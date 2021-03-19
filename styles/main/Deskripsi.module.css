@@ -1,0 +1,54 @@
+#deskripsi {
+  height: 100vh;
+  background-size: cover;
+}
+
+.hadua {
+  font-weight: 500;
+  font-family: "Kufam", cursive;
+  font-size: 2.3rem;
+}
+
+.paragrap {
+  font-size: 1.3rem;
+}
+
+@media (max-width: 576px) {
+  .hadua {
+    font-size: 2rem;
+  }
+
+  .paragrap {
+    font-size: 1.05rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .hadua {
+    font-size: 2rem;
+  }
+
+  .paragrap {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .hadua {
+    font-size: 2.1rem;
+  }
+
+  .paragrap {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .hadua {
+    font-size: 2.1rem;
+  }
+
+  .paragrap {
+    font-size: 1.1rem;
+  }
+}

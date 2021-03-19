@@ -1,0 +1,70 @@
+.jumbotron {
+  height: 100vh;
+  background-size: cover;
+}
+
+.container {
+  margin: 20px auto;
+}
+
+.gambar {
+  width: 20%;
+}
+
+.hasatu {
+  font-size: 2.9rem;
+  font-family: "Eczar", serif;
+  font-weight: 600;
+}
+
+.paragrap {
+  font-size: 1.8rem;
+}
+
+@media (max-width: 576px) {
+  .container {
+    margin: 100px auto;
+  }
+
+  .gambar {
+    width: 35%;
+  }
+
+  .hasatu {
+    font-size: 2.4rem;
+  }
+
+  .paragrap {
+    font-size: 1.4rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .container {
+    margin: 80px auto;
+  }
+
+  .gambar {
+    width: 29%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .container {
+    margin: 60px auto;
+  }
+
+  .gambar {
+    width: 28%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .container {
+    margin: 50px auto;
+  }
+
+  .gambar {
+    width: 22%;
+  }
+}

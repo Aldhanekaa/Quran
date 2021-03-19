@@ -1,0 +1,15 @@
+#switcher {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.sun {
+  padding-top: 3px;
+  padding-right: 7px;
+  color: yellow;
+}
+
+.moona {
+  padding-top: 2.4px;
+  color: blue;
+}

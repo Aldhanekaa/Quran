@@ -1,0 +1,11 @@
+#footer {
+  padding-top: 20px;
+  height: 20vh;
+  background-size: cover;
+}
+
+@media (max-width: 576px) {
+  #footer {
+    height: 28vh;
+  }
+}

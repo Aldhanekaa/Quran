@@ -1,49 +1,96 @@
-import Link from "next/link";
-import { heroBG } from "../../assets/data/Gambar";
-export default function Hero(): JSX.Element {
+import Toolbar from "@material-ui/core/Toolbar";
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
+import DirectionsIcon from "@material-ui/icons/Directions";
+
+export default function HomeHero() {
   return (
-    <section className="px-2 pt-32 bg-white md:px-0">
-      <div className="container items-center max-w-6xl px-5 mx-auto space-y-6 text-center">
-        <h1 className="text-4xl font-extrabold tracking-tight text-left text-gray-900 sm:text-5xl md:text-6xl md:text-center">
-          <span className="block">
-            <span className="block mt-1 text-deep-purple-accent-400 lg:inline lg:mt-0">
-              MTs TechnoNatura
-            </span>
-            Website
-          </span>
-        </h1>
-        <p className="w-full mx-auto text-base text-left text-gray-500 md:max-w-md sm:text-lg lg:text-2xl md:max-w-3xl md:text-center">
-          MTs Techno Natura website page.
-        </p>
-        <div className="relative flex flex-col justify-center md:flex-row md:space-x-4">
-          <Link href="/contact">
-            <a className="flex items-center w-full px-6 py-3 mb-3 text-lg text-white bg-deep-purple-accent-400 rounded-md md:mb-0 hover:bg-deep-purple-accent-200 md:w-auto">
-              Contact
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 ml-1"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </Link>
-          <Link href="/about">
-            <a className="flex items-center px-6 py-3 text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 hover:text-gray-600">
-              About Us
-            </a>
-          </Link>
+    <div>
+      <Container maxWidth="sm">
+        <Typography
+          className="arabic"
+          component="h1"
+          variant="h2"
+          align="center"
+          color="textPrimary"
+          gutterBottom
+        >
+          القرآن الكريم
+        </Typography>
+        <Typography variant="h5" align="center" color="textSecondary" paragraph>
+          Read and Meditate with Quran Online.
+        </Typography>
+        <div>
+          <Grid container spacing={2} justify="center">
+            <CustomizedInputBase />
+          </Grid>
+          <Grid container spacing={2} justify="center">
+            <Grid item>
+              <Button variant="contained" color="primary">
+                Read Quran
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="outlined" color="primary">
+                Recitations
+              </Button>
+            </Grid>
+          </Grid>
         </div>
-      </div>
-      <div className="container items-center max-w-4xl px-5 mx-auto mt-16 text-center">
-        <img src={heroBG} alt="MTs Techno Natura Hero Image" />
-      </div>
-    </section>
+      </Container>
+    </div>
+  );
+}
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      padding: "2px 4px",
+      marginBottom: "30px",
+      marginTop: "20px",
+      display: "flex",
+      alignItems: "center",
+      width: "100%"
+    },
+    input: {
+      marginLeft: theme.spacing(1),
+      flex: 1
+    },
+    iconButton: {
+      padding: 10
+    }
+  })
+);
+
+function CustomizedInputBase() {
+  const classes = useStyles();
+
+  return (
+    <Paper component="form" className={classes.root}>
+      <IconButton className={classes.iconButton} aria-label="menu">
+        <MenuIcon />
+      </IconButton>
+      <InputBase
+        className={classes.input}
+        placeholder="Search Surah"
+        inputProps={{ "aria-label": "search google maps" }}
+      />
+      <IconButton
+        type="submit"
+        className={classes.iconButton}
+        aria-label="search"
+      >
+        <SearchIcon />
+      </IconButton>
+    </Paper>
   );
 }

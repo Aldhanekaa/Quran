@@ -16,7 +16,6 @@ import Slide from "@material-ui/core/Slide";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MenuIcon from "@material-ui/icons/Menu";
 
-import styled from "styled-components";
 import { Fragment } from "react";
 import Link from "next/link";
 
@@ -76,10 +75,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-const Logo = styled(Link)`
-  cursor: pointer;
-`;
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.

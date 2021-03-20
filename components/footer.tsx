@@ -19,18 +19,13 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh"
-  },
   main: {
     marginTop: theme.spacing(8),
     marginBottom: theme.spacing(2)
   },
   footer: {
     padding: theme.spacing(3, 2),
-    marginTop: "auto",
+    marginTop: "100px",
     backgroundColor:
       theme.palette.type === "light"
         ? theme.palette.grey[200]
@@ -42,18 +37,16 @@ export default function StickyFooter() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <footer className={classes.footer}>
-        <Container maxWidth="sm">
-          <Typography variant="body1">
-            Project maintained by{" "}
-            <Link href="https://github.com/aldhanekaa" target="_blank">
-              Aldhaneka
-            </Link>
-          </Typography>
-          <Copyright />
-        </Container>
-      </footer>
-    </div>
+    <footer className={classes.footer}>
+      <Container maxWidth="sm">
+        <Typography variant="body1">
+          Project maintained by{" "}
+          <Link href="https://github.com/aldhanekaa" target="_blank">
+            Aldhaneka
+          </Link>
+        </Typography>
+        <Copyright />
+      </Container>
+    </footer>
   );
 }

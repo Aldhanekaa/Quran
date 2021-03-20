@@ -170,11 +170,13 @@ export default function ListSurah() {
                   </DialogTitle>
                   <DialogContent>
                     <DialogContentText>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: dialog.surahInfo.text
-                        }}
-                      ></div>
+                      {dialog.surahInfo.text && (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: dialog.surahInfo.text
+                          }}
+                        ></div>
+                      )}
                     </DialogContentText>
                   </DialogContent>
                 </Dialog>

@@ -18,6 +18,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { Fragment } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -104,6 +105,8 @@ function HideOnScroll(props: AdvancedProps) {
 
 export default function SearchAppBar(props: Props) {
   const classes = useStyles();
+  const router = useRouter();
+  console.log("INI ROUTERRR", router);
 
   return (
     <Fragment>

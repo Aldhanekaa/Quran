@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import ProgressLoad from "../components/ProgressLoad";
+import ScrollToTop from "../components/scrollToTop";
 
 import React from "react";
 import { useTheme } from "@material-ui/core/styles";
@@ -108,9 +109,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         {/* {Footer ? Footer : ""} */}
         <Footer />
+
+        <ScrollToTop {...pageProps} />
       </ThemeProvider>
     </>
   );
 }
-
 export default MyApp;

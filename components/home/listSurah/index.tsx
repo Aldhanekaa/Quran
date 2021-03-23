@@ -21,6 +21,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
+import Link from "next/link";
 /* ======================= END UI ======================= */
 
 import {
@@ -208,7 +209,14 @@ export default function ListSurah() {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Button size="small">Read Surah</Button>
+                      <Link
+                        href={{
+                          pathname: "/[surah]",
+                          query: { surah: chapter.id }
+                        }}
+                      >
+                        <Button size="small">Read Surah</Button>
+                      </Link>
                       <Button
                         size="small"
                         onClick={() => handleClickOpen(chapter.id)}

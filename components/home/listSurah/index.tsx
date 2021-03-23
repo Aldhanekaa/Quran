@@ -21,6 +21,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
+/* ======================= END UI ======================= */
 
 import {
   createStyles,
@@ -66,6 +67,7 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function ListSurah() {
+  // Fetch chapter list
   const { data, error }: fetchChapters = useSWR<chapters, any>(
     "https://api.quran.com/api/v4/chapters?language=en",
     fetcher
@@ -79,9 +81,12 @@ export default function ListSurah() {
   const classes = useStyles();
   const bull = <span className={classes.bullet}>•</span>;
 
+  // width for dialog or modal
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  // width for dialog or modal
 
+  // click event to open dialog
   const handleClickOpen = (id: number) => {
     setDialog((prevState: boolean | surahListDialog[] | undefined) => {
       if (Array.isArray(prevState)) {
@@ -92,6 +97,7 @@ export default function ListSurah() {
     });
   };
 
+  // click event to close dialog
   const handleClose = (id: number) => {
     setDialog((prevState: boolean | surahListDialog[] | undefined) => {
       if (Array.isArray(prevState)) {
@@ -127,15 +133,19 @@ export default function ListSurah() {
           };
         }
 
+        const Surah = {
+          surahInfo: surahInfo,
+          surah: chapter
+        };
+
         //   We push the data info of the surah
         surahDialog.push({
           id: chapter.id,
           open: false,
-          surahInfo,
-          surah: chapter
+          surah: Surah
         });
       });
-      console.log(surahDialog);
+      // console.log(surahDialog);
 
       setDialog(surahDialog);
     } else {
@@ -166,14 +176,15 @@ export default function ListSurah() {
                     id="customized-dialog-title"
                     onClose={() => handleClose(dialog.id)}
                   >
-                    {dialog.surah.name_simple} {bull} {dialog.surah.name_arabic}
+                    {dialog.surah.surah.name_simple} {bull}{" "}
+                    {dialog.surah.surah.name_arabic}
                   </DialogTitle>
                   <DialogContent>
                     <DialogContentText>
-                      {dialog.surahInfo.text && (
+                      {dialog.surah.surahInfo.text && (
                         <div
                           dangerouslySetInnerHTML={{
-                            __html: dialog.surahInfo.text
+                            __html: dialog.surah.surahInfo.text
                           }}
                         ></div>
                       )}

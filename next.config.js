@@ -9,17 +9,17 @@ const {
   timeConversion
 } = require("./utils/konversiWaktu");
 
+const getDate = new Date();
+
 const NODE_ENV = process.env.NODE_ENV;
 const dualENV = {
   production: {
-    PUBLIC_URL: "https://mts-technonatura.vercel.app"
+    PUBLIC_URL: "https://sekilas13.vercel.app"
   },
   development: {
     PUBLIC_URL: "http://localhost:3000"
   }
 };
-
-const getDate = new Date();
 
 const env = { ...dualENV[NODE_ENV], isProduction: NODE_ENV === "production" };
 
@@ -114,10 +114,7 @@ module.exports = withPlugins(
       [
         withPurgeCss({
           purgeCssEnabled: ({ dev, isServer }) => !dev && !isServer,
-          purgeCssPaths: ["pages/**/*", "components/**/*"],
-          purgeCss: {
-            whitelist: () => whitelist
-          }
+          purgeCssPaths: ["pages/**/*", "components/**/*"]
         })
       ]
     ]

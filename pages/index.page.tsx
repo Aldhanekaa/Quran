@@ -28,27 +28,6 @@ export default function Home() {
             "QuranKu Website - Read Quran and Meditate with Quran online"
         }}
       />
-
-      <style jsx global>{`
-        html {
-          font-family: "Roboto", sans-serif;
-          scroll-behavior: smooth;
-        }
-
-        @font-face {
-          font-family: arabicfont;
-          src: url("/LPMQ.ttf");
-        }
-
-        html {
-          scroll-behavior: smooth;
-          padding-top: 50px;
-        }
-
-        .arabic {
-          font-family: arabicfont;
-        }
-      `}</style>
       <Toolbar />
       <Hero />
       <ListSurah />

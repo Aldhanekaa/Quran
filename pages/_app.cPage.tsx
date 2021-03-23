@@ -3,6 +3,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 
 import { DefaultSeo } from "next-seo";
 import SEO from "../seo.config";
+import "../styles/global.css";
 
 import Head from "next/head";
 import { AppProps } from "next/app";
@@ -83,6 +84,15 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="Website Madrasah Tsanawiyah Techno Natura"
         />
       </Head>
+
+      <style jsx global>{`
+        html {
+          font-family: "Roboto", sans-serif;
+          scroll-behavior: smooth;
+          scroll-behavior: smooth;
+          padding-top: 50px;
+        }
+      `}</style>
 
       <DefaultSeo {...SEO} />
 

@@ -106,7 +106,6 @@ function HideOnScroll(props: AdvancedProps) {
 export default function SearchAppBar(props: Props) {
   const classes = useStyles();
   const router = useRouter();
-  console.log("INI ROUTERRR", router);
 
   return (
     <Fragment>

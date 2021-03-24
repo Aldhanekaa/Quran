@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import FetchVerses from "../../utils/getVerseByChapter";
 import FetchSurah from "../../utils/getChapter";
 import Tab from "../../components/Surah/Tab";
+import { GetStaticProps, GetStaticPaths } from "next";
 
 interface WithRouterProps {
   router: NextRouter;
@@ -93,13 +94,36 @@ interface AA {
   a: string;
 }
 
-// export const getServerSideProps: GetServerSideProps<Redirect | AA> = async (
-//   ctx
-// ) => {
-//   console.log("asdasd", ctx.query);
+// // @ts-ignore
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   // Get the paths we want to pre-render based on users
+//   const paths = [1, 2, 3, 4, 5].map((user) => ({
+//     params: { chapter: user }
+//   }));
+
+//   // We'll pre-render only these paths at build time.
+//   // { fallback: false } means other routes should 404.
+//   return { paths, fallback: false };
+// };
+
+// // @ts-ignore
+// export const getStaticProps: GetStaticProps = ({ chapter }) => {
+//   const id = params?.id;
+
 //   return {
 //     props: {
-//       a: "as"
+//       p: []
 //     }
 //   };
 // };
+
+export const getServerSideProps: GetServerSideProps<Redirect | AA> = async (
+  ctx
+) => {
+  console.log("asdasd", ctx.query);
+  return {
+    props: {
+      a: "as"
+    }
+  };
+};

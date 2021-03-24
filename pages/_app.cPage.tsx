@@ -49,6 +49,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const theme = useTheme();
 
+  console.log("INI ROUTERRR", router);
+
   let path: string = router.pathname;
 
   useEffect(() => {

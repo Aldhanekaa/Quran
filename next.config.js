@@ -28,6 +28,7 @@ const nextConfig = {
   pageExtensions: [
     "page.js",
     "page.tsx",
+    "tsx",
     "page.jsx",
     "cPage.tsx",
     "api.js",

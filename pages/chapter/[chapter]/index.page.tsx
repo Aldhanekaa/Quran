@@ -11,12 +11,12 @@ import {
   VerseByChapterFetchResult,
   ErrorMessage,
   Surah
-} from "../../types/interfaces";
+} from "../../../types/interfaces";
 import { useEffect, useState } from "react";
 
-import FetchVerses from "../../utils/getVerseByChapter";
-import FetchSurah from "../../utils/getChapter";
-import Tab from "../../components/Surah/Tab";
+import FetchVerses from "../../../utils/getVerseByChapter";
+import FetchSurah from "../../../utils/getChapter";
+import Tab from "../../../components/Surah/Tab";
 
 interface WithRouterProps {
   router: NextRouter;

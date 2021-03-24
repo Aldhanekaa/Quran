@@ -69,4 +69,54 @@ const nextConfig = {
   env
 };
 
-module.exports = withPlugins([], nextConfig);
+const plugins = [
+  [
+    optimizedImages,
+    {
+      inlineImageLimit: 8192,
+      imagesFolder: "images",
+      imagesName: "[name]-[hash].[ext]",
+      handleImages: ["jpeg", "png", "webp"],
+      removeOriginalExtension: false,
+      optimizeImages: true,
+      optimizeImagesInDev: false,
+      mozjpeg: {
+        quality: 80
+      },
+      optipng: {
+        optimizationLevel: 3
+      },
+      pngquant: false,
+      webp: {
+        preset: "default",
+        quality: 75
+      },
+      responsive: {
+        adapter: require("responsive-loader/sharp")
+      }
+    }
+  ],
+  [
+    withPWA,
+    {
+      pwa: {
+        disable: process.env.NODE_ENV === "development",
+        register: true,
+        scope: "/",
+        sw: "service-worker.js",
+        dest: "public"
+      }
+    }
+  ],
+  [
+    withCss,
+    [
+      withPurgeCss({
+        purgeCssEnabled: ({ dev, isServer }) => !dev && !isServer,
+        purgeCssPaths: ["pages/**/*", "components/**/*"]
+      })
+    ]
+  ]
+];
+
+module.exports = withPlugins([...plugins], nextConfig);

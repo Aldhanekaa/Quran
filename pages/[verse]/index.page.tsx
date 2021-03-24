@@ -27,37 +27,37 @@ interface MyComponentProps extends WithRouterProps {}
 export default function Verse() {
   const router = useRouter();
 
-  console.log(router);
+  // console.log(router);
 
-  const [surahVerses, changeVerses] = useState<
-    undefined | VerseByChapterFetchResult | ErrorMessage
-  >();
+  // const [surahVerses, changeVerses] = useState<
+  //   undefined | VerseByChapterFetchResult | ErrorMessage
+  // >();
 
-  const [Surah, setSurah] = useState<Surah | undefined | ErrorMessage>();
+  // const [Surah, setSurah] = useState<Surah | undefined | ErrorMessage>();
 
-  // @ts-ignore
-  useEffect(async () => {
-    if (router.query.verse) {
-      // @ts-ignore
-      const verses = await FetchVerses(router.query.verse);
-      // @ts-ignore
-      const surah = await FetchSurah(router.query.verse);
+  // // @ts-ignore
+  // useEffect(async () => {
+  //   if (router.query.verse) {
+  //     // @ts-ignore
+  //     const verses = await FetchVerses(router.query.verse);
+  //     // @ts-ignore
+  //     const surah = await FetchSurah(router.query.verse);
 
-      setSurah(surah);
-      changeVerses(verses);
-    }
-  }, [router.query.verse]);
+  //     setSurah(surah);
+  //     changeVerses(verses);
+  //   }
+  // }, [router.query.verse]);
 
-  useEffect(() => {
-    console.log("surah", Surah);
+  // useEffect(() => {
+  //   console.log("surah", Surah);
 
-    console.log("surahVerses", surahVerses);
-  }, [surahVerses]);
+  //   console.log("surahVerses", surahVerses);
+  // }, [surahVerses]);
 
   return (
     <div style={{ marginTop: "50px" }}>
       <Container maxWidth="sm">
-        {Surah && "surah" in Surah && Surah.surah.bismillah_pre && (
+        {/* {Surah && "surah" in Surah && Surah.surah.bismillah_pre && (
           <Typography
             className="arabic"
             component="h1"
@@ -80,7 +80,9 @@ export default function Verse() {
           >
             <CircularProgress />
           </Typography>
-        )}
+        )}router */}
+
+        {JSON.stringify(router)}
       </Container>
       <Tab />
     </div>

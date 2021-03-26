@@ -17,6 +17,7 @@ import ScrollToTop from "../components/scrollToTop";
 
 import React from "react";
 import { useTheme } from "@material-ui/core/styles";
+import { ChakraProvider } from "@chakra-ui/react";
 
 declare global {
   interface Window {
@@ -98,22 +99,23 @@ function MyApp({ Component, pageProps }: AppProps) {
       `}</style>
 
       <DefaultSeo {...SEO} />
+      <ChakraProvider>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <ProgressLoad />
 
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <ProgressLoad />
+          <Navbar />
 
-        <Navbar />
+          {/* {<Navbar /> && Nav} */}
+          <Component {...pageProps} />
 
-        {/* {<Navbar /> && Nav} */}
-        <Component {...pageProps} />
+          {/* {Footer ? Footer : ""} */}
+          <Footer />
 
-        {/* {Footer ? Footer : ""} */}
-        <Footer />
-
-        <ScrollToTop {...pageProps} />
-      </ThemeProvider>
+          <ScrollToTop {...pageProps} />
+        </ThemeProvider>
+      </ChakraProvider>
     </>
   );
 }

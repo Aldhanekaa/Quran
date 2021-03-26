@@ -1,6 +1,5 @@
 import {
   ErrorMessage,
-  VerseByChapterFetchResult,
   surahInfoType,
   chapter,
   Surah
@@ -33,7 +32,7 @@ export default async function fetchSurah(
       surahInfo: chapterInfo.data.chapter_info
     };
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     return {
       message: "error"
     };

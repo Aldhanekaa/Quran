@@ -59,7 +59,11 @@ const TabsStyled = styled(Tabs)`
   justify-content: center !important;
 `;
 
-export default function ScrollableTabsButtonPrevent() {
+interface thisIsProps {
+  Translations?: JSX.Element | JSX.Element[];
+}
+
+export default function ScrollableTabsButtonPrevent(props: thisIsProps) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -83,7 +87,7 @@ export default function ScrollableTabsButtonPrevent() {
         </TabsStyled>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Item One
+        {props.Translations}
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two

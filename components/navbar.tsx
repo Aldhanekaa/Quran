@@ -11,14 +11,33 @@ import {
   Theme,
   makeStyles
 } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
 import Slide from "@material-ui/core/Slide";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MenuIcon from "@material-ui/icons/Menu";
 
+import clsx from "clsx";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import HomeIcon from "@material-ui/icons/Home";
+import SearchIcon from "@material-ui/icons/Search";
+
 import { Fragment } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
+const aaaa = makeStyles({
+  list: {
+    width: 250
+  },
+  fullList: {
+    width: "auto"
+  }
+});
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -103,9 +122,75 @@ function HideOnScroll(props: AdvancedProps) {
   );
 }
 
+type Anchor = "top" | "left" | "bottom" | "right";
+
 export default function SearchAppBar(props: Props) {
   const classes = useStyles();
   const router = useRouter();
+
+  const aaa = aaaa();
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false
+  });
+
+  const toggleDrawer = (anchor: Anchor, open: boolean) => (
+    event: React.KeyboardEvent | React.MouseEvent
+  ) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const list = (anchor: Anchor) => (
+    <div
+      className={clsx(aaa.list, {
+        [aaa.fullList]: anchor === "top" || anchor === "bottom"
+      })}
+      role="presentation"
+    >
+      <List>
+        <Link href="/">
+          <ListItem button>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+        </Link>
+        <ListItem button>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="List Surah" />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem button>
+          <ListItemIcon>
+            <SearchIcon />
+          </ListItemIcon>
+          <ListItemText primary="Search Surah" />
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <SearchIcon />
+          </ListItemIcon>
+          <ListItemText primary="Search Verse" />
+        </ListItem>
+      </List>
+    </div>
+  );
 
   return (
     <Fragment>
@@ -119,6 +204,7 @@ export default function SearchAppBar(props: Props) {
               className={classes.menuButton}
               color="inherit"
               aria-label="open drawer"
+              onClick={toggleDrawer("left", true)}
             >
               <MenuIcon />
             </IconButton>
@@ -145,6 +231,17 @@ export default function SearchAppBar(props: Props) {
           </Toolbar>
         </AppBar>
       </HideOnScroll>
+
+      <React.Fragment>
+        <SwipeableDrawer
+          anchor="left"
+          open={state["left"]}
+          onClose={toggleDrawer("left", false)}
+          onOpen={toggleDrawer("left", true)}
+        >
+          {list("left")}
+        </SwipeableDrawer>
+      </React.Fragment>
     </Fragment>
   );
 }

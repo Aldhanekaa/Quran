@@ -198,7 +198,7 @@ export default function ListSurah() {
             data &&
             data.chapters.map((chapter) => {
               return (
-                <Grid item xs>
+                <Grid item xs key={chapter.id}>
                   <Card className={classes.root}>
                     <CardContent>
                       <Typography variant="h5" component="h2">

@@ -157,6 +157,8 @@ export default function SearchAppBar(props: Props) {
         [aaa.fullList]: anchor === "top" || anchor === "bottom"
       })}
       role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
         <Link href="/">

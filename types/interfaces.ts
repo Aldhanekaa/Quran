@@ -6,7 +6,7 @@ export type chapter = {
   bismillah_pre: boolean;
   name_complex: boolean;
   name_arabic: boolean;
-  verses_count: boolean;
+  verses_count: number;
   pages: number[];
   name_simple: string;
   translated_name: {

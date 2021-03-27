@@ -198,41 +198,39 @@ export default function SearchAppBar(props: Props) {
     <Fragment>
       <CssBaseline />
 
-      <HideOnScroll {...props}>
-        <AppBar>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer("left", true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Link href="/">
-              <Typography className={classes.title} variant="h6" noWrap>
-                Quran
-              </Typography>
-            </Link>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <form>
-                <InputBase
-                  placeholder="Search Surah"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput
-                  }}
-                  inputProps={{ "aria-label": "search" }}
-                />
-              </form>
+      <AppBar>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer("left", true)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Link href="/">
+            <Typography className={classes.title} variant="h6" noWrap>
+              Quran
+            </Typography>
+          </Link>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
             </div>
-          </Toolbar>
-        </AppBar>
-      </HideOnScroll>
+            <form>
+              <InputBase
+                placeholder="Search Surah"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
+            </form>
+          </div>
+        </Toolbar>
+      </AppBar>
 
       <React.Fragment>
         <SwipeableDrawer

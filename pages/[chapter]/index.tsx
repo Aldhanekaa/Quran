@@ -1,9 +1,7 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
-
 import Container from "@material-ui/core/Container";
-import { withRouter, NextRouter, useRouter } from "next/router";
 import Typography from "@material-ui/core/Typography";
-
+import { Box, Heading, Text, Stack, Badge } from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
 import { Redirect, GetServerSideProps, GetServerSidePropsResult } from "next";
 import {
@@ -11,19 +9,25 @@ import {
   ErrorMessage,
   Surah
 } from "../../types/interfaces";
+import { withRouter, NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { GetStaticProps, GetStaticPaths } from "next";
+import styled from "@emotion/styled";
 
 import FetchVerses from "../../utils/getVerseByChapter";
 import FetchSurah from "../../utils/getChapter";
-import Tab from "../../components/Surah/Tab";
-import { GetStaticProps, GetStaticPaths } from "next";
-import { Box, Heading, Text, Stack } from "@chakra-ui/react";
+import Tab from "@/components/Surah/Tab";
+import Hero from "@/components/Surah/Hero";
 
-interface WithRouterProps {
-  router: NextRouter;
-}
+const BismillahText = styled(Text)`
+  font-size: 70px;
 
-export default function Verse(props: ErrorMessage | Surah) {
+  @media screen and (max-width: 556px) {
+    font-size: 40px;
+  }
+`;
+
+export default function Chapter(props: ErrorMessage | Surah) {
   const router = useRouter();
 
   console.log(router);
@@ -46,9 +50,29 @@ export default function Verse(props: ErrorMessage | Surah) {
   }, [router.query.verse]);
 
   // const OK =
+  console.log("asdasdas", typeof props);
 
   return (
     <div style={{ marginTop: "50px" }}>
+      {/* @ts-ignore */}
+      {!props.message && props.surah && (
+        <>
+          {/* @ts-ignore */}
+          <Hero
+            // @ts-ignore
+            surah_name={props.surah.name_simple}
+            //  @ts-ignore
+            verses_count={props.surah.verses_count}
+            // @ts-ignore
+            desc={props.surahInfo.short_text}
+            // @ts-ignore
+            revelation_place={props.surah.revelation_place}
+          />
+        </>
+      )}
+      {/* @ts-ignore */}
+      {props.message && <h1>error</h1>}
+
       <Container maxWidth="sm">
         {!surahVerses && (
           <Typography
@@ -65,17 +89,9 @@ export default function Verse(props: ErrorMessage | Surah) {
         Translations={
           <>
             {Surah && "surah" in Surah && Surah.surah.bismillah_pre && (
-              <Typography
-                className="arabic"
-                component="h1"
-                variant="h2"
-                align="center"
-                color="textPrimary"
-                gutterBottom
-                id="bismillah"
-              >
+              <BismillahText className="arabic" align="center" id="bismillah">
                 ﷽
-              </Typography>
+              </BismillahText>
             )}
 
             <Stack spacing={0}>
@@ -87,6 +103,7 @@ export default function Verse(props: ErrorMessage | Surah) {
                 borderRadius="lg"
                 overflow="hidden"
               >
+                <Badge>Verse 1</Badge>
                 <Heading fontSize="xl">sssasdas</Heading>
                 <Text mt={4}>asdasi</Text>
               </Box>
@@ -101,7 +118,6 @@ export default function Verse(props: ErrorMessage | Surah) {
 export const getServerSideProps: GetServerSideProps<
   ErrorMessage | Surah
 > = async (ctx) => {
-  console.log("asdasd", ctx.query);
   // const verses = await FetchVerses(router.query.verse);
   //@ts-ignore
   const surah = await FetchSurah(ctx.query.chapter);

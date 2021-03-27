@@ -7,6 +7,8 @@
   text-align: right;
   font-family: arabicfont !important;
   font-size: large;
+  line-height: 45px;
+  word-spacing: 9px;
 }
 
 body {

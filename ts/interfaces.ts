@@ -81,11 +81,19 @@ export type Verse = {
   image_width?: number;
   words: Word[];
   audio?: AudioFile;
+  translations: Translation[];
+};
+
+export type Translation = {
+  resource_id: number;
+  resource_name?: string;
+  id?: number;
+  text: string;
 };
 
 // Audio File
 export type AudioFile = {
-  url: string;
+  url?: string;
   duration?: number;
   format?: string;
   segments: Array<any>;

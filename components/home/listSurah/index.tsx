@@ -3,7 +3,7 @@ import {
   chapters,
   surahInfoType,
   surahListDialog
-} from "../../../types/interfaces";
+} from "../../../ts/interfaces";
 
 /* ======================= UI ======================= */
 import Box from "@material-ui/core/Box";

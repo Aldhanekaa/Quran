@@ -1,14 +1,22 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import { Box, Heading, Text, Stack, Badge } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Stack,
+  Badge,
+  Center,
+  Button
+} from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
 import { Redirect, GetServerSideProps, GetServerSidePropsResult } from "next";
 import {
   VerseByChapterFetchResult,
   ErrorMessage,
   Surah
-} from "../../types/interfaces";
+} from "@/ts/interfaces";
 import { withRouter, NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
@@ -18,6 +26,10 @@ import FetchVerses from "../../utils/getVerseByChapter";
 import FetchSurah from "../../utils/getChapter";
 import Tab from "@/components/Surah/Tab";
 import Hero from "@/components/Surah/Hero";
+import Verse from "@/components/Surah/verse";
+// import {} from "@/";
+// import {} from "@/typescript/";
+import { chapter } from "@/ts/interfaces";
 
 const BismillahText = styled(Text)`
   font-size: 70px;
@@ -33,7 +45,7 @@ export default function Chapter(props: ErrorMessage | Surah) {
   console.log(router);
 
   const [surahVerses, changeVerses] = useState<
-    VerseByChapterFetchResult | ErrorMessage
+    VerseByChapterFetchResult | false
   >();
 
   const [Surah, setSurah] = useState<Surah | ErrorMessage>(() => {
@@ -45,12 +57,13 @@ export default function Chapter(props: ErrorMessage | Surah) {
     if (router.query.chapter) {
       // @ts-ignore
       const verses = await FetchVerses(router.query.chapter);
+      console.log(verses);
       changeVerses(verses);
     }
   }, [router.query.verse]);
 
   // const OK =
-  console.log("asdasdas", typeof props);
+  // console.log("asdasdas", surahVerses);
 
   return (
     <div style={{ marginTop: "50px" }}>
@@ -73,44 +86,38 @@ export default function Chapter(props: ErrorMessage | Surah) {
       {/* @ts-ignore */}
       {props.message && <h1>error</h1>}
 
-      <Container maxWidth="sm">
-        {!surahVerses && (
-          <Typography
-            variant="h5"
-            align="center"
-            color="textSecondary"
-            paragraph
-          >
-            <CircularProgress />
-          </Typography>
-        )}
-      </Container>
-      <Tab
-        Translations={
-          <>
-            {Surah && "surah" in Surah && Surah.surah.bismillah_pre && (
-              <BismillahText className="arabic" align="center" id="bismillah">
-                ﷽
-              </BismillahText>
-            )}
+      {!surahVerses && (
+        <Typography variant="h5" align="center" color="textSecondary" paragraph>
+          <CircularProgress />
+        </Typography>
+      )}
 
-            <Stack spacing={0}>
-              <Box
-                p={5}
-                flex="1"
-                width="100%"
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-              >
-                <Badge>Verse 1</Badge>
-                <Heading fontSize="xl">sssasdas</Heading>
-                <Text mt={4}>asdasi</Text>
-              </Box>
-            </Stack>
-          </>
-        }
-      />
+      {surahVerses && (
+        <Tab
+          Translations={
+            <>
+              {Surah && "surah" in Surah && Surah.surah.bismillah_pre && (
+                <BismillahText className="arabic" align="center" id="bismillah">
+                  ﷽
+                </BismillahText>
+              )}
+              <Container>
+                <Stack spacing={5}>
+                  {surahVerses &&
+                    surahVerses.verses.map((verse) => {
+                      return <Verse {...verse}></Verse>;
+                    })}
+                </Stack>
+              </Container>
+              <Center marginTop={10} color="white">
+                <Button colorScheme="teal" variant="solid">
+                  Load More Verse
+                </Button>
+              </Center>
+            </>
+          }
+        />
+      )}
     </div>
   );
 }

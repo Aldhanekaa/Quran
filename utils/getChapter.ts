@@ -1,12 +1,6 @@
-import {
-  ErrorMessage,
-  surahInfoType,
-  chapter,
-  Surah
-} from "../types/interfaces";
+import { ErrorMessage, surahInfoType, chapter, Surah } from "../ts/interfaces";
 
 import axios from "axios";
-
 interface B {
   a: string;
 }

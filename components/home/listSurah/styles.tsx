@@ -6,11 +6,16 @@ import {
   makeStyles,
   useTheme
 } from "@material-ui/core/styles";
+import styled from "@emotion/styled";
+import Card from "@material-ui/core/Card";
+
+const ChapterCard = styled(Card)`
+  @media screen and (min-width: 345px) {
+    min-width: 300px;
+  }
+`;
 
 const useStyles = makeStyles({
-  root: {
-    minWidth: 275
-  },
   bullet: {
     display: "inline-block",
     margin: "0 2px",
@@ -35,4 +40,4 @@ const styles = (theme: Theme) =>
     }
   });
 
-export { styles, useStyles };
+export { styles, useStyles, ChapterCard };

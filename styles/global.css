@@ -735,14 +735,14 @@ divehi .alert-dismissible .close,
 .text_indopak .end,
 .text_uthmani .end,
 .text_uthmani_tajweed .end {
-  font-family: UthmanicHafs1;
+  font-family: UthmanicHafs1 !important;
   font-size: 35px;
-  unicode-bidi: bidi-override;
+  unicode-bidi: bidi-override !important;
 }
 .text_indopak .end *,
 .text_uthmani .end *,
 .text_uthmani_tajweed .end * {
-  font-family: UthmanicHafs1;
+  font-family: UthmanicHafs1 !important;
   font-size: 35px;
 }
 

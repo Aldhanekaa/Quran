@@ -12,7 +12,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Dialog from "@material-ui/core/Dialog";
@@ -32,11 +31,31 @@ import {
   makeStyles,
   useTheme
 } from "@material-ui/core/styles";
-import { styles, useStyles } from "./styles";
+import { styles, useStyles, ChapterCard } from "./styles";
 import NoData from "./noData";
 import useSWR from "swr";
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
+import styled from "@emotion/styled";
+import { Tabs, TabList, TabPanels, TabPanel, Tab } from "@chakra-ui/react";
+
+const StyledDialogContent = styled(DialogContent)`
+  ol,
+  ul {
+    padding-left: 30px;
+    margin-top: 20px;
+  }
+
+  h2 {
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: 500;
+  }
+
+  p {
+    margin-top: 10px;
+  }
+`;
 
 export interface DialogTitleProps extends WithStyles<typeof styles> {
   id: string;
@@ -156,81 +175,102 @@ export default function ListSurah() {
 
   return (
     <>
-      <Container style={{ flexGrow: 1, marginTop: "100px" }}>
-        <Grid container spacing={3}>
-          {!dialogs &&
-            !error &&
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(() => {
-              return <NoData classes={classes} />;
-            })}
-          {Array.isArray(dialogs) &&
-            data &&
-            dialogs.map((dialog: surahListDialog) => {
-              return (
-                <Dialog
-                  fullScreen={fullScreen}
-                  open={dialog.open}
-                  onClose={() => handleClose(dialog.id)}
-                  aria-labelledby="responsive-dialog-title"
-                >
-                  <DialogTitle
-                    id="customized-dialog-title"
-                    onClose={() => handleClose(dialog.id)}
-                  >
-                    {dialog.surah.surah.name_simple} {bull}{" "}
-                    {dialog.surah.surah.name_arabic}
-                  </DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>
-                      {dialog.surah.surahInfo.text && (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: dialog.surah.surahInfo.text
-                          }}
-                        ></div>
-                      )}
-                    </DialogContentText>
-                  </DialogContent>
-                </Dialog>
-              );
-            })}
-          {dialogs &&
-            data &&
-            data.chapters.map((chapter) => {
-              return (
-                <Grid item xs key={chapter.id}>
-                  <Card className={classes.root}>
-                    <CardContent>
-                      <Typography variant="h5" component="h2">
-                        {chapter.name_simple} {bull} {chapter.name_arabic}
-                      </Typography>
-                      <Typography className={classes.pos} color="textSecondary">
-                        {chapter.translated_name.name}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Link
-                        href={{
-                          pathname: "/[surah]",
-                          query: { surah: chapter.id }
-                        }}
+      <Container
+        style={{
+          flexGrow: 1,
+          marginTop: "100px"
+        }}
+      >
+        <Tabs isFitted variant="enclosed">
+          <TabList mb="1em">
+            <Tab>Surahs (Chapters)</Tab>
+            <Tab>Juz</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Grid container spacing={3}>
+                {!dialogs &&
+                  !error &&
+                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(() => {
+                    return <NoData classes={classes} />;
+                  })}
+                {Array.isArray(dialogs) &&
+                  data &&
+                  dialogs.map((dialog: surahListDialog) => {
+                    return (
+                      <Dialog
+                        fullScreen={fullScreen}
+                        open={dialog.open}
+                        onClose={() => handleClose(dialog.id)}
+                        aria-labelledby="responsive-dialog-title"
                       >
-                        <Button size="small">Read Surah</Button>
-                      </Link>
-                      <Button
-                        size="small"
-                        onClick={() => handleClickOpen(chapter.id)}
-                      >
-                        See Info
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
-            })}
+                        <DialogTitle
+                          id="customized-dialog-title"
+                          onClose={() => handleClose(dialog.id)}
+                        >
+                          {dialog.surah.surah.name_simple} {bull}{" "}
+                          {dialog.surah.surah.name_arabic}
+                        </DialogTitle>
+                        <StyledDialogContent>
+                          <DialogContentText>
+                            {dialog.surah.surahInfo.text && (
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: dialog.surah.surahInfo.text
+                                }}
+                              ></div>
+                            )}
+                          </DialogContentText>
+                        </StyledDialogContent>
+                      </Dialog>
+                    );
+                  })}
+                {dialogs &&
+                  data &&
+                  data.chapters.map((chapter) => {
+                    return (
+                      <Grid item xs key={chapter.id}>
+                        <ChapterCard>
+                          <CardContent>
+                            <Typography variant="h5" component="h2">
+                              {chapter.name_simple} {bull} {chapter.name_arabic}
+                            </Typography>
+                            <Typography
+                              className={classes.pos}
+                              color="textSecondary"
+                            >
+                              {chapter.translated_name.name}
+                            </Typography>
+                          </CardContent>
+                          <CardActions>
+                            <Link
+                              href={{
+                                pathname: "/[surah]",
+                                query: { surah: chapter.id }
+                              }}
+                            >
+                              <Button size="small">Read Surah</Button>
+                            </Link>
+                            <Button
+                              size="small"
+                              onClick={() => handleClickOpen(chapter.id)}
+                            >
+                              See Info
+                            </Button>
+                          </CardActions>
+                        </ChapterCard>
+                      </Grid>
+                    );
+                  })}
 
-          {!dialogs && error && <p>Eror!</p>}
-        </Grid>
+                {!dialogs && error && <p>Eror!</p>}
+              </Grid>
+            </TabPanel>
+            <TabPanel>
+              <p>two!</p>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Container>
     </>
   );

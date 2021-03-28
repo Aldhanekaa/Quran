@@ -30,7 +30,9 @@ import {
   Center,
   useDisclosure,
   Tooltip,
-  Button
+  Button,
+  useToast,
+  useClipboard
 } from "@chakra-ui/react";
 
 import { NextSeo } from "next-seo";
@@ -73,6 +75,10 @@ export default function VerseComponent(props: VerseProps) {
       return "";
     })
     .join("");
+  const toast = useToast();
+
+  const { hasCopied, onCopy } = useClipboard(words);
+
   return (
     <>
       <Box
@@ -94,7 +100,15 @@ export default function VerseComponent(props: VerseProps) {
                 className="arabic"
               >
                 <Tooltip label={word.translation.text} arrow>
-                  <span>{word.text_uthmani}</span>
+                  <span
+                    className={
+                      word.char_type_name == "end"
+                        ? "end text_uthmani arabic"
+                        : ""
+                    }
+                  >
+                    {word.text_uthmani}
+                  </span>
                 </Tooltip>
               </Text>
             );
@@ -127,8 +141,23 @@ export default function VerseComponent(props: VerseProps) {
             </Button>
           </ButtonGridItem>
           <ButtonGridItem item>
-            <Button leftIcon={<FilterNoneIcon />} colorScheme="blue">
-              Copy
+            <Button
+              leftIcon={<FilterNoneIcon />}
+              onClick={() => {
+                {
+                  !hasCopied &&
+                    toast({
+                      title: `Copied To Clipboard`,
+                      status: "success",
+                      isClosable: true,
+                      position: "bottom-right"
+                    });
+                }
+                onCopy();
+              }}
+              colorScheme="blue"
+            >
+              {hasCopied ? "Copied" : "Copy"}
             </Button>
           </ButtonGridItem>
           <ButtonGridItem

@@ -25,7 +25,10 @@ import {
   ModalCloseButton,
   useClipboard,
   Flex,
-  Input
+  Input,
+  WrapItem,
+  Wrap,
+  useToast
 } from "@chakra-ui/react";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -73,6 +76,8 @@ interface shareModalDataRef {
 }
 
 export default function Chapter(props: SurahResult) {
+  const toast = useToast();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [scrollBehavior, setScrollBehavior] = useState("inside");
   const shareModalData = useRef<shareModalDataRef>({
@@ -81,7 +86,6 @@ export default function Chapter(props: SurahResult) {
   });
   const { hasCopied, onCopy } = useClipboard(shareModalData.current.verse);
 
-  const btnRef = useRef();
   const router = useRouter();
 
   const [surahVerses, changeVerses] = useState<
@@ -117,7 +121,7 @@ export default function Chapter(props: SurahResult) {
       <Modal onClose={onClose} isOpen={isOpen} scrollBehavior="inside">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Share This Ayah</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex mb={2}>
@@ -127,7 +131,21 @@ export default function Chapter(props: SurahResult) {
                 isReadOnly
                 placeholder="Welcome"
               />
-              <Button onClick={onCopy} ml={2}>
+              <Button
+                onClick={() => {
+                  {
+                    !hasCopied &&
+                      toast({
+                        title: `Copied To Clipboard`,
+                        status: "success",
+                        isClosable: true,
+                        position: "bottom-right"
+                      });
+                  }
+                  onCopy();
+                }}
+                ml={2}
+              >
                 {hasCopied ? "Copied" : "Copy"}
               </Button>
             </Flex>
@@ -140,7 +158,6 @@ export default function Chapter(props: SurahResult) {
                 marginTop: "10px"
               }}
               alignContent="stretch"
-              justify="center"
             >
               <ButtonGridItem item>
                 <Button colorScheme="facebook">

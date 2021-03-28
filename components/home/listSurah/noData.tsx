@@ -5,10 +5,9 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Skeleton from "@material-ui/lab/Skeleton";
-
+import { ChapterCard } from "./styles";
 interface NoDataListSurahProps {
   classes: {
-    root: string;
     bullet: string;
     pos: string;
   };
@@ -17,7 +16,7 @@ interface NoDataListSurahProps {
 export default function NoDataListSurah({ classes }: NoDataListSurahProps) {
   return (
     <Grid item xs>
-      <Card className={classes.root}>
+      <ChapterCard>
         <CardContent>
           <Typography variant="h5" component="h2">
             <Skeleton />
@@ -34,7 +33,7 @@ export default function NoDataListSurah({ classes }: NoDataListSurahProps) {
             <Button size="small">See Info</Button>
           </Skeleton>
         </CardActions>
-      </Card>
+      </ChapterCard>
     </Grid>
   );
 }

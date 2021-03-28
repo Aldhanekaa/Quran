@@ -1,5 +1,4 @@
 import Toolbar from "@material-ui/core/Toolbar";
-import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -12,21 +11,27 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import DirectionsIcon from "@material-ui/icons/Directions";
+import { QuranulKarim } from "../../assets/data/Gambar";
+import Image from "next/image";
+import { Box } from "@chakra-ui/react";
 
 export default function HomeHero() {
   return (
     <div>
+      <Box
+        w="100%"
+        style={{ textAlign: "center" }}
+        marginBottom={5}
+        bgImage="url('https://holyquran.vercel.app/static/media/QuranBanner.f6797099.png ')"
+      >
+        <Image
+          src={QuranulKarim}
+          alt="Picture of the author"
+          width="auto"
+          height="auto"
+        />
+      </Box>
       <Container maxWidth="sm">
-        <Typography
-          className="arabic"
-          component="h1"
-          variant="h2"
-          align="center"
-          color="textPrimary"
-          gutterBottom
-        >
-          القرآن الكريم
-        </Typography>
         <Typography variant="h5" align="center" color="textSecondary" paragraph>
           Read and Meditate with Quran Online.
         </Typography>

@@ -14,7 +14,7 @@ const getDate = new Date();
 const NODE_ENV = process.env.NODE_ENV;
 const dualENV = {
   production: {
-    PUBLIC_URL: "https://sekilas13.vercel.app"
+    PUBLIC_URL: "https://qurann.vercel.app"
   },
   development: {
     PUBLIC_URL: "http://localhost:3000"

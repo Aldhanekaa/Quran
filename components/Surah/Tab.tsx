@@ -12,8 +12,26 @@ import ThumbDown from "@material-ui/icons/ThumbDown";
 import ThumbUp from "@material-ui/icons/ThumbUp";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import { Container } from "@material-ui/core";
 import styled from "@emotion/styled";
 
+const SurahInfoTab = styled(Container)`
+  ol,
+  ul {
+    padding-left: 30px;
+    margin-top: 20px;
+  }
+
+  h2 {
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: 500;
+  }
+
+  p {
+    margin-top: 10px;
+  }
+`;
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -32,7 +50,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={1}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -61,6 +79,7 @@ const TabsStyled = styled(Tabs)`
 
 interface thisIsProps {
   Translations?: JSX.Element | JSX.Element[];
+  SurahInfo?: string;
 }
 
 export default function ScrollableTabsButtonPrevent(props: thisIsProps) {
@@ -93,19 +112,14 @@ export default function ScrollableTabsButtonPrevent(props: thisIsProps) {
         Item Two
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
-      <TabPanel value={value} index={6}>
-        Item Seven
+        <SurahInfoTab>
+          <div
+            dangerouslySetInnerHTML={{
+              // @ts-ignore
+              __html: props.SurahInfo
+            }}
+          ></div>
+        </SurahInfoTab>
       </TabPanel>
     </div>
   );

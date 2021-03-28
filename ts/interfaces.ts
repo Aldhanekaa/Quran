@@ -28,6 +28,13 @@ export type Surah = {
   surah: chapter;
 };
 
+// surah data fetch result
+export type SurahResult = {
+  surahInfo?: surahInfoType;
+  surah?: chapter;
+  message: string;
+};
+
 // Surah / Chapter Info Model
 export type surahInfoType = {
   short_text?: string;

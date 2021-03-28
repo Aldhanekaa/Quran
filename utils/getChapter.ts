@@ -1,4 +1,9 @@
-import { ErrorMessage, surahInfoType, chapter, Surah } from "../ts/interfaces";
+import {
+  ErrorMessage,
+  surahInfoType,
+  chapter,
+  SurahResult
+} from "../ts/interfaces";
 
 import axios from "axios";
 interface B {
@@ -13,7 +18,7 @@ interface surahInfoResponse {
 }
 export default async function fetchSurah(
   chapterID: number
-): Promise<Surah | ErrorMessage> {
+): Promise<SurahResult> {
   try {
     const Chapter = await axios.get<ChapterResponse>(
       `https://api.quran.com/api/v4/chapters/${chapterID}?language=en`
@@ -23,7 +28,8 @@ export default async function fetchSurah(
     );
     return {
       surah: Chapter.data.chapter,
-      surahInfo: chapterInfo.data.chapter_info
+      surahInfo: chapterInfo.data.chapter_info,
+      message: "success"
     };
   } catch (err) {
     // console.log(err);

@@ -1,6 +1,12 @@
+/* ======================= UI ======================= */
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Grid from "@material-ui/core/Grid";
+
 import {
   Box,
   Heading,
@@ -8,17 +14,32 @@ import {
   Stack,
   Badge,
   Center,
-  Button
+  useDisclosure,
+  Button,
+  Modal,
+  ModalContent,
+  ModalBody,
+  ModalOverlay,
+  ModalHeader,
+  ModalFooter,
+  ModalCloseButton,
+  useClipboard,
+  Flex,
+  Input
 } from "@chakra-ui/react";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import RedditIcon from "@material-ui/icons/Reddit";
+import TelegramIcon from "@material-ui/icons/Telegram";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
+/* ======================= END UI ======================= */
+
 import { NextSeo } from "next-seo";
 import { Redirect, GetServerSideProps, GetServerSidePropsResult } from "next";
-import {
-  VerseByChapterFetchResult,
-  ErrorMessage,
-  Surah
-} from "@/ts/interfaces";
+import { VerseByChapterFetchResult, SurahResult } from "@/ts/interfaces";
 import { withRouter, NextRouter, useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import styled from "@emotion/styled";
 
@@ -27,9 +48,6 @@ import FetchSurah from "../../utils/getChapter";
 import Tab from "@/components/Surah/Tab";
 import Hero from "@/components/Surah/Hero";
 import Verse from "@/components/Surah/verse";
-// import {} from "@/";
-// import {} from "@/typescript/";
-import { chapter } from "@/ts/interfaces";
 
 const BismillahText = styled(Text)`
   font-size: 70px;
@@ -39,16 +57,38 @@ const BismillahText = styled(Text)`
   }
 `;
 
-export default function Chapter(props: ErrorMessage | Surah) {
-  const router = useRouter();
+const ButtonGridItem = styled(Grid)`
+  button {
+    width: 100%;
+  }
 
-  console.log(router);
+  @media screen and (max-width: 680px) {
+    width: 100%;
+  }
+`;
+
+interface shareModalDataRef {
+  verse: string;
+  translation: string;
+}
+
+export default function Chapter(props: SurahResult) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [scrollBehavior, setScrollBehavior] = useState("inside");
+  const shareModalData = useRef<shareModalDataRef>({
+    verse: "",
+    translation: ""
+  });
+  const { hasCopied, onCopy } = useClipboard(shareModalData.current.verse);
+
+  const btnRef = useRef();
+  const router = useRouter();
 
   const [surahVerses, changeVerses] = useState<
     VerseByChapterFetchResult | false
   >();
 
-  const [Surah, setSurah] = useState<Surah | ErrorMessage>(() => {
+  const [Surah, setSurah] = useState<SurahResult>(() => {
     return props;
   });
 
@@ -65,10 +105,82 @@ export default function Chapter(props: ErrorMessage | Surah) {
   // const OK =
   // console.log("asdasdas", surahVerses);
 
+  function handleShareModal(verse: string, translation: string) {
+    shareModalData.current.verse = verse;
+    shareModalData.current.translation = translation;
+
+    onOpen();
+  }
+
   return (
     <div style={{ marginTop: "50px" }}>
+      <Modal onClose={onClose} isOpen={isOpen} scrollBehavior="inside">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modal Title</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex mb={2}>
+              <Input
+                fontSize={20}
+                value={shareModalData.current.verse}
+                isReadOnly
+                placeholder="Welcome"
+              />
+              <Button onClick={onCopy} ml={2}>
+                {hasCopied ? "Copied" : "Copy"}
+              </Button>
+            </Flex>
+            {/* @ts-ignore */}
+            <Grid
+              container
+              marginTop={10}
+              spacing={2}
+              style={{
+                marginTop: "10px"
+              }}
+              alignContent="stretch"
+              justify="center"
+            >
+              <ButtonGridItem item>
+                <Button colorScheme="facebook">
+                  <FacebookIcon />
+                </Button>
+              </ButtonGridItem>
+              <ButtonGridItem item>
+                <Button colorScheme="twitter">
+                  <TwitterIcon />
+                </Button>
+              </ButtonGridItem>
+              <ButtonGridItem item>
+                <Button colorScheme="orange">
+                  <RedditIcon />
+                </Button>
+              </ButtonGridItem>
+              <ButtonGridItem item>
+                <Button colorScheme="linkedin">
+                  <LinkedInIcon />
+                </Button>
+              </ButtonGridItem>
+              <ButtonGridItem item>
+                <Button colorScheme="telegram">
+                  <TelegramIcon />
+                </Button>
+              </ButtonGridItem>
+              <ButtonGridItem item>
+                <Button colorScheme="whatsapp">
+                  <WhatsAppIcon />
+                </Button>
+              </ButtonGridItem>
+            </Grid>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={onClose}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       {/* @ts-ignore */}
-      {!props.message && props.surah && (
+      {Surah.message != "error" && Surah.surah && (
         <>
           {/* @ts-ignore */}
           <Hero
@@ -84,7 +196,7 @@ export default function Chapter(props: ErrorMessage | Surah) {
         </>
       )}
       {/* @ts-ignore */}
-      {props.message && <h1>error</h1>}
+      {props.message == "error" && <p>error</p>}
 
       {!surahVerses && (
         <Typography variant="h5" align="center" color="textSecondary" paragraph>
@@ -94,27 +206,67 @@ export default function Chapter(props: ErrorMessage | Surah) {
 
       {surahVerses && (
         <Tab
+          SurahInfo={Surah.surahInfo?.text}
           Translations={
-            <>
-              {Surah && "surah" in Surah && Surah.surah.bismillah_pre && (
-                <BismillahText className="arabic" align="center" id="bismillah">
-                  ﷽
-                </BismillahText>
-              )}
+            <Container>
+              {Surah.message == "success" &&
+                Surah.surah &&
+                Surah.surah.bismillah_pre && (
+                  <BismillahText
+                    marginTop={10}
+                    className="arabic"
+                    align="center"
+                    id="bismillah"
+                  >
+                    ﷽
+                  </BismillahText>
+                )}
+              <Stack spacing={5}>
+                {/* Verses */}
+                {surahVerses &&
+                  surahVerses.verses.map((verse) => {
+                    return <Verse onOpen={handleShareModal} {...verse}></Verse>;
+                  })}
+              </Stack>
+
               <Container>
-                <Stack spacing={5}>
-                  {surahVerses &&
-                    surahVerses.verses.map((verse) => {
-                      return <Verse {...verse}></Verse>;
-                    })}
-                </Stack>
+                {/* @ts-ignore */}
+                <Grid
+                  container
+                  marginTop={10}
+                  spacing={2}
+                  style={{
+                    marginTop: "10px"
+                  }}
+                  alignContent="stretch"
+                  justify="center"
+                >
+                  <ButtonGridItem item>
+                    <Button
+                      colorScheme="blue"
+                      variant="outline"
+                      leftIcon={<NavigateBeforeIcon />}
+                    >
+                      Previous Chapter
+                    </Button>
+                  </ButtonGridItem>
+                  <ButtonGridItem item>
+                    <Button colorScheme="blue" variant="outline">
+                      Load More Verse
+                    </Button>
+                  </ButtonGridItem>
+                  <ButtonGridItem item>
+                    <Button
+                      colorScheme="blue"
+                      variant="outline"
+                      rightIcon={<NavigateNextIcon />}
+                    >
+                      Next Chapter
+                    </Button>
+                  </ButtonGridItem>
+                </Grid>
               </Container>
-              <Center marginTop={10} color="white">
-                <Button colorScheme="teal" variant="solid">
-                  Load More Verse
-                </Button>
-              </Center>
-            </>
+            </Container>
           }
         />
       )}
@@ -122,9 +274,9 @@ export default function Chapter(props: ErrorMessage | Surah) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<
-  ErrorMessage | Surah
-> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<SurahResult> = async (
+  ctx
+) => {
   // const verses = await FetchVerses(router.query.verse);
   //@ts-ignore
   const surah = await FetchSurah(ctx.query.chapter);

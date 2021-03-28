@@ -14,8 +14,6 @@ import {
 import Slide from "@material-ui/core/Slide";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MenuIcon from "@material-ui/icons/Menu";
-
-import clsx from "clsx";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
@@ -25,6 +23,19 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
+import InfoIcon from "@material-ui/icons/Info";
+
+import clsx from "clsx";
+import { ChakraProvider } from "@chakra-ui/react";
+import {
+  chakra,
+  HTMLChakraProps,
+  Text,
+  Box,
+  Stack,
+  useColorModeValue,
+  HStack
+} from "@chakra-ui/react";
 
 import { Fragment } from "react";
 import { useRouter } from "next/router";
@@ -197,8 +208,33 @@ export default function SearchAppBar(props: Props) {
   return (
     <Fragment>
       <CssBaseline />
+      <Box as="section">
+        <Stack
+          direction={{ base: "column", sm: "row" }}
+          py="3"
+          px={{ base: "3", md: "6", lg: "8" }}
+          color="white"
+          bg={useColorModeValue("blue.600", "blue.400")}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <HStack direction="row" spacing="3">
+            <Box as={InfoIcon} fontSize="2xl" h="10" />
+            <Text fontWeight="medium" marginEnd="2">
+              This is open source webapp project. Open to everyone!
+            </Text>
+          </HStack>
+          <iframe
+            src="https://ghbtns.com/github-btn.html?user=aldhanekaa&repo=Quran&type=star&count=true"
+            scrolling="0"
+            width="150"
+            height="20"
+            title="GitHub"
+          ></iframe>
+        </Stack>
+      </Box>
 
-      <AppBar>
+      <AppBar position="sticky" style={{ top: "0px" }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -232,16 +268,31 @@ export default function SearchAppBar(props: Props) {
         </Toolbar>
       </AppBar>
 
-      <React.Fragment>
-        <SwipeableDrawer
-          anchor="left"
-          open={state["left"]}
-          onClose={toggleDrawer("left", false)}
-          onOpen={toggleDrawer("left", true)}
-        >
-          {list("left")}
-        </SwipeableDrawer>
-      </React.Fragment>
+      <SwipeableDrawer
+        anchor="left"
+        open={state["left"]}
+        onClose={toggleDrawer("left", false)}
+        onOpen={toggleDrawer("left", true)}
+      >
+        {list("left")}
+      </SwipeableDrawer>
     </Fragment>
+  );
+}
+
+function ActionLink(props: HTMLChakraProps<"a">) {
+  return (
+    <chakra.a
+      {...props}
+      href="#"
+      px="4"
+      py="1.5"
+      textAlign="center"
+      borderWidth="1px"
+      borderColor="whiteAlpha.400"
+      fontWeight="medium"
+      rounded="base"
+      _hover={{ bg: "whiteAlpha.200" }}
+    />
   );
 }

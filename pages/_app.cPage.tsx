@@ -1,23 +1,32 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
+import InfoIcon from "@material-ui/icons/Info";
 
-import { DefaultSeo } from "next-seo";
 import SEO from "../seo.config";
 import "../styles/global.css";
-
-import Head from "next/head";
-import { AppProps } from "next/app";
-import { useEffect } from "react";
 import * as gtag from "../utils/gtag";
-import { useRouter } from "next/router";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import ProgressLoad from "../components/ProgressLoad";
 import ScrollToTop from "../components/scrollToTop";
 
-import React from "react";
-import { useTheme } from "@material-ui/core/styles";
+import { DefaultSeo } from "next-seo";
+import Head from "next/head";
+import { AppProps } from "next/app";
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+
 import { ChakraProvider } from "@chakra-ui/react";
+import {
+  chakra,
+  HTMLChakraProps,
+  Text,
+  Box,
+  Stack,
+  useColorModeValue,
+  HStack
+} from "@chakra-ui/react";
 
 declare global {
   interface Window {
@@ -87,6 +96,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           name="description"
           content="Website Madrasah Tsanawiyah Techno Natura"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.1.1/css/all.css"
+        />
       </Head>
 
       <style jsx global>{`
@@ -94,7 +107,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           font-family: "Roboto", sans-serif;
           scroll-behavior: smooth;
           scroll-behavior: smooth;
-          padding-top: 50px;
         }
       `}</style>
 
@@ -119,4 +131,21 @@ function MyApp({ Component, pageProps }: AppProps) {
     </>
   );
 }
+function ActionLink(props: HTMLChakraProps<"a">) {
+  return (
+    <chakra.a
+      {...props}
+      href="#"
+      px="4"
+      py="1.5"
+      textAlign="center"
+      borderWidth="1px"
+      borderColor="whiteAlpha.400"
+      fontWeight="medium"
+      rounded="base"
+      _hover={{ bg: "whiteAlpha.200" }}
+    />
+  );
+}
+
 export default MyApp;

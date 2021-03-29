@@ -30,7 +30,6 @@ export default function Home() {
     fetcher
   );
 
-  console.log(dataFetchChapters);
   return (
     <Fragment>
       <Head>
@@ -49,7 +48,7 @@ export default function Home() {
         }}
       />
       <Toolbar />
-      <Hero />
+      <Hero {...dataFetchChapters} />
       <ListSurah {...dataFetchChapters} />
     </Fragment>
   );

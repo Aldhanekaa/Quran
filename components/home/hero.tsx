@@ -14,8 +14,23 @@ import DirectionsIcon from "@material-ui/icons/Directions";
 import { QuranulKarim } from "../../assets/data/Gambar";
 import Image from "next/image";
 import { Box } from "@chakra-ui/react";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 
-export default function HomeHero() {
+import {
+  fetchChapters,
+  chapter,
+  chapters,
+  surahInfoType,
+  surahListDialog
+} from "@/ts/interfaces";
+
+interface HomeHeroProps {
+  data?: chapters;
+  error?: any;
+}
+
+export default function HomeHero(dataFetchChapters: HomeHeroProps) {
   return (
     <div>
       <Box
@@ -37,7 +52,10 @@ export default function HomeHero() {
         </Typography>
         <div>
           <Grid container spacing={2} justify="center">
-            <CustomizedInputBase />
+            <CustomizedInputBase
+              chapters={dataFetchChapters.data?.chapters}
+              error={dataFetchChapters.error}
+            />
           </Grid>
           <Grid container spacing={2} justify="center">
             <Grid item>
@@ -76,19 +94,54 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function CustomizedInputBase() {
+interface CustomizedInputBaseComponentProps {
+  chapters?: chapter[];
+  error?: any;
+}
+function CustomizedInputBase(
+  dataFetchChapters: CustomizedInputBaseComponentProps
+) {
   const classes = useStyles();
-
+  const { chapters, error } = dataFetchChapters;
   return (
     <Paper component="form" className={classes.root}>
-      <IconButton className={classes.iconButton} aria-label="menu">
-        <MenuIcon />
-      </IconButton>
-      <InputBase
-        className={classes.input}
-        placeholder="Search Surah"
-        inputProps={{ "aria-label": "search google maps" }}
-      />
+      {!chapters && (
+        <InputBase
+          className={classes.input}
+          placeholder="Search Surah"
+          inputProps={{ "aria-label": "search google maps" }}
+        />
+      )}
+
+      {chapters && (
+        <Autocomplete
+          id="country-select-demo"
+          className={classes.input}
+          options={chapters as chapter[]}
+          autoHighlight
+          getOptionLabel={(option) => option.name_simple}
+          renderOption={(option) => {
+            return (
+              <>
+                <span>{option.name_simple}</span>
+              </>
+            );
+          }}
+          renderInput={(params) => {
+            return (
+              <TextField
+                {...params}
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: "new-password" // disable autocomplete and autofill
+                }}
+                className={classes.input}
+                placeholder="Search Surah"
+              />
+            );
+          }}
+        />
+      )}
       <IconButton
         type="submit"
         className={classes.iconButton}

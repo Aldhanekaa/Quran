@@ -51,6 +51,7 @@ import FetchSurah from "../../utils/getChapter";
 import Tab from "@/components/Surah/Tab";
 import Hero from "@/components/Surah/Hero";
 import Verse from "@/components/Surah/verse";
+import Link from "next/link";
 
 const BismillahText = styled(Text)`
   font-size: 70px;
@@ -283,29 +284,44 @@ export default function Chapter(props: SurahResult) {
                     alignContent="stretch"
                     justify="center"
                   >
-                    <ButtonGridItem item>
-                      <Button
-                        colorScheme="blue"
-                        variant="outline"
-                        leftIcon={<NavigateBeforeIcon />}
-                      >
-                        Previous Chapter
-                      </Button>
-                    </ButtonGridItem>
+                    {props.surah && props.surah.id != 1 ? (
+                      <ButtonGridItem item>
+                        <Link href={`/${props?.surah?.id - 1}`}>
+                          <Button
+                            colorScheme="blue"
+                            variant="outline"
+                            leftIcon={<NavigateBeforeIcon />}
+                          >
+                            Previous Chapter
+                          </Button>
+                        </Link>
+                      </ButtonGridItem>
+                    ) : (
+                      // </Link>
+                      ""
+                    )}
+
                     <ButtonGridItem item>
                       <Button colorScheme="blue" variant="outline">
                         Load More Verse
                       </Button>
                     </ButtonGridItem>
-                    <ButtonGridItem item>
-                      <Button
-                        colorScheme="blue"
-                        variant="outline"
-                        rightIcon={<NavigateNextIcon />}
-                      >
-                        Next Chapter
-                      </Button>
-                    </ButtonGridItem>
+                    {props.surah && props.surah.id != 114 ? (
+                      <ButtonGridItem item>
+                        <Link href={`/${props?.surah?.id + 1}`}>
+                          <Button
+                            colorScheme="blue"
+                            variant="outline"
+                            rightIcon={<NavigateNextIcon />}
+                          >
+                            Next Chapter
+                          </Button>
+                        </Link>
+                      </ButtonGridItem>
+                    ) : (
+                      // </Link>
+                      ""
+                    )}
                   </Grid>
                 </Container>
               </Container>

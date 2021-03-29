@@ -42,7 +42,7 @@ import { NextSeo } from "next-seo";
 import { Redirect, GetServerSideProps, GetServerSidePropsResult } from "next";
 import { VerseByChapterFetchResult, SurahResult } from "@/ts/interfaces";
 import { withRouter, NextRouter, useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Fragment } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import styled from "@emotion/styled";
 
@@ -117,177 +117,203 @@ export default function Chapter(props: SurahResult) {
   }
 
   return (
-    <div style={{ marginTop: "50px" }}>
-      <Modal onClose={onClose} isOpen={isOpen} scrollBehavior="inside">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Share This Ayah</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Flex mb={2}>
-              <Input
-                fontSize={20}
-                value={shareModalData.current.verse}
-                isReadOnly
-                placeholder="Welcome"
-              />
-              <Button
-                onClick={() => {
-                  {
-                    !hasCopied &&
-                      toast({
-                        title: `Copied To Clipboard`,
-                        status: "success",
-                        isClosable: true,
-                        position: "bottom-right"
-                      });
-                  }
-                  onCopy();
-                }}
-                ml={2}
-              >
-                {hasCopied ? "Copied" : "Copy"}
-              </Button>
-            </Flex>
-            {/* @ts-ignore */}
-            <Grid
-              container
-              marginTop={10}
-              spacing={2}
-              style={{
-                marginTop: "10px"
-              }}
-              alignContent="stretch"
-            >
-              <ButtonGridItem item>
-                <Button colorScheme="facebook">
-                  <FacebookIcon />
-                </Button>
-              </ButtonGridItem>
-              <ButtonGridItem item>
-                <Button colorScheme="twitter">
-                  <TwitterIcon />
-                </Button>
-              </ButtonGridItem>
-              <ButtonGridItem item>
-                <Button colorScheme="orange">
-                  <RedditIcon />
-                </Button>
-              </ButtonGridItem>
-              <ButtonGridItem item>
-                <Button colorScheme="linkedin">
-                  <LinkedInIcon />
-                </Button>
-              </ButtonGridItem>
-              <ButtonGridItem item>
-                <Button colorScheme="telegram">
-                  <TelegramIcon />
-                </Button>
-              </ButtonGridItem>
-              <ButtonGridItem item>
-                <Button colorScheme="whatsapp">
-                  <WhatsAppIcon />
-                </Button>
-              </ButtonGridItem>
-            </Grid>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      {/* @ts-ignore */}
-      {Surah.message != "error" && Surah.surah && (
-        <>
-          {/* @ts-ignore */}
-          <Hero
-            // @ts-ignore
-            surah_name={props.surah.name_simple}
-            //  @ts-ignore
-            verses_count={props.surah.verses_count}
-            // @ts-ignore
-            desc={props.surahInfo.short_text}
-            // @ts-ignore
-            revelation_place={props.surah.revelation_place}
-          />
-        </>
-      )}
-      {/* @ts-ignore */}
-      {props.message == "error" && <p>error</p>}
+    <Fragment>
+      <NextSeo
+        title={`${props?.surah?.name_simple} - QuranKu Website`}
+        description={`${props.surahInfo?.short_text}`}
+        canonical={process.env.PUBLIC_URL}
+        openGraph={{
+          url: process.env.PUBLIC_URL,
+          title: "QuranKu Website Read Quran For Free",
+          description:
+            "QuranKu Website - Read Quran and Meditate with Quran online"
+        }}
+      />
 
-      {!surahVerses && (
-        <Typography variant="h5" align="center" color="textSecondary" paragraph>
-          <CircularProgress />
-        </Typography>
-      )}
-
-      {surahVerses && (
-        <Tab
-          SurahInfo={Surah.surahInfo?.text}
-          Translations={
-            <Container>
-              {Surah.message == "success" &&
-                Surah.surah &&
-                Surah.surah.bismillah_pre && (
-                  <BismillahText
-                    marginTop={10}
-                    className="arabic"
-                    align="center"
-                    id="bismillah"
-                  >
-                    ﷽
-                  </BismillahText>
-                )}
-              <Stack spacing={5}>
-                {/* Verses */}
-                {surahVerses &&
-                  surahVerses.verses.map((verse) => {
-                    return <Verse onOpen={handleShareModal} {...verse}></Verse>;
-                  })}
-              </Stack>
-
-              <Container>
-                {/* @ts-ignore */}
-                <Grid
-                  container
-                  marginTop={10}
-                  spacing={2}
-                  style={{
-                    marginTop: "10px"
+      <div style={{ marginTop: "50px" }}>
+        <Modal onClose={onClose} isOpen={isOpen} scrollBehavior="inside">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Share This Ayah</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Flex mb={2}>
+                <Input
+                  fontSize={20}
+                  value={shareModalData.current.verse}
+                  isReadOnly
+                  placeholder="Welcome"
+                />
+                <Button
+                  onClick={() => {
+                    {
+                      !hasCopied &&
+                        toast({
+                          title: `Copied To Clipboard`,
+                          status: "success",
+                          isClosable: true,
+                          position: "bottom-right"
+                        });
+                    }
+                    onCopy();
                   }}
-                  alignContent="stretch"
-                  justify="center"
+                  ml={2}
                 >
-                  <ButtonGridItem item>
-                    <Button
-                      colorScheme="blue"
-                      variant="outline"
-                      leftIcon={<NavigateBeforeIcon />}
+                  {hasCopied ? "Copied" : "Copy"}
+                </Button>
+              </Flex>
+              {/* @ts-ignore */}
+              <Grid
+                container
+                marginTop={10}
+                spacing={2}
+                style={{
+                  marginTop: "10px"
+                }}
+                alignContent="stretch"
+              >
+                <ButtonGridItem item>
+                  <Button colorScheme="facebook">
+                    <FacebookIcon />
+                  </Button>
+                </ButtonGridItem>
+                <ButtonGridItem item>
+                  <Button colorScheme="twitter">
+                    <TwitterIcon />
+                  </Button>
+                </ButtonGridItem>
+                <ButtonGridItem item>
+                  <Button colorScheme="orange">
+                    <RedditIcon />
+                  </Button>
+                </ButtonGridItem>
+                <ButtonGridItem item>
+                  <Button colorScheme="linkedin">
+                    <LinkedInIcon />
+                  </Button>
+                </ButtonGridItem>
+                <ButtonGridItem item>
+                  <Button colorScheme="telegram">
+                    <TelegramIcon />
+                  </Button>
+                </ButtonGridItem>
+                <ButtonGridItem item>
+                  <Button colorScheme="whatsapp">
+                    <WhatsAppIcon />
+                  </Button>
+                </ButtonGridItem>
+              </Grid>
+            </ModalBody>
+            <ModalFooter>
+              <Button onClick={onClose}>Close</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+        {/* @ts-ignore */}
+        {Surah.message != "error" && Surah.surah && (
+          <>
+            {/* @ts-ignore */}
+            <Hero
+              // @ts-ignore
+              surah_name={props.surah.name_simple}
+              //  @ts-ignore
+              verses_count={props.surah.verses_count}
+              // @ts-ignore
+              desc={props.surahInfo.short_text}
+              // @ts-ignore
+              revelation_place={props.surah.revelation_place}
+            />
+          </>
+        )}
+        {/* @ts-ignore */}
+        {props.message == "error" && <p>error</p>}
+
+        {!surahVerses && (
+          <Typography
+            variant="h5"
+            align="center"
+            color="textSecondary"
+            paragraph
+          >
+            <CircularProgress />
+          </Typography>
+        )}
+
+        {/* Tabs */}
+        {surahVerses && (
+          <Tab
+            SurahInfo={Surah.surahInfo?.text}
+            Translations={
+              <Container>
+                {/* Bismillah Text */}
+                {Surah.message == "success" &&
+                  Surah.surah &&
+                  Surah.surah.bismillah_pre && (
+                    <BismillahText
+                      marginTop={10}
+                      className="arabic"
+                      align="center"
+                      id="bismillah"
                     >
-                      Previous Chapter
-                    </Button>
-                  </ButtonGridItem>
-                  <ButtonGridItem item>
-                    <Button colorScheme="blue" variant="outline">
-                      Load More Verse
-                    </Button>
-                  </ButtonGridItem>
-                  <ButtonGridItem item>
-                    <Button
-                      colorScheme="blue"
-                      variant="outline"
-                      rightIcon={<NavigateNextIcon />}
-                    >
-                      Next Chapter
-                    </Button>
-                  </ButtonGridItem>
-                </Grid>
+                      ﷽
+                    </BismillahText>
+                  )}
+
+                {/* Verses */}
+                <Stack spacing={5}>
+                  {/* Verses */}
+                  {surahVerses &&
+                    surahVerses.verses.map((verse) => {
+                      return (
+                        <Verse onOpen={handleShareModal} {...verse}></Verse>
+                      );
+                    })}
+                </Stack>
+
+                {/* Buttons | Previous, Next Chapter, and Load more verse */}
+                <Container>
+                  {/* @ts-ignore */}
+                  <Grid
+                    container
+                    marginTop={10}
+                    spacing={2}
+                    style={{
+                      marginTop: "10px"
+                    }}
+                    alignContent="stretch"
+                    justify="center"
+                  >
+                    <ButtonGridItem item>
+                      <Button
+                        colorScheme="blue"
+                        variant="outline"
+                        leftIcon={<NavigateBeforeIcon />}
+                      >
+                        Previous Chapter
+                      </Button>
+                    </ButtonGridItem>
+                    <ButtonGridItem item>
+                      <Button colorScheme="blue" variant="outline">
+                        Load More Verse
+                      </Button>
+                    </ButtonGridItem>
+                    <ButtonGridItem item>
+                      <Button
+                        colorScheme="blue"
+                        variant="outline"
+                        rightIcon={<NavigateNextIcon />}
+                      >
+                        Next Chapter
+                      </Button>
+                    </ButtonGridItem>
+                  </Grid>
+                </Container>
               </Container>
-            </Container>
-          }
-        />
-      )}
-    </div>
+            }
+          />
+        )}
+      </div>
+    </Fragment>
   );
 }
 

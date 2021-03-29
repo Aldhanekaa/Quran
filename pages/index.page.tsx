@@ -9,8 +9,28 @@ import ListSurah from "../components/home/listSurah/";
 const title = "Home | MTs TechnoNatura";
 const description =
   "Website resmi Remaja Madrasah Tsanawiyah TechnoNatura Depok. Website buatan para programmer MTs.";
+import {
+  fetchChapters,
+  chapters,
+  surahInfoType,
+  surahListDialog
+} from "@/ts/interfaces";
+import useSWR from "swr";
+import axios from "axios";
+
+// Fetcher for the SWR
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function Home() {
+  const chapters = [];
+
+  // Fetch chapter list
+  const { data, error }: fetchChapters = useSWR<chapters, any>(
+    "https://api.quran.com/api/v4/chapters?language=en",
+    fetcher
+  );
+
+  console.log(data);
   return (
     <Fragment>
       <Head>
@@ -30,33 +50,7 @@ export default function Home() {
       />
       <Toolbar />
       <Hero />
-      <ListSurah />
+      <ListSurah data={data} error={error} />
     </Fragment>
   );
 }
-
-/*
-<Grid item xs>
-            <Card className={classes.root}>
-              <CardContent>
-                <Typography variant="h5" component="h2">
-                  Al-Fatihah {bull} <span>الفاتحة</span>
-                </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  The Opener
-                </Typography>
-                <Typography variant="body2" component="p">
-                  This Surah is named Al-Fatihah because of its subject-matter.
-                  Fatihah is that which opens a subject or a book or any other
-                  thing. In other words, Al-Fatihah is a sort of preface.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={handleClickOpen}>
-                  Read Surah
-                </Button>
-                <Button size="small">See Info</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-*/

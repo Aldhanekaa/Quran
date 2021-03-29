@@ -209,7 +209,7 @@ export default function ListSurah() {
                           onClose={() => handleClose(dialog.id)}
                         >
                           {dialog.surah.surah.name_simple} {bull}{" "}
-                          {dialog.surah.surah.name_arabic}
+                          <span className={`icon-surah${dialog.id}`}></span>
                         </DialogTitle>
                         <StyledDialogContent>
                           <DialogContentText>
@@ -233,7 +233,10 @@ export default function ListSurah() {
                         <ChapterCard>
                           <CardContent>
                             <Typography variant="h5" component="h2">
-                              {chapter.name_simple} {bull} {chapter.name_arabic}
+                              {chapter.name_simple} {bull}{" "}
+                              <span
+                                className={`icon-surah${chapter.id}`}
+                              ></span>
                             </Typography>
                             <Typography
                               className={classes.pos}

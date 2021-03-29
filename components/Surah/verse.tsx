@@ -97,6 +97,7 @@ export default function VerseComponent(props: VerseProps) {
                 display="inline-block"
                 marginLeft={2}
                 fontSize="2xl"
+                fontWeight={900}
                 className="arabic"
               >
                 <Tooltip label={word.translation.text} arrow>

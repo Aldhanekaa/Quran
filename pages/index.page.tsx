@@ -25,12 +25,12 @@ export default function Home() {
   const chapters = [];
 
   // Fetch chapter list
-  const { data, error }: fetchChapters = useSWR<chapters, any>(
+  const dataFetchChapters: fetchChapters = useSWR<chapters, any>(
     "https://api.quran.com/api/v4/chapters?language=en",
     fetcher
   );
 
-  console.log(data);
+  console.log(dataFetchChapters);
   return (
     <Fragment>
       <Head>
@@ -50,7 +50,7 @@ export default function Home() {
       />
       <Toolbar />
       <Hero />
-      <ListSurah data={data} error={error} />
+      <ListSurah {...dataFetchChapters} />
     </Fragment>
   );
 }

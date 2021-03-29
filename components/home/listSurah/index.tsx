@@ -1,5 +1,4 @@
 import {
-  fetchChapters,
   chapters,
   surahInfoType,
   surahListDialog
@@ -86,13 +85,11 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 // Fetcher for the SWR
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-export default function ListSurah() {
-  // Fetch chapter list
-  const { data, error }: fetchChapters = useSWR<chapters, any>(
-    "https://api.quran.com/api/v4/chapters?language=en",
-    fetcher
-  );
-
+interface ListSurahProps {
+  data?: chapters;
+  error?: any;
+}
+export default function ListSurah({ data, error }: ListSurahProps) {
   // Dialogs; Use Interface surahListDialog
   const [dialogs, setDialog] = useState<
     surahListDialog[] | undefined | boolean

@@ -36,6 +36,7 @@ import RedditIcon from "@material-ui/icons/Reddit";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import WordVerseSound from "react-sound";
 /* ======================= END UI ======================= */
 
 import { NextSeo } from "next-seo";
@@ -76,8 +77,19 @@ interface shareModalDataRef {
   translation: string;
 }
 
+interface songInterface {
+  status: "PLAYING" | "STOPPED" | "PAUSED";
+  url: string;
+}
+
 export default function Chapter(props: SurahResult) {
   const toast = useToast();
+  const [audio, setAudio] = useState<songInterface>(() => {
+    return {
+      status: "STOPPED",
+      url: ""
+    };
+  });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [scrollBehavior, setScrollBehavior] = useState("inside");
@@ -117,8 +129,24 @@ export default function Chapter(props: SurahResult) {
     onOpen();
   }
 
+  function playWordVerseSound(url: string) {
+    setAudio((prevState) => {
+      return Object.assign({}, prevState, {
+        status: "PLAYING",
+        url: url
+      });
+    });
+  }
+
+  function stopWordVerseSound() {
+    setAudio((prevState) => {
+      return Object.assign({}, prevState, { status: "STOPPED" });
+    });
+  }
+
   return (
     <Fragment>
+      <WordVerseSound playStatus={audio.status} url={audio.url} />
       <NextSeo
         title={`${props?.surah?.name_simple} - QuranKu Website`}
         description={`${props.surahInfo?.short_text}`}
@@ -266,7 +294,12 @@ export default function Chapter(props: SurahResult) {
                   {surahVerses &&
                     surahVerses.verses.map((verse) => {
                       return (
-                        <Verse onOpen={handleShareModal} {...verse}></Verse>
+                        <Verse
+                          playWordVerseSound={playWordVerseSound}
+                          stopWordVerseSound={stopWordVerseSound}
+                          onOpen={handleShareModal}
+                          {...verse}
+                        ></Verse>
                       );
                     })}
                 </Stack>

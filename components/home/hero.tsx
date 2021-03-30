@@ -133,8 +133,11 @@ function CustomizedInputBase(
                 {...params}
                 inputProps={{
                   ...params.inputProps,
-                  autoComplete: "new-password" // disable autocomplete and autofill
+                  autoComplete: "off", // disable autocomplete and autofill
+                  autoCorrect: "off"
                 }}
+                autoComplete="off"
+                autoCorrect="off"
                 className={classes.input}
                 placeholder="Search Surah"
               />

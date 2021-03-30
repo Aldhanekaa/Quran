@@ -64,6 +64,8 @@ const ButtonGridItem = styled(Grid)`
 
 interface VerseProps extends Verse {
   onOpen: (verse: string, translation: string) => void;
+  playWordVerseSound: (url: string) => void;
+  stopWordVerseSound: () => void;
 }
 
 export default function VerseComponent(props: VerseProps) {
@@ -107,6 +109,12 @@ export default function VerseComponent(props: VerseProps) {
                         ? "end text_uthmani arabic"
                         : ""
                     }
+                    onClick={() => {
+                      props.stopWordVerseSound();
+                      props.playWordVerseSound(
+                        "https://verses.quran.com/" + word.audio_url
+                      );
+                    }}
                   >
                     {word.text_uthmani}
                   </span>

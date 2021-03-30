@@ -77,8 +77,11 @@ export default function VerseComponent(props: VerseProps) {
       return "";
     })
     .join("");
+
+  // Toasts for copy to clipboard
   const toast = useToast();
 
+  // function for copy verse to clipboard
   const { hasCopied, onCopy } = useClipboard(words);
 
   return (
@@ -101,6 +104,12 @@ export default function VerseComponent(props: VerseProps) {
                 fontSize="2xl"
                 fontWeight={900}
                 className="arabic"
+                onClick={() => {
+                  props.stopWordVerseSound();
+                  props.playWordVerseSound(
+                    "https://verses.quran.com/" + word.audio_url
+                  );
+                }}
               >
                 <Tooltip label={word.translation.text} arrow>
                   <span
@@ -109,12 +118,6 @@ export default function VerseComponent(props: VerseProps) {
                         ? "end text_uthmani arabic"
                         : ""
                     }
-                    onClick={() => {
-                      props.stopWordVerseSound();
-                      props.playWordVerseSound(
-                        "https://verses.quran.com/" + word.audio_url
-                      );
-                    }}
                   >
                     {word.text_uthmani}
                   </span>

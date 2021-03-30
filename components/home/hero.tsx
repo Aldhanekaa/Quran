@@ -118,7 +118,9 @@ function CustomizedInputBase(
           id="country-select-demo"
           className={classes.input}
           options={chapters as chapter[]}
+          disableClearable
           autoHighlight
+          freeSolo
           getOptionLabel={(option) => option.name_simple}
           renderOption={(option) => {
             return (

@@ -144,9 +144,17 @@ export default function Chapter(props: SurahResult) {
     });
   }
 
+  function handleWordVerseSoundFinishedPlaying() {
+    stopWordVerseSound();
+  }
+
   return (
     <Fragment>
-      <WordVerseSound playStatus={audio.status} url={audio.url} />
+      <WordVerseSound
+        onFinishedPlaying={handleWordVerseSoundFinishedPlaying}
+        playStatus={audio.status}
+        url={audio.url}
+      />
       <NextSeo
         title={`${props?.surah?.name_simple} - QuranKu Website`}
         description={`${props.surahInfo?.short_text}`}

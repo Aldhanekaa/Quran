@@ -43,7 +43,14 @@ import { NextSeo } from "next-seo";
 import { Redirect, GetServerSideProps, GetServerSidePropsResult } from "next";
 import { VerseByChapterFetchResult, SurahResult } from "@/ts/interfaces";
 import { withRouter, NextRouter, useRouter } from "next/router";
-import { useEffect, useState, useRef, Fragment, useCallback } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  Fragment,
+  useCallback,
+  useMemo
+} from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import styled from "@emotion/styled";
 
@@ -95,7 +102,7 @@ interface songInterface {
 }
 
 export default function Chapter(props: SurahResult) {
-  let BismillahText = useRef<JSX.Element>();
+  let [BismillahText, setBismillahText] = useState<JSX.Element>();
   const toast = useToast();
   const [audio, setAudio] = useState<songInterface>(() => {
     return {
@@ -124,30 +131,18 @@ export default function Chapter(props: SurahResult) {
 
   // @ts-ignore
   useEffect(async () => {
-    if (Surah.surah && Surah.surah.bismillah_pre) {
-      BismillahText.current = <BismillahTextComponent />;
-    } else {
-      BismillahText.current = <Toolbar />;
-    }
     if (router.query.chapter) {
       // @ts-ignore
       const verses = await FetchVerses(router.query.chapter);
       changeVerses(verses);
     }
+
+    if (Surah.surah && Surah.surah.bismillah_pre) {
+      setBismillahText(<BismillahTextComponent />);
+    } else {
+      setBismillahText(<Toolbar />);
+    }
   }, [props.surah]);
-
-  // @ts-ignore
-  // const routeChangeEnd = useCallback(async () => {
-  //   if (router.query.chapter) {
-  //     // @ts-ignore
-  //     const verses = await FetchVerses(router.query.chapter);
-  //     changeVerses(verses);
-  //   }
-  // });
-  // Router.events.on("routeChangeStart", routeChangeEnd);
-
-  // const OK =
-  // console.log("asdasdas", surahVerses);
 
   function handleShareModal(verse: string, translation: string) {
     shareModalData.current.verse = verse;
@@ -306,11 +301,11 @@ export default function Chapter(props: SurahResult) {
         {/* Tabs */}
         {surahVerses && (
           <Tab
-            SurahInfo={Surah.surahInfo?.text}
+            SurahInfo={props.surahInfo?.text}
             Translations={
               <Container>
                 {/* Bismillah Text */}
-                {BismillahText.current}
+                {BismillahText}
 
                 {/* Verses */}
                 <Stack spacing={5}>
@@ -357,11 +352,14 @@ export default function Chapter(props: SurahResult) {
                       ""
                     )}
 
-                    <ButtonGridItem item>
-                      <Button colorScheme="blue" variant="outline">
-                        Load More Verse
-                      </Button>
-                    </ButtonGridItem>
+                    {props.surah && props.surah?.verses_count > 10 && (
+                      <ButtonGridItem item>
+                        <Button colorScheme="blue" variant="outline">
+                          Load More Verse
+                        </Button>
+                      </ButtonGridItem>
+                    )}
+
                     {props.surah && props.surah.id != 114 ? (
                       <ButtonGridItem item>
                         <Link href={`/${props?.surah?.id + 1}`}>

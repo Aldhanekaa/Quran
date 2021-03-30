@@ -43,7 +43,7 @@ import { NextSeo } from "next-seo";
 import { Redirect, GetServerSideProps, GetServerSidePropsResult } from "next";
 import { VerseByChapterFetchResult, SurahResult } from "@/ts/interfaces";
 import { withRouter, NextRouter, useRouter } from "next/router";
-import { useEffect, useState, useRef, Fragment } from "react";
+import { useEffect, useState, useRef, Fragment, useCallback } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import styled from "@emotion/styled";
 
@@ -53,14 +53,26 @@ import Tab from "@/components/Surah/Tab";
 import Hero from "@/components/Surah/Hero";
 import Verse from "@/components/Surah/verse";
 import Link from "next/link";
+import { Toolbar } from "@material-ui/core";
 
-const BismillahText = styled(Text)`
+const StyledBismillahTextComponent = styled(Text)`
   font-size: 70px;
 
   @media screen and (max-width: 556px) {
     font-size: 40px;
   }
 `;
+
+const BismillahTextComponent = () => (
+  <StyledBismillahTextComponent
+    marginTop={10}
+    className="arabic"
+    align="center"
+    id="bismillah"
+  >
+    ﷽
+  </StyledBismillahTextComponent>
+);
 
 const ButtonGridItem = styled(Grid)`
   button {
@@ -83,6 +95,7 @@ interface songInterface {
 }
 
 export default function Chapter(props: SurahResult) {
+  let BismillahText = useRef<JSX.Element>();
   const toast = useToast();
   const [audio, setAudio] = useState<songInterface>(() => {
     return {
@@ -111,13 +124,27 @@ export default function Chapter(props: SurahResult) {
 
   // @ts-ignore
   useEffect(async () => {
+    if (Surah.surah && Surah.surah.bismillah_pre) {
+      BismillahText.current = <BismillahTextComponent />;
+    } else {
+      BismillahText.current = <Toolbar />;
+    }
     if (router.query.chapter) {
       // @ts-ignore
       const verses = await FetchVerses(router.query.chapter);
-      console.log(verses);
       changeVerses(verses);
     }
-  }, [router.query.verse]);
+  }, [props.surah]);
+
+  // @ts-ignore
+  // const routeChangeEnd = useCallback(async () => {
+  //   if (router.query.chapter) {
+  //     // @ts-ignore
+  //     const verses = await FetchVerses(router.query.chapter);
+  //     changeVerses(verses);
+  //   }
+  // });
+  // Router.events.on("routeChangeStart", routeChangeEnd);
 
   // const OK =
   // console.log("asdasdas", surahVerses);
@@ -283,18 +310,7 @@ export default function Chapter(props: SurahResult) {
             Translations={
               <Container>
                 {/* Bismillah Text */}
-                {Surah.message == "success" &&
-                  Surah.surah &&
-                  Surah.surah.bismillah_pre && (
-                    <BismillahText
-                      marginTop={10}
-                      className="arabic"
-                      align="center"
-                      id="bismillah"
-                    >
-                      ﷽
-                    </BismillahText>
-                  )}
+                {BismillahText.current}
 
                 {/* Verses */}
                 <Stack spacing={5}>
@@ -317,7 +333,6 @@ export default function Chapter(props: SurahResult) {
                   {/* @ts-ignore */}
                   <Grid
                     container
-                    marginTop={10}
                     spacing={2}
                     style={{
                       marginTop: "10px"

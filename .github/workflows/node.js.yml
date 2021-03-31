@@ -34,7 +34,7 @@ jobs:
       run: yarn build
       env:
         NEXT_PUBLIC_BASE_PATH: /Quran
-    - run: yarn export
+    - run: yarn start
       env:
         NEXT_PUBLIC_BASE_PATH: /Quran
     - run: touch ./out/.nojekyll

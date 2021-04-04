@@ -66,6 +66,7 @@ interface VerseProps extends Verse {
   onOpen: (verse: string, translation: string) => void;
   playWordVerseSound: (url: string) => void;
   stopWordVerseSound: () => void;
+  playtranslationRecognition: (text: string) => void;
 }
 
 export default function VerseComponent(props: VerseProps) {
@@ -133,6 +134,14 @@ export default function VerseComponent(props: VerseProps) {
           mt={4}
           dangerouslySetInnerHTML={{
             __html: `${props.translations[0].text}`
+          }}
+          onDoubleClick={() => {
+            if ("getSelection" in window) {
+              props.playtranslationRecognition(
+                // @ts-ignore
+                window.getSelection().toString()
+              );
+            }
           }}
         ></Text>
 

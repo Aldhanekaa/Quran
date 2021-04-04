@@ -102,6 +102,35 @@ interface songInterface {
 }
 
 export default function Chapter(props: SurahResult) {
+  let translationRecognition = new SpeechSynthesisUtterance();
+  translationRecognition.lang = "en-US";
+  translationRecognition.volume = 0.75;
+
+  new SpeechSynthesisUtterance();
+
+  function playtranslationRecognition(text: string) {
+    translationRecognition.text = text;
+    if (!("speechSynthesis" in window)) {
+      toast({
+        title: `Sorry, your browser doesn't support text to speech!`,
+        status: "error",
+        isClosable: true,
+        position: "bottom-right"
+      });
+      return;
+    }
+    window.speechSynthesis.speak(translationRecognition);
+  }
+
+  translationRecognition.onerror = function (event) {
+    toast({
+      title: `Translation text to speech recognetion error`,
+      status: "error",
+      isClosable: true,
+      position: "bottom-right"
+    });
+  };
+
   let [BismillahText, setBismillahText] = useState<JSX.Element>();
   const toast = useToast();
   const [audio, setAudio] = useState<songInterface>(() => {
@@ -161,6 +190,7 @@ export default function Chapter(props: SurahResult) {
   }
 
   function stopWordVerseSound() {
+    window.speechSynthesis.cancel();
     setAudio((prevState) => {
       return Object.assign({}, prevState, { status: "STOPPED" });
     });
@@ -314,6 +344,9 @@ export default function Chapter(props: SurahResult) {
                     surahVerses.verses.map((verse) => {
                       return (
                         <Verse
+                          playtranslationRecognition={
+                            playtranslationRecognition
+                          }
                           playWordVerseSound={playWordVerseSound}
                           stopWordVerseSound={stopWordVerseSound}
                           onOpen={handleShareModal}

@@ -16,7 +16,9 @@ import Head from "next/head";
 import { AppProps } from "next/app";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
+import { Provider } from "react-redux";
 
+import store from "../store";
 import { ChakraProvider } from "@chakra-ui/react";
 import {
   chakra,
@@ -111,23 +113,25 @@ function MyApp({ Component, pageProps }: AppProps) {
       `}</style>
 
       <DefaultSeo {...SEO} />
-      <ChakraProvider>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <ProgressLoad />
+      <Provider store={store}>
+        <ChakraProvider>
+          <ThemeProvider theme={theme}>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <ProgressLoad />
 
-          <Navbar />
+            <Navbar />
 
-          {/* {<Navbar /> && Nav} */}
-          <Component {...pageProps} />
+            {/* {<Navbar /> && Nav} */}
+            <Component {...pageProps} />
 
-          {/* {Footer ? Footer : ""} */}
-          <Footer />
+            {/* {Footer ? Footer : ""} */}
+            <Footer />
 
-          <ScrollToTop {...pageProps} />
-        </ThemeProvider>
-      </ChakraProvider>
+            <ScrollToTop {...pageProps} />
+          </ThemeProvider>
+        </ChakraProvider>
+      </Provider>
     </>
   );
 }

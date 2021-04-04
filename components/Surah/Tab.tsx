@@ -8,37 +8,17 @@ import Typography from "@material-ui/core/Typography";
 
 /* ======================= UI ======================= */
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import Grid from "@material-ui/core/Grid";
 
-import { Box, Stack, Button, useToast } from "@chakra-ui/react";
+import { Box, useToast } from "@chakra-ui/react";
 import WordVerseSound from "react-sound";
 /* ======================= END UI ======================= */
 
-import {
-  VerseByChapterFetchResult,
-  SurahResult,
-  chapter
-} from "@/ts/interfaces";
-import {
-  useEffect,
-  useState,
-  useRef,
-  Fragment,
-  useCallback,
-  useMemo
-} from "react";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { useState } from "react";
 import styled from "@emotion/styled";
+import { ChapterContext } from "../../pages/[chapter]/index";
 
-import FetchVerses from "../../utils/getVerseByChapter";
-import FetchSurah from "../../utils/getChapter";
-import Hero from "@/components/Surah/Hero";
-import Verse from "@/components/Surah/verse";
-import Link from "next/link";
-import { Toolbar } from "@material-ui/core";
+import TranslationTab from "./Translations";
 
 const ButtonGridItem = styled(Grid)`
   button {
@@ -117,20 +97,12 @@ const TabsStyled = styled(Tabs)`
   justify-content: center !important;
 `;
 
-interface ChapterTabProps {
-  Translations?: JSX.Element | JSX.Element[];
-  SurahInfo?: string;
-  surahVerses: VerseByChapterFetchResult | false;
-  surah?: chapter;
-  handleShareModal: (verse: string, translation: string) => void;
-}
-
 interface songInterface {
   status: "PLAYING" | "STOPPED" | "PAUSED";
   url: string;
 }
 
-export default function ChapterTab(props: ChapterTabProps) {
+export default function ChapterTab() {
   let translationRecognition = new SpeechSynthesisUtterance();
   translationRecognition.lang = "en-US";
   translationRecognition.volume = 0.75;
@@ -194,44 +166,52 @@ export default function ChapterTab(props: ChapterTabProps) {
   const [value, setValue] = React.useState(0);
 
   return (
-    <div className={classes.root}>
-      <WordVerseSound
-        onFinishedPlaying={handleWordVerseSoundFinishedPlaying}
-        playStatus={audio.status}
-        url={audio.url}
-      />
-      <AppBar position="static">
-        <TabsStyled
-          value={value}
-          onChange={handleChange}
-          scrollButtons="off"
-          centered
-          aria-label="scrollable prevent tabs example"
-        >
-          <Tab label="Translation" aria-label="phone" {...a11yProps(0)} />
-          <Tab label="Read" aria-label="favorite" {...a11yProps(1)} />
-          <Tab label="Surah Info" aria-label="person" {...a11yProps(2)} />
-        </TabsStyled>
-      </AppBar>
-      <TabPanel value={value} index={0}>
-        <Container>
-          {/* Bismillah Text */}
-          {props.Translations}
-        </Container>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {props.Translations}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <SurahInfoTab>
-          <div
-            dangerouslySetInnerHTML={{
-              // @ts-ignore
-              __html: props.SurahInfo
-            }}
-          ></div>
-        </SurahInfoTab>
-      </TabPanel>
-    </div>
+    <ChapterContext.Consumer>
+      {({ SurahInfo, BismillahText }) => (
+        <div className={classes.root}>
+          <WordVerseSound
+            onFinishedPlaying={handleWordVerseSoundFinishedPlaying}
+            playStatus={audio.status}
+            url={audio.url}
+          />
+          <AppBar position="static">
+            <TabsStyled
+              value={value}
+              onChange={handleChange}
+              scrollButtons="off"
+              centered
+              aria-label="scrollable prevent tabs example"
+            >
+              <Tab label="Translation" aria-label="phone" {...a11yProps(0)} />
+              <Tab label="Read" aria-label="favorite" {...a11yProps(1)} />
+              <Tab label="Surah Info" aria-label="person" {...a11yProps(2)} />
+            </TabsStyled>
+          </AppBar>
+          <TabPanel value={value} index={0}>
+            <Container>
+              <p>{BismillahText && BismillahText}</p>
+              <TranslationTab
+                playWordVerseSound={playWordVerseSound}
+                stopWordVerseSound={stopWordVerseSound}
+                playtranslationRecognition={playtranslationRecognition}
+              />
+            </Container>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            {BismillahText}
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <SurahInfoTab>
+              <div
+                dangerouslySetInnerHTML={{
+                  // @ts-ignore
+                  __html: SurahInfo?.text
+                }}
+              ></div>
+            </SurahInfoTab>
+          </TabPanel>
+        </div>
+      )}
+    </ChapterContext.Consumer>
   );
 }

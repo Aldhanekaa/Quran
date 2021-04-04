@@ -36,7 +36,6 @@ import RedditIcon from "@material-ui/icons/Reddit";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import WordVerseSound from "react-sound";
 /* ======================= END UI ======================= */
 
 import { NextSeo } from "next-seo";
@@ -96,49 +95,9 @@ interface shareModalDataRef {
   translation: string;
 }
 
-interface songInterface {
-  status: "PLAYING" | "STOPPED" | "PAUSED";
-  url: string;
-}
-
 export default function Chapter(props: SurahResult) {
-  let translationRecognition = new SpeechSynthesisUtterance();
-  translationRecognition.lang = "en-US";
-  translationRecognition.volume = 0.75;
-
-  new SpeechSynthesisUtterance();
-
-  function playtranslationRecognition(text: string) {
-    translationRecognition.text = text;
-    if (!("speechSynthesis" in window)) {
-      toast({
-        title: `Sorry, your browser doesn't support text to speech!`,
-        status: "error",
-        isClosable: true,
-        position: "bottom-right"
-      });
-      return;
-    }
-    window.speechSynthesis.speak(translationRecognition);
-  }
-
-  translationRecognition.onerror = function (event) {
-    toast({
-      title: `Translation text to speech recognetion error`,
-      status: "error",
-      isClosable: true,
-      position: "bottom-right"
-    });
-  };
-
   let [BismillahText, setBismillahText] = useState<JSX.Element>();
   const toast = useToast();
-  const [audio, setAudio] = useState<songInterface>(() => {
-    return {
-      status: "STOPPED",
-      url: ""
-    };
-  });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [scrollBehavior, setScrollBehavior] = useState("inside");
@@ -180,33 +139,8 @@ export default function Chapter(props: SurahResult) {
     onOpen();
   }
 
-  function playWordVerseSound(url: string) {
-    setAudio((prevState) => {
-      return Object.assign({}, prevState, {
-        status: "PLAYING",
-        url: url
-      });
-    });
-  }
-
-  function stopWordVerseSound() {
-    window.speechSynthesis.cancel();
-    setAudio((prevState) => {
-      return Object.assign({}, prevState, { status: "STOPPED" });
-    });
-  }
-
-  function handleWordVerseSoundFinishedPlaying() {
-    stopWordVerseSound();
-  }
-
   return (
     <Fragment>
-      <WordVerseSound
-        onFinishedPlaying={handleWordVerseSoundFinishedPlaying}
-        playStatus={audio.status}
-        url={audio.url}
-      />
       <NextSeo
         title={`${props?.surah?.name_simple} - QuranKu Website`}
         description={`${props.surahInfo?.short_text}`}
@@ -331,88 +265,11 @@ export default function Chapter(props: SurahResult) {
         {/* Tabs */}
         {surahVerses && (
           <Tab
+            surah={Surah.surah}
             SurahInfo={props.surahInfo?.text}
-            Translations={
-              <Container>
-                {/* Bismillah Text */}
-                {BismillahText}
-
-                {/* Verses */}
-                <Stack spacing={5}>
-                  {/* Verses */}
-                  {surahVerses &&
-                    surahVerses.verses.map((verse) => {
-                      return (
-                        <Verse
-                          playtranslationRecognition={
-                            playtranslationRecognition
-                          }
-                          playWordVerseSound={playWordVerseSound}
-                          stopWordVerseSound={stopWordVerseSound}
-                          onOpen={handleShareModal}
-                          {...verse}
-                        ></Verse>
-                      );
-                    })}
-                </Stack>
-
-                {/* Buttons | Previous, Next Chapter, and Load more verse */}
-                <Container>
-                  {/* @ts-ignore */}
-                  <Grid
-                    container
-                    spacing={2}
-                    style={{
-                      marginTop: "10px"
-                    }}
-                    alignContent="stretch"
-                    justify="center"
-                  >
-                    {props.surah && props.surah.id != 1 ? (
-                      <ButtonGridItem item>
-                        <Link href={`/${props?.surah?.id - 1}`}>
-                          <Button
-                            colorScheme="blue"
-                            variant="outline"
-                            leftIcon={<NavigateBeforeIcon />}
-                          >
-                            Previous Chapter
-                          </Button>
-                        </Link>
-                      </ButtonGridItem>
-                    ) : (
-                      // </Link>
-                      ""
-                    )}
-
-                    {props.surah && props.surah?.verses_count > 10 && (
-                      <ButtonGridItem item>
-                        <Button colorScheme="blue" variant="outline">
-                          Load More Verse
-                        </Button>
-                      </ButtonGridItem>
-                    )}
-
-                    {props.surah && props.surah.id != 114 ? (
-                      <ButtonGridItem item>
-                        <Link href={`/${props?.surah?.id + 1}`}>
-                          <Button
-                            colorScheme="blue"
-                            variant="outline"
-                            rightIcon={<NavigateNextIcon />}
-                          >
-                            Next Chapter
-                          </Button>
-                        </Link>
-                      </ButtonGridItem>
-                    ) : (
-                      // </Link>
-                      ""
-                    )}
-                  </Grid>
-                </Container>
-              </Container>
-            }
+            surahVerses={surahVerses}
+            handleShareModal={handleShareModal}
+            Translations={BismillahText}
           />
         )}
       </div>

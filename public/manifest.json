@@ -1,8 +1,8 @@
 {
-  "name": "MTs Technonatura Depok - Technonatura Junior High School",
-  "short_name": "MTs Technonatura",
-  "description": "Website Technonatura Depok",
-  "theme_color": "#f0efeb",
+  "name": "Qurann Website Application",
+  "short_name": "Qurann WebApp",
+  "description": "Qurann Open Source Website",
+  "theme_color": "#000",
   "background_color": "#ffffff",
   "scope": "/",
   "start_url": "/",

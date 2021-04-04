@@ -57,7 +57,11 @@ function ScrollTop(props: Props) {
 
 function ScrollToTop(props: any) {
   return (
-    <a href="#">
+    <a
+      onClick={() => {
+        window.scrollTo(0, 0);
+      }}
+    >
       <ScrollTop {...props}>
         <Fab color="secondary" size="small" aria-label="scroll back to top">
           <KeyboardArrowUpIcon />

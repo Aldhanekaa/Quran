@@ -105,10 +105,12 @@ export default function VerseComponent(props: VerseProps) {
                 fontWeight={900}
                 className="arabic"
                 onClick={() => {
-                  props.stopWordVerseSound();
-                  props.playWordVerseSound(
-                    "https://verses.quran.com/" + word.audio_url
-                  );
+                  if (word.char_type_name !== "end") {
+                    props.stopWordVerseSound();
+                    props.playWordVerseSound(
+                      "https://verses.quran.com/" + word.audio_url
+                    );
+                  }
                 }}
               >
                 <Tooltip label={word.translation.text} arrow>

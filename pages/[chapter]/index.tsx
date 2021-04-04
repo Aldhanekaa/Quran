@@ -39,26 +39,16 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 /* ======================= END UI ======================= */
 
 import { NextSeo } from "next-seo";
-import { Redirect, GetServerSideProps, GetServerSidePropsResult } from "next";
+import { GetServerSideProps } from "next";
 import { VerseByChapterFetchResult, SurahResult } from "@/ts/interfaces";
-import { withRouter, NextRouter, useRouter } from "next/router";
-import {
-  useEffect,
-  useState,
-  useRef,
-  Fragment,
-  useCallback,
-  useMemo
-} from "react";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { useRouter } from "next/router";
+import { useEffect, useState, useRef, Fragment } from "react";
 import styled from "@emotion/styled";
 
 import FetchVerses from "../../utils/getVerseByChapter";
 import FetchSurah from "../../utils/getChapter";
 import Tab from "@/components/Surah/Tab";
 import Hero from "@/components/Surah/Hero";
-import Verse from "@/components/Surah/verse";
-import Link from "next/link";
 import { Toolbar } from "@material-ui/core";
 
 const StyledBismillahTextComponent = styled(Text)`

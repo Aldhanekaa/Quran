@@ -19,6 +19,7 @@ import styled from "@emotion/styled";
 import { ChapterContext } from "../../pages/[chapter]/index";
 
 import TranslationTab from "./Translations";
+import ReadTab from "./ReadTab";
 
 const ButtonGridItem = styled(Grid)`
   button {
@@ -189,7 +190,9 @@ export default function ChapterTab() {
           </AppBar>
           <TabPanel value={value} index={0}>
             <Container>
-              <p>{BismillahText && BismillahText}</p>
+              <p style={{ marginBottom: "50px" }}>
+                {BismillahText && BismillahText}
+              </p>
               <TranslationTab
                 playWordVerseSound={playWordVerseSound}
                 stopWordVerseSound={stopWordVerseSound}
@@ -199,6 +202,9 @@ export default function ChapterTab() {
           </TabPanel>
           <TabPanel value={value} index={1}>
             {BismillahText}
+            <Container>
+              <ReadTab />
+            </Container>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <SurahInfoTab>

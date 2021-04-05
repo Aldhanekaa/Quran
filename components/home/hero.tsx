@@ -17,6 +17,7 @@ import { Box } from "@chakra-ui/react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 
+import { useToast, Code } from "@chakra-ui/react";
 import {
   fetchChapters,
   chapter,
@@ -101,8 +102,25 @@ interface CustomizedInputBaseComponentProps {
 function CustomizedInputBase(
   dataFetchChapters: CustomizedInputBaseComponentProps
 ) {
+  const toast = useToast();
+
   const classes = useStyles();
   const { chapters, error } = dataFetchChapters;
+
+  function handleOnChange() {
+    toast({
+      title: "Chapter Selected",
+      description: (
+        <p>
+          Press <Code>Enter</Code> to go to the chapter
+        </p>
+      ),
+      status: "info",
+      duration: 9000,
+      isClosable: true
+    });
+  }
+
   return (
     <Paper component="form" className={classes.root}>
       {!chapters && (
@@ -121,6 +139,7 @@ function CustomizedInputBase(
           disableClearable
           autoHighlight
           freeSolo
+          onChange={handleOnChange}
           getOptionLabel={(option) => option.name_simple}
           renderOption={(option) => {
             return (
@@ -132,6 +151,9 @@ function CustomizedInputBase(
           renderInput={(params) => {
             return (
               <TextField
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
                 {...params}
                 inputProps={{
                   ...params.inputProps,

@@ -26,7 +26,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import InfoIcon from "@material-ui/icons/Info";
 
 import clsx from "clsx";
-import { ChakraProvider } from "@chakra-ui/react";
 import {
   chakra,
   HTMLChakraProps,
@@ -254,6 +253,7 @@ export default function SearchAppBar(props: Props) {
             </div>
             <form>
               <InputBase
+                fullWidth
                 placeholder="Search Surah"
                 classes={{
                   root: classes.inputRoot,

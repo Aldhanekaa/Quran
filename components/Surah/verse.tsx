@@ -1,20 +1,6 @@
 /* ======================= UI ======================= */
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import CloseIcon from "@material-ui/icons/Close";
-import Link from "next/link";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import ShareIcon from "@material-ui/icons/Share";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import FilterNoneIcon from "@material-ui/icons/FilterNone";
@@ -152,7 +138,7 @@ export default function VerseComponent(props: VerseComponentProps) {
         overflow="hidden"
       >
         <Badge>Verse {props.verse_number}</Badge>
-        <Box as="p" className="arabic">
+        <Box as="p" className="arabic" marginTop={3}>
           {props.words.map((word) => {
             return (
               <Text
@@ -179,7 +165,7 @@ export default function VerseComponent(props: VerseComponentProps) {
                         : ""
                     }
                   >
-                    {word.text_uthmani}
+                    {word.char_type_name == "end" ? "" : word.text_uthmani}
                   </span>
                 </Tooltip>
               </Text>

@@ -13,9 +13,12 @@ import SearchIcon from "@material-ui/icons/Search";
 import DirectionsIcon from "@material-ui/icons/Directions";
 import { QuranulKarim } from "../../assets/data/Gambar";
 import Image from "next/image";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
+import TextField, {
+  StandardTextFieldProps,
+  TextFieldProps
+} from "@material-ui/core/TextField";
 
 import { useToast, Code } from "@chakra-ui/react";
 import {
@@ -25,6 +28,8 @@ import {
   surahInfoType,
   surahListDialog
 } from "@/ts/interfaces";
+import { Fragment, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 interface HomeHeroProps {
   data?: chapters;
@@ -102,7 +107,10 @@ interface CustomizedInputBaseComponentProps {
 function CustomizedInputBase(
   dataFetchChapters: CustomizedInputBaseComponentProps
 ) {
+  const Router = useRouter();
+  const inptRef = useRef<StandardTextFieldProps>();
   const toast = useToast();
+  const [inputValue, setInputValue] = useState<string>("");
 
   const classes = useStyles();
   const { chapters, error } = dataFetchChapters;
@@ -112,17 +120,47 @@ function CustomizedInputBase(
       title: "Chapter Selected",
       description: (
         <p>
-          Press <Code>Enter</Code> to go to the chapter
+          Press <Code>Enter</Code> or submit to go to the chapter
         </p>
       ),
       status: "info",
-      duration: 9000,
-      isClosable: true
+      duration: 2500,
+      isClosable: true,
+      position: "top-right"
     });
   }
 
+  function handleSubmitForm(event: React.FormEvent<HTMLDivElement>) {
+    event.preventDefault();
+    const sorted = chapters?.map((chapter) => {
+      return Object.assign(
+        {},
+        { ...chapter },
+        {
+          name_simple: chapter.name_simple.toLowerCase(),
+          translated_name: {
+            name: chapter.translated_name.name.toLowerCase()
+          }
+        }
+      );
+    });
+
+    // @ts-ignore
+    const findChapterByName = sorted.findIndex(
+      // @ts-ignore
+      (e) => e.name_simple == inptRef.current?.value.toLowerCase()
+    );
+    if (findChapterByName + 1 != 0) {
+      Router.push(`/${findChapterByName + 1}`);
+    }
+  }
+
   return (
-    <Paper component="form" className={classes.root}>
+    <Paper
+      component="form"
+      onSubmit={handleSubmitForm}
+      className={classes.root}
+    >
       {!chapters && (
         <InputBase
           className={classes.input}
@@ -140,26 +178,34 @@ function CustomizedInputBase(
           autoHighlight
           freeSolo
           onChange={handleOnChange}
-          getOptionLabel={(option) => option.name_simple}
-          renderOption={(option) => {
+          getOptionLabel={(option) => {
+            return option.name_simple;
+          }}
+          renderOption={(props, option) => {
             return (
               <>
-                <span>{option.name_simple}</span>
+                {/* @ts-ignore */}
+                <li {...props}>
+                  <span>{props.name_simple}</span>
+                  <Box>
+                    <Text color="gray.500" isTruncated>
+                      {props.translated_name.name}
+                    </Text>
+                  </Box>
+                </li>
               </>
             );
           }}
           renderInput={(params) => {
             return (
               <TextField
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
                 {...params}
                 inputProps={{
                   ...params.inputProps,
                   autoComplete: "off", // disable autocomplete and autofill
                   autoCorrect: "off"
                 }}
+                inputRef={inptRef}
                 autoComplete="off"
                 autoCorrect="off"
                 className={classes.input}

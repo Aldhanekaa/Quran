@@ -9,8 +9,10 @@ import Typography from "@material-ui/core/Typography";
 /* ======================= UI ======================= */
 
 import Grid from "@material-ui/core/Grid";
-
-import { Box, useToast } from "@chakra-ui/react";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Link from "next/link";
+import { Stack, Button, Box, useToast } from "@chakra-ui/react";
 import WordVerseSound from "react-sound";
 /* ======================= END UI ======================= */
 
@@ -168,7 +170,7 @@ export default function ChapterTab() {
 
   return (
     <ChapterContext.Consumer>
-      {({ SurahInfo, BismillahText }) => (
+      {({ SurahInfo, BismillahText, surah, surahVerses }) => (
         <div className={classes.root}>
           <WordVerseSound
             onFinishedPlaying={handleWordVerseSoundFinishedPlaying}
@@ -198,12 +200,23 @@ export default function ChapterTab() {
                 stopWordVerseSound={stopWordVerseSound}
                 playtranslationRecognition={playtranslationRecognition}
               />
+              <ChapterNavigation
+                totalVerses={surah?.verses_count}
+                surahID={surah?.id}
+              />
             </Container>
           </TabPanel>
           <TabPanel value={value} index={1}>
             {BismillahText}
             <Container>
-              <ReadTab />
+              <ReadTab
+                playWordVerseSound={playWordVerseSound}
+                stopWordVerseSound={stopWordVerseSound}
+              />
+              <ChapterNavigation
+                totalVerses={surah?.verses_count}
+                surahID={surah?.id}
+              />
             </Container>
           </TabPanel>
           <TabPanel value={value} index={2}>
@@ -219,5 +232,68 @@ export default function ChapterTab() {
         </div>
       )}
     </ChapterContext.Consumer>
+  );
+}
+
+interface ChapterNavigationProps {
+  surahID?: number;
+  totalVerses?: number;
+}
+function ChapterNavigation({ surahID, totalVerses }: ChapterNavigationProps) {
+  return (
+    <Container>
+      {/* @ts-ignore */}
+      <Grid
+        container
+        spacing={2}
+        style={{
+          marginTop: "50px"
+        }}
+        alignContent="stretch"
+        justify="center"
+      >
+        {surahID && surahID != 1 ? (
+          <ButtonGridItem item>
+            <Link href={`/${surahID - 1}`}>
+              <Button
+                colorScheme="blue"
+                variant="outline"
+                leftIcon={<NavigateBeforeIcon />}
+              >
+                Previous Chapter
+              </Button>
+            </Link>
+          </ButtonGridItem>
+        ) : (
+          // </Link>
+          ""
+        )}
+
+        {totalVerses && totalVerses > 10 && (
+          <ButtonGridItem item>
+            <Button colorScheme="blue" variant="outline">
+              Load More Verse
+            </Button>
+          </ButtonGridItem>
+        )}
+
+        {surahID && surahID != 114 ? (
+          <ButtonGridItem item>
+            <Link href={`/${surahID + 1}`}>
+              <Button
+                colorScheme="blue"
+                variant="outline"
+                rightIcon={<NavigateNextIcon />}
+              >
+                Next Chapter
+              </Button>
+            </Link>
+          </ButtonGridItem>
+        ) : (
+          // </Link>
+          ""
+        )}
+      </Grid>
+    </Container>
   );
 }

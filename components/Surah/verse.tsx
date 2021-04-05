@@ -48,10 +48,6 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import styled from "@emotion/styled";
 import { Verse } from "../../ts/interfaces";
 
-import FetchVerses from "../../utils/getVerseByChapter";
-import FetchSurah from "../../utils/getChapter";
-// import {} from "@/type/";
-
 const ButtonGridItem = styled(Grid)`
   button {
     width: 100%;
@@ -63,13 +59,73 @@ const ButtonGridItem = styled(Grid)`
 `;
 
 interface VerseProps extends Verse {
-  onOpen: (verse: string, translation: string) => void;
   playWordVerseSound: (url: string) => void;
   stopWordVerseSound: () => void;
+}
+
+interface VerseComponentProps extends VerseProps {
+  onOpen: (verse: string, translation: string) => void;
   playtranslationRecognition: (text: string) => void;
 }
 
-export default function VerseComponent(props: VerseProps) {
+export function readVerseComponent(props: VerseProps) {
+  return (
+    <>
+      {/* <Box
+        p={5}
+        flex="1"
+        width="100%"
+        borderWidth="1px"
+        borderRadius="lg"
+        overflow="hidden"
+        marginTop={5}
+      > */}
+      <Box
+        as="p"
+        alignContent="center"
+        textAlign="center"
+        marginBottom={3}
+        className="arabic"
+        display="inline-block"
+      >
+        {props.words.map((word) => {
+          return (
+            <Text
+              display="inline-block"
+              marginLeft={3}
+              fontSize="2xl"
+              fontWeight={900}
+              className="arabic"
+              onClick={() => {
+                if (word.char_type_name !== "end") {
+                  props.stopWordVerseSound();
+                  props.playWordVerseSound(
+                    "https://verses.quran.com/" + word.audio_url
+                  );
+                }
+              }}
+            >
+              <Tooltip label={word.translation.text} arrow>
+                <span
+                  className={
+                    word.char_type_name == "end"
+                      ? "end text_uthmani arabic"
+                      : ""
+                  }
+                >
+                  {word.text_uthmani}
+                </span>
+              </Tooltip>
+            </Text>
+          );
+        })}
+      </Box>
+      {/* </Box> */}
+    </>
+  );
+}
+
+export default function VerseComponent(props: VerseComponentProps) {
   const words = props.words
     .map((word) => {
       if (word.char_type_name == "word") {
@@ -104,6 +160,7 @@ export default function VerseComponent(props: VerseProps) {
                 marginLeft={2}
                 fontSize="2xl"
                 fontWeight={900}
+                marginTop={3}
                 className="arabic"
                 onClick={() => {
                   if (word.char_type_name !== "end") {

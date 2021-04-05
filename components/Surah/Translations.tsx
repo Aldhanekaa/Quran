@@ -7,10 +7,10 @@ import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import Grid from "@material-ui/core/Grid";
 
-import { Box, Stack, Button, useToast } from "@chakra-ui/react";
+import { Stack, Button, useToast } from "@chakra-ui/react";
 /* ======================= END UI ======================= */
 
-import { ChapterContext } from "../../pages/[chapter]/index";
+import { ChapterContext } from "@/pages/[chapter]/index";
 import styled from "@emotion/styled";
 
 import Verse from "@/components/Surah/verse";
@@ -47,7 +47,6 @@ export default function TranslationTab({
   return (
     <ChapterContext.Consumer>
       {({
-        surah,
         surahVerses,
         modalShare: {
           closeModalShare,
@@ -74,60 +73,6 @@ export default function TranslationTab({
               })}
           </Stack>
           {/* Buttons | Previous, Next Chapter, and Load more verse */}
-          <Container>
-            {/* @ts-ignore */}
-            <Grid
-              container
-              spacing={2}
-              style={{
-                marginTop: "10px"
-              }}
-              alignContent="stretch"
-              justify="center"
-            >
-              {surah && surah.id != 1 ? (
-                <ButtonGridItem item>
-                  <Link href={`/${surah?.id - 1}`}>
-                    <Button
-                      colorScheme="blue"
-                      variant="outline"
-                      leftIcon={<NavigateBeforeIcon />}
-                    >
-                      Previous Chapter
-                    </Button>
-                  </Link>
-                </ButtonGridItem>
-              ) : (
-                // </Link>
-                ""
-              )}
-
-              {surah && surah.verses_count > 10 && (
-                <ButtonGridItem item>
-                  <Button colorScheme="blue" variant="outline">
-                    Load More Verse
-                  </Button>
-                </ButtonGridItem>
-              )}
-
-              {surah && surah.id != 114 ? (
-                <ButtonGridItem item>
-                  <Link href={`/${surah?.id + 1}`}>
-                    <Button
-                      colorScheme="blue"
-                      variant="outline"
-                      rightIcon={<NavigateNextIcon />}
-                    >
-                      Next Chapter
-                    </Button>
-                  </Link>
-                </ButtonGridItem>
-              ) : (
-                // </Link>
-                ""
-              )}
-            </Grid>
-          </Container>
         </>
       )}
     </ChapterContext.Consumer>

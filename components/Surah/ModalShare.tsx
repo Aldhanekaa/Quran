@@ -1,15 +1,6 @@
 /* ======================= UI ======================= */
-
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import Grid from "@material-ui/core/Grid";
-
 import {
-  Text,
-  useDisclosure,
   Button,
   Modal,
   ModalContent,
@@ -21,8 +12,6 @@ import {
   useClipboard,
   Flex,
   Input,
-  WrapItem,
-  Wrap,
   useToast
 } from "@chakra-ui/react";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -33,21 +22,8 @@ import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 /* ======================= END UI ======================= */
 
-import { NextSeo } from "next-seo";
-import { GetServerSideProps } from "next";
-import {
-  VerseByChapterFetchResult,
-  SurahResult,
-  surahInfoType
-} from "@/ts/interfaces";
-import { useRouter } from "next/router";
-import { useEffect, useState, useRef, Fragment, createContext } from "react";
 import { ChapterContext } from "../../pages/[chapter]/index";
 import styled from "@emotion/styled";
-
-import Tab from "@/components/Surah/Tab";
-import Hero from "@/components/Surah/Hero";
-import { Toolbar } from "@material-ui/core";
 
 const ButtonGridItem = styled(Grid)`
   button {

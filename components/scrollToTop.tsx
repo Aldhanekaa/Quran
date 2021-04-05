@@ -1,10 +1,22 @@
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Zoom from "@material-ui/core/Zoom";
-import Link from "next/link";
+import InfoIcon from "@material-ui/icons/Info";
+import SpeedDial from "@material-ui/lab/SpeedDial";
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
+import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
+import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
+import SaveIcon from "@material-ui/icons/Save";
+import PrintIcon from "@material-ui/icons/Print";
+import ShareIcon from "@material-ui/icons/Share";
+import EditIcon from "@material-ui/icons/Edit";
+import Box from "@material-ui/core/Box";
 
+import {} from "next/link";
+import { useState } from "react";
+import { useMenuState } from "@chakra-ui/menu";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -33,7 +45,7 @@ function ScrollTop(props: Props) {
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
     disableHysteresis: true,
-    threshold: 100
+    threshold: 50
   });
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -57,17 +69,84 @@ function ScrollTop(props: Props) {
 
 function ScrollToTop(props: any) {
   return (
-    <a
-      onClick={() => {
-        window.scrollTo(0, 0);
-      }}
-    >
-      <ScrollTop {...props}>
-        <Fab color="secondary" size="small" aria-label="scroll back to top">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </ScrollTop>
-    </a>
+    <ScrollTop {...props}>
+      <OpenIconSpeedDial />
+    </ScrollTop>
+  );
+}
+
+const SpeedDialStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      transform: "translateZ(0px)",
+      flexGrow: 1
+    },
+    exampleWrapper: {
+      position: "relative",
+      marginTop: theme.spacing(3),
+      height: 380
+    },
+    radioGroup: {
+      margin: theme.spacing(1, 0)
+    },
+    speedDial: {
+      position: "absolute",
+      "&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft": {
+        bottom: theme.spacing(2),
+        right: theme.spacing(2)
+      },
+      "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
+        top: theme.spacing(2),
+        left: theme.spacing(2)
+      }
+    }
+  })
+);
+
+const actions = [
+  { icon: <FileCopyIcon />, name: "Copy" },
+  { icon: <SaveIcon />, name: "Save" },
+  { icon: <PrintIcon />, name: "Print" },
+  { icon: <ShareIcon />, name: "Share" }
+];
+
+function OpenIconSpeedDial() {
+  const classes = SpeedDialStyles();
+
+  const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  return (
+    <>
+      {/* @ts-ignore */}
+      <Box sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
+        <SpeedDial
+          ariaLabel="SpeedDial example"
+          className={classes.speedDial}
+          hidden={hidden}
+          icon={<SpeedDialIcon />}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          open={open}
+          direction="up"
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+            />
+          ))}
+        </SpeedDial>
+      </Box>
+    </>
   );
 }
 

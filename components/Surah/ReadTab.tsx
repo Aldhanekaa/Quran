@@ -59,16 +59,7 @@ export default function BasicTabs({
 
   return (
     <ChapterContext.Consumer>
-      {({
-        surahVerses,
-        surah,
-        modalShare: {
-          closeModalShare,
-          isModalShareOpen,
-          shareModalData: { verse, translation },
-          handleShareModal
-        }
-      }) => (
+      {({ surahVerses, surah }) => (
         <React.Fragment>
           {/* @ts-ignore */}
           <Box sx={{ width: "100%" }} style={{ marginTop: "50px" }}>

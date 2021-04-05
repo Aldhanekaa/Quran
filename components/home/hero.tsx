@@ -1,4 +1,3 @@
-import Toolbar from "@material-ui/core/Toolbar";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -6,11 +5,8 @@ import Button from "@material-ui/core/Button";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import DirectionsIcon from "@material-ui/icons/Directions";
 import { QuranulKarim } from "../../assets/data/Gambar";
 import Image from "next/image";
 import { Box, Text } from "@chakra-ui/react";
@@ -21,14 +17,8 @@ import TextField, {
 } from "@material-ui/core/TextField";
 
 import { useToast, Code } from "@chakra-ui/react";
-import {
-  fetchChapters,
-  chapter,
-  chapters,
-  surahInfoType,
-  surahListDialog
-} from "@/ts/interfaces";
-import { Fragment, useRef, useState } from "react";
+import { chapter, chapters } from "@/ts/interfaces";
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 interface HomeHeroProps {

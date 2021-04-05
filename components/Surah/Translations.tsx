@@ -73,7 +73,7 @@ export default function TranslationTab({
                 );
               })}
           </Stack>
-          ;{/* Buttons | Previous, Next Chapter, and Load more verse */}
+          {/* Buttons | Previous, Next Chapter, and Load more verse */}
           <Container>
             {/* @ts-ignore */}
             <Grid

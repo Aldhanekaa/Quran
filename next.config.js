@@ -104,7 +104,7 @@ const plugins = [
         disable: process.env.NODE_ENV === "development",
         register: true,
         swSrc: "service-worker.js",
-        swDest: "service-worker.js",
+        swDest: "sw.js",
         dest: "public"
       }
     }

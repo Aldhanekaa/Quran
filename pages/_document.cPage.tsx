@@ -30,7 +30,30 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             rel="apple-touch-icon"
             href={process.env.PUBLIC_URL + "/logo192-apple-touch.png"}
           />
+          <meta name="application-name" content="QuranWebApp" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="default"
+          />
+          <meta name="apple-mobile-web-app-title" content="Qurann WebApp" />
+          <meta
+            name="description"
+            content="WebApp Quran, Read and Meditate with Quran Online."
+          />
+          <meta name="format-detection" content="telephone=no" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="theme-color" content="#FFFFFF" />
+          {/* TIP: set viewport head meta tag in _app.js, otherwise it will show a warning */}
+          {/* <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover' /> */}
+
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+          />
           <link rel="manifest" href="/manifest.json" />
+          <link rel="shortcut icon" href="/favicon.ico" />
 
           <script
             async

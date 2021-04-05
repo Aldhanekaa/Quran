@@ -103,9 +103,8 @@ const plugins = [
       pwa: {
         disable: process.env.NODE_ENV === "development",
         register: true,
-        scope: "/",
         swSrc: "service-worker.js",
-        dest: "public"
+        swDest: "public"
       }
     }
   ],

@@ -30,10 +30,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             rel="apple-touch-icon"
             href={process.env.PUBLIC_URL + "/logo192-apple-touch.png"}
           />
-          <link
-            rel="manifest"
-            href={process.env.PUBLIC_URL + "/manifest.json"}
-          />
+          <link rel="manifest" href="/manifest.json" />
 
           <script
             async

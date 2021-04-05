@@ -104,7 +104,8 @@ const plugins = [
         disable: process.env.NODE_ENV === "development",
         register: true,
         swSrc: "sw.js",
-        swDest: "public"
+        swDest: "sw.js",
+        dest: "public"
       }
     }
   ],

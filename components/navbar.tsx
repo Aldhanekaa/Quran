@@ -256,7 +256,7 @@ export default function SearchAppBar(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link href="/">Qurann</Link>
+            <Link href="/">Quran</Link>
           </Typography>
           <Paper component="form" elevation={0} className={classes.root}>
             <IconButton className={classes.searchIcon} aria-label="menu">

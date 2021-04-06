@@ -71,8 +71,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   console.log("INI ROUTERRR", router);
 
-  let path: string = router.pathname;
-
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       gtag.pageview(url);
@@ -136,7 +134,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             {/* {Footer ? Footer : ""} */}
             <Footer />
 
-            <ScrollToTop />
+            <ScrollToTop router={router} />
           </ThemeProvider>
         </ChakraProvider>
       </Provider>

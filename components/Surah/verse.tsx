@@ -57,7 +57,7 @@ interface VerseComponentProps extends VerseProps {
 export function readVerseComponent(props: VerseProps) {
   return (
     <>
-      {/* <Box
+      <Box
         p={5}
         flex="1"
         width="100%"
@@ -65,48 +65,48 @@ export function readVerseComponent(props: VerseProps) {
         borderRadius="lg"
         overflow="hidden"
         marginTop={5}
-      > */}
-      <Box
-        as="p"
-        alignContent="center"
-        textAlign="center"
-        marginBottom={3}
-        className="arabic"
-        display="inline-block"
       >
-        {props.words.map((word) => {
-          return (
-            <Text
-              display="inline-block"
-              marginLeft={3}
-              fontSize="2xl"
-              fontWeight={900}
-              className="arabic"
-              onClick={() => {
-                if (word.char_type_name !== "end") {
-                  props.stopWordVerseSound();
-                  props.playWordVerseSound(
-                    "https://verses.quran.com/" + word.audio_url
-                  );
-                }
-              }}
-            >
-              <Tooltip label={word.translation.text} arrow>
-                <span
-                  className={
-                    word.char_type_name == "end"
-                      ? "end text_uthmani arabic"
-                      : ""
+        <Box
+          as="p"
+          alignContent="center"
+          textAlign="center"
+          marginBottom={3}
+          className="arabic"
+          display="inline-block"
+        >
+          {props.words.map((word) => {
+            return (
+              <Text
+                display="inline-block"
+                marginLeft={3}
+                fontSize="2xl"
+                fontWeight={900}
+                className="arabic"
+                onClick={() => {
+                  if (word.char_type_name !== "end") {
+                    props.stopWordVerseSound();
+                    props.playWordVerseSound(
+                      "https://verses.quran.com/" + word.audio_url
+                    );
                   }
-                >
-                  {word.text_uthmani}
-                </span>
-              </Tooltip>
-            </Text>
-          );
-        })}
+                }}
+              >
+                <Tooltip label={word.translation.text} arrow>
+                  <span
+                    className={
+                      word.char_type_name == "end"
+                        ? "end text_uthmani arabic"
+                        : ""
+                    }
+                  >
+                    {word.text_uthmani}
+                  </span>
+                </Tooltip>
+              </Text>
+            );
+          })}
+        </Box>
       </Box>
-      {/* </Box> */}
     </>
   );
 }

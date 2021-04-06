@@ -5,6 +5,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Paper from "@material-ui/core/Paper";
+
 import {
   createStyles,
   fade,
@@ -24,6 +26,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import InfoIcon from "@material-ui/icons/Info";
+import DirectionsIcon from "@material-ui/icons/Directions";
 
 import clsx from "clsx";
 import {
@@ -52,20 +55,9 @@ const aaaa = makeStyles({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1
-    },
-    menuButton: {
-      marginRight: theme.spacing(2)
-    },
-    title: {
-      flexGrow: 1,
-      display: "none",
-      [theme.breakpoints.up("sm")]: {
-        display: "block"
-      }
-    },
-    search: {
-      position: "relative",
+      display: "flex",
+      color: theme.palette.common.white,
+      alignItems: "center",
       borderRadius: theme.shape.borderRadius,
       backgroundColor: fade(theme.palette.common.white, 0.15),
       "&:hover": {
@@ -78,22 +70,31 @@ const useStyles = makeStyles((theme: Theme) =>
         width: "auto"
       }
     },
+    menuButton: {
+      marginRight: theme.spacing(2)
+    },
+    title: {
+      flexGrow: 1,
+      display: "none",
+      [theme.breakpoints.up("sm")]: {
+        display: "block"
+      }
+    },
+
     searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: "100%",
-      position: "absolute",
-      pointerEvents: "none",
       display: "flex",
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
+      color: "primary"
     },
     inputRoot: {
+      width: "100%",
       color: "inherit"
     },
     inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
+      // padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+      // paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
       transition: theme.transitions.create("width"),
       width: "100%",
       [theme.breakpoints.up("sm")]: {
@@ -101,7 +102,17 @@ const useStyles = makeStyles((theme: Theme) =>
         "&:focus": {
           width: "20ch"
         }
-      }
+      },
+      marginLeft: theme.spacing(1),
+      flex: 1
+    },
+    input: {
+      marginLeft: theme.spacing(1),
+      flex: 1
+    },
+    divider: {
+      height: 28,
+      margin: 4
     }
   })
 );
@@ -247,8 +258,8 @@ export default function SearchAppBar(props: Props) {
           <Typography className={classes.title} variant="h6" noWrap>
             <Link href="/">Quran</Link>
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
+          {/* <div className={classes.search}> */}
+          {/* <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <form>
@@ -262,7 +273,32 @@ export default function SearchAppBar(props: Props) {
                 inputProps={{ "aria-label": "search" }}
               />
             </form>
-          </div>
+            <Divider className={classes.divider} orientation="vertical" />
+            <IconButton
+              color="primary"
+              className={classes.iconButton}
+              aria-label="directions"
+            >
+              <DirectionsIcon />
+            </IconButton>
+          </div> */}
+          <Paper component="form" elevation={0} className={classes.root}>
+            <IconButton className={classes.searchIcon} aria-label="menu">
+              <SearchIcon />
+            </IconButton>
+            <InputBase
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput
+              }}
+              placeholder="Search Google Maps"
+              inputProps={{ "aria-label": "search google maps" }}
+            />
+            <Divider className={classes.divider} orientation="vertical" />
+            <IconButton color="primary" aria-label="directions">
+              <DirectionsIcon />
+            </IconButton>
+          </Paper>
         </Toolbar>
       </AppBar>
 

@@ -4,15 +4,25 @@ import Zoom from "@material-ui/core/Zoom";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
-import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
+import SettingsIcon from "@material-ui/icons/Settings";
 import SaveIcon from "@material-ui/icons/Save";
 import PrintIcon from "@material-ui/icons/Print";
 import ShareIcon from "@material-ui/icons/Share";
 import Box from "@material-ui/core/Box";
 
-import {} from "next/link";
+import { NextRouter } from "next/router";
 import { useState } from "react";
-import { useMenuState } from "@chakra-ui/menu";
+import {
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Button
+} from "@chakra-ui/react";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -41,7 +51,7 @@ function ScrollTop(props: Props) {
   const trigger = useScrollTrigger({
     target: window ? window() : undefined,
     disableHysteresis: true,
-    threshold: 50
+    threshold: -1
   });
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -63,11 +73,41 @@ function ScrollTop(props: Props) {
   );
 }
 
-function ScrollToTop(props: any) {
+interface SpeedDialProps {
+  router: NextRouter;
+}
+function ScrollToTop(props: SpeedDialProps) {
+  const {
+    isOpen: isDialogShareOnOpen,
+    onOpen: openShareDialog,
+    onClose: closeShareDialog
+  } = useDisclosure();
+
+  // @ts-ignore
+  console.log("heyyy router! ", props.router.components);
   return (
-    <ScrollTop {...props}>
-      <OpenIconSpeedDial />
-    </ScrollTop>
+    <>
+      <Modal
+        onClose={closeShareDialog}
+        isOpen={isDialogShareOnOpen}
+        scrollBehavior="outside"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Share This WebApp</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
+            exercitationem architecto natus itaque doloremque. Itaque sint
+            ducimus velit, corrupti blanditiis dolorem. Nesciunt quam natus
+            voluptate ratione eligendi pariatur similique exercitationem?
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <ScrollTop {...props}>
+        <OpenIconSpeedDial openShareDialog={openShareDialog} />
+      </ScrollTop>
+    </>
   );
 }
 
@@ -80,7 +120,7 @@ const SpeedDialStyles = makeStyles((theme: Theme) =>
     exampleWrapper: {
       position: "relative",
       marginTop: theme.spacing(3),
-      height: 380
+      height: 0
     },
     radioGroup: {
       margin: theme.spacing(1, 0)
@@ -100,13 +140,15 @@ const SpeedDialStyles = makeStyles((theme: Theme) =>
 );
 
 const actions = [
-  { icon: <FileCopyIcon />, name: "Copy" },
   { icon: <SaveIcon />, name: "Save" },
   { icon: <PrintIcon />, name: "Print" },
   { icon: <ShareIcon />, name: "Share" }
 ];
 
-function OpenIconSpeedDial() {
+interface OpenIconSpeedDialProps {
+  openShareDialog: () => void;
+}
+function OpenIconSpeedDial(props: OpenIconSpeedDialProps) {
   const classes = SpeedDialStyles();
 
   const [open, setOpen] = useState(false);
@@ -133,13 +175,12 @@ function OpenIconSpeedDial() {
           open={open}
           direction="up"
         >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-            />
-          ))}
+          <SpeedDialAction icon={<SettingsIcon />} tooltipTitle="Settings" />
+          <SpeedDialAction
+            icon={<ShareIcon />}
+            onClick={props.openShareDialog}
+            tooltipTitle="Share"
+          />
         </SpeedDial>
       </Box>
     </>

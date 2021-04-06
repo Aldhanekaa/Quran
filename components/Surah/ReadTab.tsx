@@ -76,12 +76,7 @@ export default function BasicTabs({
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-              <Box
-                marginTop={5}
-                className="arabic"
-                alignContent="center"
-                textAlign="center"
-              >
+              <Box marginTop={5} className="arabic">
                 {surahVerses &&
                   surahVerses.verses.map((verse) => {
                     return (

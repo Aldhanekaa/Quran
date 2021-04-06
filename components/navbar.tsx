@@ -1,4 +1,5 @@
-import React from "react";
+/* ============================================= UI ============================================= */
+
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -6,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import InputBase from "@material-ui/core/InputBase";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Paper from "@material-ui/core/Paper";
-
 import {
   createStyles,
   fade,
@@ -26,10 +26,8 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import InfoIcon from "@material-ui/icons/Info";
-import DirectionsIcon from "@material-ui/icons/Directions";
+import MicIcon from "@material-ui/icons/Mic";
 import { grey } from "@material-ui/core/colors";
-
-import clsx from "clsx";
 import {
   chakra,
   HTMLChakraProps,
@@ -39,8 +37,19 @@ import {
   useColorModeValue,
   HStack
 } from "@chakra-ui/react";
+import Tooltip from "@material-ui/core/Tooltip";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
 
-import { Fragment } from "react";
+/* ============================================= UI ============================================= */
+
+import clsx from "clsx";
+
+import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -150,6 +159,16 @@ export default function SearchAppBar(props: Props) {
   const classes = useStyles();
   const router = useRouter();
 
+  const [voiceDialogOpen, voiceSetDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    voiceSetDialog(true);
+  };
+
+  const handleClose = () => {
+    voiceSetDialog(false);
+  };
+
   const aaa = aaaa();
   const [state, setState] = React.useState({
     top: false,
@@ -219,6 +238,30 @@ export default function SearchAppBar(props: Props) {
   return (
     <Fragment>
       <CssBaseline />
+
+      <Dialog
+        open={voiceDialogOpen}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To subscribe to this website, please enter your email address here.
+            We will send updates occasionally.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            fullWidth
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Banner */}
       <Box as="section">
         <Stack
           direction={{ base: "column", sm: "row" }}
@@ -244,6 +287,7 @@ export default function SearchAppBar(props: Props) {
           ></iframe>
         </Stack>
       </Box>
+      {/* Banner */}
 
       <AppBar position="sticky" style={{ top: "0px" }}>
         <Toolbar>
@@ -272,8 +316,16 @@ export default function SearchAppBar(props: Props) {
               inputProps={{ "aria-label": "search google maps" }}
             />
             <Divider className={classes.divider} orientation="vertical" />
-            <IconButton color="primary" aria-label="directions">
-              <DirectionsIcon />
+            <IconButton
+              onClick={() => {
+                handleClickOpen();
+              }}
+              color="primary"
+              aria-label="directions"
+            >
+              <Tooltip title="Search With Voice" arrow>
+                <MicIcon style={{ color: grey[50] }} />
+              </Tooltip>
             </IconButton>
           </Paper>
         </Toolbar>
@@ -288,22 +340,5 @@ export default function SearchAppBar(props: Props) {
         {list("left")}
       </SwipeableDrawer>
     </Fragment>
-  );
-}
-
-function ActionLink(props: HTMLChakraProps<"a">) {
-  return (
-    <chakra.a
-      {...props}
-      href="#"
-      px="4"
-      py="1.5"
-      textAlign="center"
-      borderWidth="1px"
-      borderColor="whiteAlpha.400"
-      fontWeight="medium"
-      rounded="base"
-      _hover={{ bg: "whiteAlpha.200" }}
-    />
   );
 }

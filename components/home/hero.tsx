@@ -154,8 +154,8 @@ function CustomizedInputBase(
       {!chapters && (
         <InputBase
           className={classes.input}
-          placeholder="Search Surah"
-          inputProps={{ "aria-label": "search google maps" }}
+          placeholder="Search Chapter"
+          inputProps={{ "aria-label": "search surah " }}
         />
       )}
 

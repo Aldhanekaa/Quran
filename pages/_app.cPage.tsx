@@ -133,29 +133,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
             {/* {Footer ? Footer : ""} */}
             <Footer />
-
-            <ScrollToTop router={router} />
           </ThemeProvider>
         </ChakraProvider>
       </Provider>
     </>
-  );
-}
-
-function ActionLink(props: HTMLChakraProps<"a">) {
-  return (
-    <chakra.a
-      {...props}
-      href="#"
-      px="4"
-      py="1.5"
-      textAlign="center"
-      borderWidth="1px"
-      borderColor="whiteAlpha.400"
-      fontWeight="medium"
-      rounded="base"
-      _hover={{ bg: "whiteAlpha.200" }}
-    />
   );
 }
 

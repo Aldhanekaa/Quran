@@ -134,7 +134,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             {/* {Footer ? Footer : ""} */}
             <Footer />
 
-            <ScrollToTop router={router} />
           </ThemeProvider>
         </ChakraProvider>
       </Provider>

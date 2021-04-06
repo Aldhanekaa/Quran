@@ -27,7 +27,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import InfoIcon from "@material-ui/icons/Info";
 import DirectionsIcon from "@material-ui/icons/Directions";
-import {grey} from '@material-ui/core/colors";
+import {grey} from "@material-ui/core/colors";
 
 import clsx from "clsx";
 import {

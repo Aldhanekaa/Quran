@@ -27,6 +27,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
 import InfoIcon from "@material-ui/icons/Info";
 import DirectionsIcon from "@material-ui/icons/Directions";
+import {grey} from '@material-ui/core/colors
 
 import clsx from "clsx";
 import {
@@ -260,14 +261,14 @@ export default function SearchAppBar(props: Props) {
           </Typography>
           <Paper component="form" elevation={0} className={classes.root}>
             <IconButton className={classes.searchIcon} aria-label="menu">
-              <SearchIcon />
+              <SearchIcon style={{color: grey[50]}}/>
             </IconButton>
             <InputBase
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput
               }}
-              placeholder="Search Google Maps"
+              placeholder="Search Surah"
               inputProps={{ "aria-label": "search google maps" }}
             />
             <Divider className={classes.divider} orientation="vertical" />

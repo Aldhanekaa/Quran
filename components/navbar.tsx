@@ -256,32 +256,8 @@ export default function SearchAppBar(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            <Link href="/">Quran</Link>
+            <Link href="/">Qurann</Link>
           </Typography>
-          {/* <div className={classes.search}> */}
-          {/* <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <form>
-              <InputBase
-                fullWidth
-                placeholder="Search Surah"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput
-                }}
-                inputProps={{ "aria-label": "search" }}
-              />
-            </form>
-            <Divider className={classes.divider} orientation="vertical" />
-            <IconButton
-              color="primary"
-              className={classes.iconButton}
-              aria-label="directions"
-            >
-              <DirectionsIcon />
-            </IconButton>
-          </div> */}
           <Paper component="form" elevation={0} className={classes.root}>
             <IconButton className={classes.searchIcon} aria-label="menu">
               <SearchIcon />

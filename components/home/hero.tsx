@@ -209,7 +209,7 @@ function CustomizedInputBase(
                 autoComplete="off"
                 autoCorrect="off"
                 className={classes.input}
-                placeholder="Search Sura"
+                placeholder="Search Chapter"
               />
             );
           }}

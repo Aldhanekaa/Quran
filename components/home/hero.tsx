@@ -25,6 +25,8 @@ interface HomeHeroProps {
 }
 
 export default function HomeHero(dataFetchChapters: HomeHeroProps) {
+  const router = useRouter();
+  // console.log(router.route);
   return (
     <div>
       <Box

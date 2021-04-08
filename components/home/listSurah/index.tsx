@@ -1,6 +1,7 @@
 import {
   chapter,
   chapters,
+  juzModel,
   surahInfoType,
   surahListDialog
 } from "../../../ts/interfaces";
@@ -21,6 +22,10 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
 import Link from "next/link";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 /* ======================= END UI ======================= */
 
 import { withStyles, WithStyles, useTheme } from "@material-ui/core/styles";
@@ -83,7 +88,28 @@ interface ListSurahProps {
   data?: chapter[];
   error?: any;
 }
+
+interface Juzs {
+  juzs: juzModel[];
+}
+
+interface JuzsFetch {
+  data?: Juzs;
+  error?: any;
+}
+
+const JuzItem = styled(Grid)`
+  @media screen and (max-width: 1000px) {
+    width: 50% !important;
+  }
+`;
 export default function ListSurah({ data, error }: ListSurahProps) {
+  // Fetch chapter list
+  const { data: Juzs, error: JuzError }: JuzsFetch = useSWR<Juzs, any>(
+    "https://api.quran.com/api/v4/juzs",
+    fetcher
+  );
+
   // Dialogs; Use Interface surahListDialog
   const [dialogs, setDialog] = useState<
     surahListDialog[] | undefined | boolean
@@ -163,6 +189,8 @@ export default function ListSurah({ data, error }: ListSurahProps) {
       setDialog(false);
     }
   }, [data]);
+
+  console.log(Juzs);
 
   return (
     <>
@@ -262,7 +290,39 @@ export default function ListSurah({ data, error }: ListSurahProps) {
               </Grid>
             </TabPanel>
             <TabPanel>
-              <p>two!</p>
+              <Grid style={{ marginTop: "20px" }} container spacing={3}>
+                {!Juzs
+                  ? "loading"
+                  : !error
+                  ? Juzs.juzs.map((juz) => (
+                      <JuzItem
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        item
+                        lg={4}
+                        key={juz.juz_number}
+                      >
+                        <Accordion>
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel2a-content"
+                            id="panel2a-header"
+                          >
+                            <Typography>Juz {juz.juz_number}</Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <Typography>
+                              Lorem ipsum dolor sit amet, consectetur adipiscing
+                              elit. Suspendisse malesuada lacus ex, sit amet
+                              blandit leo lobortis eget.
+                            </Typography>
+                          </AccordionDetails>
+                        </Accordion>
+                      </JuzItem>
+                    ))
+                  : "error occured"}
+              </Grid>
             </TabPanel>
           </TabPanels>
         </Tabs>

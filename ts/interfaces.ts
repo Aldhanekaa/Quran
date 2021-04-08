@@ -1,3 +1,13 @@
+// Juz model
+export type juzModel = {
+  id: number;
+  juz_number: number;
+  verse_mapping: Object;
+  first_verse_id: number;
+  last_verse_id: number;
+  verses_count: number;
+};
+
 // Chapter Model
 export type chapter = {
   id: number;

@@ -1,12 +1,6 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
-import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
-import SaveIcon from "@material-ui/icons/Save";
-import PrintIcon from "@material-ui/icons/Print";
-import ShareIcon from "@material-ui/icons/Share";
-import EditIcon from "@material-ui/icons/Edit";
-import Box from "@material-ui/core/Box";
 
 import SEO from "../seo.config";
 import "../styles/global.css";
@@ -57,8 +51,6 @@ const doesntAlllowedNavAndFooter: string[] = [
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const theme = useTheme();
-
-  console.log("INI ROUTERRR", router);
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {

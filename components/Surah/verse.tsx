@@ -63,6 +63,7 @@ export function readVerseComponent(props: VerseProps) {
         width="100%"
         borderWidth="1px"
         borderRadius="lg"
+        marginTop={5}
         overflow="hidden"
       >
         <Badge>Verse {props.verse_number}</Badge>

@@ -6,33 +6,21 @@ import Button from "@material-ui/core/Button";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import DirectionsIcon from "@material-ui/icons/Directions";
 import { QuranulKarim } from "../../assets/data/Gambar";
 import Image from "next/image";
 import { Box, Text } from "@chakra-ui/react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField, {
-  StandardTextFieldProps,
-  TextFieldProps
-} from "@material-ui/core/TextField";
+import TextField, { StandardTextFieldProps } from "@material-ui/core/TextField";
 
 import { useToast, Code } from "@chakra-ui/react";
-import {
-  fetchChapters,
-  chapter,
-  chapters,
-  surahInfoType,
-  surahListDialog
-} from "@/ts/interfaces";
+import { chapter, chapters } from "@/ts/interfaces";
 import { Fragment, useRef, useState } from "react";
 import { useRouter } from "next/router";
-
+import Link from "next/link";
 interface HomeHeroProps {
-  data?: chapters;
+  data?: chapter[];
   error?: any;
 }
 
@@ -59,20 +47,24 @@ export default function HomeHero(dataFetchChapters: HomeHeroProps) {
         <div>
           <Grid container spacing={2} justify="center">
             <CustomizedInputBase
-              chapters={dataFetchChapters.data?.chapters}
+              chapters={dataFetchChapters.data}
               error={dataFetchChapters.error}
             />
           </Grid>
           <Grid container spacing={2} justify="center">
             <Grid item>
-              <Button variant="contained" color="primary">
-                Read Quran
-              </Button>
+              <Link href="#listSurah">
+                <Button variant="contained" color="primary">
+                  Read Quran
+                </Button>
+              </Link>
             </Grid>
             <Grid item>
-              <Button variant="outlined" color="primary">
-                Recitations
-              </Button>
+              <Link href="/recitations">
+                <Button variant="outlined" color="primary">
+                  Recitations
+                </Button>
+              </Link>
             </Grid>
           </Grid>
         </div>

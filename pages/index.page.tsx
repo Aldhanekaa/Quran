@@ -43,7 +43,7 @@ export default function Home(props: HomeFetch) {
         }}
       />
       <Toolbar />
-      <Hero {...dataFetchChapters} />
+      <Hero data={props.chapters} error={props.error} />
       <ListSurah data={props.chapters} error={props.error} />
     </Fragment>
   );

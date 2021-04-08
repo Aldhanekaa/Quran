@@ -23,14 +23,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Link from "next/link";
 /* ======================= END UI ======================= */
 
-import {
-  createStyles,
-  Theme,
-  withStyles,
-  WithStyles,
-  makeStyles,
-  useTheme
-} from "@material-ui/core/styles";
+import { withStyles, WithStyles, useTheme } from "@material-ui/core/styles";
 import { styles, useStyles, ChapterCard } from "./styles";
 import NoData from "./noData";
 import useSWR from "swr";
@@ -174,6 +167,7 @@ export default function ListSurah({ data, error }: ListSurahProps) {
   return (
     <>
       <Container
+        id="listSurah"
         style={{
           flexGrow: 1,
           marginTop: "100px"
@@ -182,11 +176,11 @@ export default function ListSurah({ data, error }: ListSurahProps) {
         <Tabs isFitted variant="enclosed">
           <TabList mb="1em">
             <Tab>Surahs (Chapters)</Tab>
-            <Tab>Juz</Tab>
+            <Tab>Juzs</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Grid container spacing={3}>
+              <Grid style={{ marginTop: "20px" }} container spacing={3}>
                 {!dialogs &&
                   !error &&
                   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(() => {

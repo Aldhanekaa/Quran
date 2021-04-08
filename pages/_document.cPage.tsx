@@ -90,20 +90,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
           <meta
             property="og:image:alt"
-            content="Madrasah Tsanawiyah Techno Natura Log Open Graph Big Version"
+            content="Alqurann Website Application Log Open Graph Big Version"
           />
           <meta property="og:image:width" content="1280" />
           <meta property="og:image:height" content="640" />
 
           <meta
             property="og:image:alt"
-            content="Madrasah Tsanawiyah Techno Natura Log Open Graph Small Version"
+            content="Alqurann Website Application Log Open Graph Small Version"
           />
           <meta property="og:image:width" content="512" />
           <meta property="og:image:height" content="512" />
           <meta
             property="og:site_name"
-            content="Website Madrasah Tsanawiyah Techno Natura Depok"
+            content="Alqurann Website Application"
           />
 
           <meta name="cannonical" content={process.env.PUBLIC_URL} />

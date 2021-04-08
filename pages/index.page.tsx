@@ -9,12 +9,7 @@ import ListSurah from "../components/home/listSurah/";
 const title = "Home | MTs TechnoNatura";
 const description =
   "Website resmi Remaja Madrasah Tsanawiyah TechnoNatura Depok. Website buatan para programmer MTs.";
-import {
-  fetchChapters,
-  chapters,
-  surahInfoType,
-  surahListDialog
-} from "@/ts/interfaces";
+import { fetchChapters, chapters } from "@/ts/interfaces";
 import useSWR from "swr";
 import axios from "axios";
 

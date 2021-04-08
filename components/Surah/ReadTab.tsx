@@ -85,23 +85,16 @@ export default function BasicTabs({
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-              <Box
-                marginTop={5}
-                className="arabic"
-                alignContent="center"
-                textAlign="center"
-              >
-                {surahVerses &&
-                  surahVerses.verses.map((verse) => {
-                    return (
-                      <ReadVerseComponent
-                        playWordVerseSound={playWordVerseSound}
-                        stopWordVerseSound={stopWordVerseSound}
-                        {...verse}
-                      />
-                    );
-                  })}
-              </Box>
+              {surahVerses &&
+                surahVerses.verses.map((verse) => {
+                  return (
+                    <ReadVerseComponent
+                      playWordVerseSound={playWordVerseSound}
+                      stopWordVerseSound={stopWordVerseSound}
+                      {...verse}
+                    />
+                  );
+                })}
             </TabPanel>
             <TabPanel value={value} index={1}>
               Item Two

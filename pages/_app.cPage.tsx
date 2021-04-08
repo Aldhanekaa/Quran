@@ -1,9 +1,6 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
-import SpeedDial from "@material-ui/lab/SpeedDial";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import FileCopyIcon from "@material-ui/icons/FileCopyOutlined";
 import SaveIcon from "@material-ui/icons/Save";
 import PrintIcon from "@material-ui/icons/Print";
@@ -18,7 +15,7 @@ import * as gtag from "../utils/gtag";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import ProgressLoad from "../components/ProgressLoad";
-import ScrollToTop from "../components/scrollToTop";
+import SpeedDial from "../components/scrollToTop";
 
 import { DefaultSeo } from "next-seo";
 import Head from "next/head";
@@ -29,14 +26,6 @@ import { Provider } from "react-redux";
 
 import store from "../store";
 import { ChakraProvider } from "@chakra-ui/react";
-import {
-  chakra,
-  HTMLChakraProps,
-  Text,
-  Stack,
-  useColorModeValue,
-  HStack
-} from "@chakra-ui/react";
 
 declare global {
   interface Window {
@@ -133,6 +122,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
             {/* {Footer ? Footer : ""} */}
             <Footer />
+            <SpeedDial router={pageProps} />
           </ThemeProvider>
         </ChakraProvider>
       </Provider>

@@ -6,17 +6,15 @@ import Head from "next/head";
 
 import Hero from "../components/home/hero";
 import ListSurah from "../components/home/listSurah/";
-const title = "Home | MTs TechnoNatura";
-const description =
-  "Website resmi Remaja Madrasah Tsanawiyah TechnoNatura Depok. Website buatan para programmer MTs.";
-import { fetchChapters, chapters } from "@/ts/interfaces";
+import { fetchChapters, chapters, chapter } from "@/ts/interfaces";
 import useSWR from "swr";
 import axios from "axios";
+import { GetServerSideProps } from "next";
 
 // Fetcher for the SWR
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-export default function Home() {
+export default function Home(props: HomeFetch) {
   const chapters = [];
 
   // Fetch chapter list
@@ -46,7 +44,38 @@ export default function Home() {
       />
       <Toolbar />
       <Hero {...dataFetchChapters} />
-      <ListSurah {...dataFetchChapters} />
+      <ListSurah data={props.chapters} error={props.error} />
     </Fragment>
   );
 }
+
+interface HomeFetch {
+  chapters?: chapter[];
+  error: boolean;
+}
+
+// @ts-ignore
+export const getServerSideProps: GetServerSideProps<HomeFetch> = async (
+  ctx
+) => {
+  // const verses = await FetchVerses(router.query.verse);
+  //@ts-ignore
+  const dataChapters = await axios.get<chapters>(
+    `https://api.quran.com/api/v4/chapters?language=en`
+  );
+  //@ts-ignore
+  if (!dataChapters) {
+    return {
+      props: {
+        chapters: undefined,
+        error: true
+      }
+    };
+  }
+  return {
+    props: {
+      chapters: dataChapters.data.chapters,
+      error: false
+    }
+  };
+};

@@ -269,7 +269,7 @@ function ChapterNavigation({ surahID, totalVerses }: ChapterNavigationProps) {
           ""
         )}
 
-        {totalVerses && totalVerses > 10 && (
+        {totalVerses && totalVerses > 19 && (
           <ButtonGridItem item>
             <Button colorScheme="blue" variant="outline">
               Load More Verse

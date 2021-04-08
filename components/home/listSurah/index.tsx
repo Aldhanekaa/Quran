@@ -1,4 +1,5 @@
 import {
+  chapter,
   chapters,
   surahInfoType,
   surahListDialog
@@ -86,7 +87,7 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 interface ListSurahProps {
-  data?: chapters;
+  data?: chapter[];
   error?: any;
 }
 export default function ListSurah({ data, error }: ListSurahProps) {
@@ -133,7 +134,7 @@ export default function ListSurah({ data, error }: ListSurahProps) {
       let surahDialog: surahListDialog[] = [];
 
       //   Iterate surah. Fetch the surah Info for content of the dialog
-      data.chapters.forEach(async (chapter) => {
+      data.forEach(async (chapter) => {
         //   since this is promise, we use foreach, otherwise if we use map the return will be promise object
         let surahInfo: surahInfoType = {};
         try {
@@ -224,7 +225,7 @@ export default function ListSurah({ data, error }: ListSurahProps) {
                   })}
                 {dialogs &&
                   data &&
-                  data.chapters.map((chapter) => {
+                  data.map((chapter) => {
                     return (
                       <Grid item xs key={chapter.id}>
                         <ChapterCard>

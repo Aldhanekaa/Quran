@@ -190,10 +190,7 @@ export const getServerSideProps: GetServerSideProps<SurahResult> = async (
   //@ts-ignore
   if (surah.message && !surah.surahInfo) {
     return {
-      redirect: {
-        destination: "/",
-        permanent: false
-      }
+      notFound: true
     };
   }
   return {

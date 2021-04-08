@@ -2,7 +2,8 @@ import {
   ErrorMessage,
   surahInfoType,
   chapter,
-  SurahResult
+  SurahResult,
+  chapters
 } from "../ts/interfaces";
 
 import axios from "axios";

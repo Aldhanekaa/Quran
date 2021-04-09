@@ -33,11 +33,6 @@ const ButtonGridItem = styled(Grid)`
   }
 `;
 
-interface shareModalDataRef {
-  verse: string;
-  translation: string;
-}
-
 const SurahInfoTab = styled(Container)`
   ol,
   ul {
@@ -206,6 +201,7 @@ export default function ChapterTab() {
               />
             </Container>
           </TabPanel>
+          {/* Read Tab */}
           <TabPanel value={value} index={1}>
             {BismillahText}
             <Container>
@@ -219,6 +215,9 @@ export default function ChapterTab() {
               />
             </Container>
           </TabPanel>
+          {/* Read Tab */}
+
+          {/* Surah Info Tab */}
           <TabPanel value={value} index={2}>
             <SurahInfoTab>
               <div
@@ -229,6 +228,7 @@ export default function ChapterTab() {
               ></div>
             </SurahInfoTab>
           </TabPanel>
+          {/* Surah Info Tab */}
         </div>
       )}
     </ChapterContext.Consumer>

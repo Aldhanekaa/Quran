@@ -3,17 +3,14 @@ import Container from "@material-ui/core/Container";
 
 /* ======================= UI ======================= */
 
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Verse from "@/components/Surah/verse";
 import Grid from "@material-ui/core/Grid";
-
 import { Stack, Button, useToast } from "@chakra-ui/react";
 /* ======================= END UI ======================= */
 
 import { ChapterContext } from "@/pages/[chapter]/index";
 import styled from "@emotion/styled";
 
-import Verse from "@/components/Surah/verse";
 import Link from "next/link";
 
 interface songInterface {
@@ -46,15 +43,7 @@ export default function TranslationTab({
 
   return (
     <ChapterContext.Consumer>
-      {({
-        surahVerses,
-        modalShare: {
-          closeModalShare,
-          isModalShareOpen,
-          shareModalData: { verse, translation },
-          handleShareModal
-        }
-      }) => (
+      {({ surahVerses, surah, modalShare: { handleShareModal } }) => (
         <>
           {/* Verses */}
           <Stack spacing={5}>
@@ -63,6 +52,7 @@ export default function TranslationTab({
               surahVerses.verses.map((verse) => {
                 return (
                   <Verse
+                    surah={surah}
                     playtranslationRecognition={playtranslationRecognition}
                     playWordVerseSound={playWordVerseSound}
                     stopWordVerseSound={stopWordVerseSound}

@@ -5,6 +5,7 @@ import ShareIcon from "@material-ui/icons/Share";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import FilterNoneIcon from "@material-ui/icons/FilterNone";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
+import LinkIcon from "@material-ui/icons/Link";
 /* ======================= END UI ======================= */
 
 import {
@@ -20,13 +21,15 @@ import {
   useToast,
   useClipboard
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 import { NextSeo } from "next-seo";
 import { Redirect, GetServerSideProps, GetServerSidePropsResult } from "next";
 import {
   VerseByChapterFetchResult,
   ErrorMessage,
-  Surah
+  Surah,
+  chapter
 } from "@/ts/interfaces";
 import { withRouter, NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -47,6 +50,7 @@ const ButtonGridItem = styled(Grid)`
 interface VerseProps extends Verse {
   playWordVerseSound: (url: string) => void;
   stopWordVerseSound: () => void;
+  surah?: chapter;
 }
 
 interface VerseComponentProps extends VerseProps {
@@ -234,6 +238,15 @@ export default function VerseComponent(props: VerseComponentProps) {
               Share
             </Button>
           </ButtonGridItem>
+          <Tooltip label="know more about this ayah" aria-label="A tooltip">
+            <ButtonGridItem item>
+              <Link href={`/${props.surah?.id}/${props.verse_number}`}>
+                <Button colorScheme="blue">
+                  <LinkIcon />
+                </Button>
+              </Link>
+            </ButtonGridItem>
+          </Tooltip>
         </Grid>
       </Box>
     </>

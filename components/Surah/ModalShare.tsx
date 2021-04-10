@@ -59,19 +59,17 @@ const ButtonGridItem = styled(Grid)`
   }
 `;
 
-export default function ModalShare() {
+interface ModalShareProps {
+  verse: string;
+}
+
+export default function ModalShare({ verse }: ModalShareProps) {
   const toast = useToast();
-  const { hasCopied, onCopy } = useClipboard("");
+  const { hasCopied, onCopy } = useClipboard(verse);
 
   return (
     <ChapterContext.Consumer>
-      {({
-        modalShare: {
-          closeModalShare,
-          isModalShareOpen,
-          shareModalData: { verse, translation }
-        }
-      }) => (
+      {({ modalShare: { closeModalShare, isModalShareOpen } }) => (
         <Modal
           onClose={closeModalShare}
           isOpen={isModalShareOpen}
@@ -91,15 +89,14 @@ export default function ModalShare() {
                 />
                 <Button
                   onClick={() => {
-                    {
-                      !hasCopied &&
-                        toast({
-                          title: `Copied To Clipboard`,
-                          status: "success",
-                          isClosable: true,
-                          position: "bottom-right"
-                        });
-                    }
+                    !hasCopied &&
+                      toast({
+                        title: `Copied To Clipboard`,
+                        status: "success",
+                        isClosable: true,
+                        position: "bottom-right"
+                      });
+
                     onCopy();
                   }}
                   ml={2}

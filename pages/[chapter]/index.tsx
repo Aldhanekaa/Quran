@@ -141,7 +141,10 @@ export default function Chapter(props: SurahResult) {
         }}
       >
         <div style={{ marginTop: "50px" }}>
+          {/* Share modal for each verse */}
           <ModalShare />
+          {/* Share modal for each verse */}
+
           {/* @ts-ignore */}
           {Surah.message != "error" && Surah.surah && (
             <>

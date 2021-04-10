@@ -167,11 +167,14 @@ export default function ChapterTab() {
     <ChapterContext.Consumer>
       {({ SurahInfo, BismillahText, surah, surahVerses }) => (
         <div className={classes.root}>
+          {/* Audio For Verse Audio Sound */}
           <WordVerseSound
             onFinishedPlaying={handleWordVerseSoundFinishedPlaying}
             playStatus={audio.status}
             url={audio.url}
           />
+          {/* Audio For Verse Audio Sound */}
+
           <AppBar position="static">
             <TabsStyled
               value={value}
@@ -185,6 +188,8 @@ export default function ChapterTab() {
               <Tab label="Surah Info" aria-label="person" {...a11yProps(2)} />
             </TabsStyled>
           </AppBar>
+
+          {/* Translation */}
           <TabPanel value={value} index={0}>
             <Container>
               <p style={{ marginBottom: "50px" }}>
@@ -201,6 +206,8 @@ export default function ChapterTab() {
               />
             </Container>
           </TabPanel>
+          {/* Translation */}
+
           {/* Read Tab */}
           <TabPanel value={value} index={1}>
             {BismillahText}

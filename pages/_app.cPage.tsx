@@ -114,7 +114,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
             {/* {Footer ? Footer : ""} */}
             <Footer />
-            <SpeedDial router={pageProps} />
+            <SpeedDial url={`https://alqurann.vercel.app${router.asPath}`} />
           </ThemeProvider>
         </ChakraProvider>
       </Provider>

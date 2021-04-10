@@ -9,9 +9,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import PrintIcon from "@material-ui/icons/Print";
 import ShareIcon from "@material-ui/icons/Share";
 import Box from "@material-ui/core/Box";
-
-import { NextRouter } from "next/router";
-import { useState } from "react";
+import Grid from "@material-ui/core/Grid";
 import {
   useDisclosure,
   Modal,
@@ -20,7 +18,8 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  ModalFooter,
+  Flex,
+  useClipboard,
   Drawer,
   DrawerOverlay,
   DrawerBody,
@@ -32,12 +31,21 @@ import {
   InputGroup,
   InputLeftAddon,
   InputRightAddon,
+  HStack,
   Select,
   Textarea,
   DrawerFooter,
   Button,
   DrawerContent
 } from "@chakra-ui/react";
+import FacebookIcon from "@material-ui/icons/Facebook";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import RedditIcon from "@material-ui/icons/Reddit";
+import TelegramIcon from "@material-ui/icons/Telegram";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import { NextRouter, useRouter } from "next/router";
+import { useState } from "react";
 interface Props {
   /**
    * Injected by the documentation to work in an iframe.
@@ -58,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface SpeedDialProps {
-  router: NextRouter;
+  url: string;
 }
 function ScrollToTop(props: SpeedDialProps) {
   const {
@@ -66,6 +74,7 @@ function ScrollToTop(props: SpeedDialProps) {
     onOpen: setSettingsToOpen,
     onClose: setSettingsToClose
   } = useDisclosure();
+  const { hasCopied, onCopy } = useClipboard(props.url);
 
   const {
     isOpen: isDialogShareOnOpen,
@@ -74,7 +83,7 @@ function ScrollToTop(props: SpeedDialProps) {
   } = useDisclosure();
 
   // @ts-ignore
-  console.log("heyyy router! ", props.router.components);
+  // console.log("heyyy router! ", props.router.components);
   return (
     <>
       <Modal
@@ -86,11 +95,65 @@ function ScrollToTop(props: SpeedDialProps) {
         <ModalContent>
           <ModalHeader>Share This WebApp</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
-            exercitationem architecto natus itaque doloremque. Itaque sint
-            ducimus velit, corrupti blanditiis dolorem. Nesciunt quam natus
-            voluptate ratione eligendi pariatur similique exercitationem?
+          <ModalBody marginBottom={9}>
+            Share this WebApp to your friends and family!
+            <Flex mb={2} mt={4}>
+              <Input value={props.url} isReadOnly placeholder="Welcome" />
+              <Button onClick={onCopy} ml={2}>
+                {hasCopied ? "Copied" : "Copy"}
+              </Button>
+            </Flex>
+            {/* @ts-ignore */}
+            <Grid
+              container
+              spacing={2}
+              style={{
+                marginTop: "10px",
+                padding: "10px"
+              }}
+              alignContent="stretch"
+            >
+              <Button
+                marginBottom={2}
+                marginRight={2}
+                colorScheme="facebook"
+                leftIcon={<FacebookIcon />}
+              >
+                Facebook
+              </Button>
+              <Button
+                marginBottom={2}
+                marginRight={2}
+                colorScheme="twitter"
+                leftIcon={<TwitterIcon />}
+              >
+                Twitter
+              </Button>
+              <Button
+                marginBottom={2}
+                marginRight={2}
+                colorScheme="orange"
+                leftIcon={<RedditIcon />}
+              >
+                Reddit
+              </Button>
+              <Button
+                marginBottom={2}
+                marginRight={2}
+                colorScheme="linkedin"
+                leftIcon={<LinkedInIcon />}
+              >
+                LinkedIn
+              </Button>
+              <Button
+                marginBottom={2}
+                marginRight={2}
+                colorScheme="telegram"
+                leftIcon={<TelegramIcon />}
+              >
+                Telegram
+              </Button>
+            </Grid>
           </ModalBody>
         </ModalContent>
       </Modal>

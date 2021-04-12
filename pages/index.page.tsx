@@ -14,11 +14,9 @@ import { GetServerSideProps } from "next";
 // Fetcher for the SWR
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-export default function Home(props: HomeFetch) {
-  const chapters = [];
-
+export default function Home() {
   // Fetch chapter list
-  const dataFetchChapters: fetchChapters = useSWR<chapters, any>(
+  const chapters: fetchChapters = useSWR<chapters, any>(
     "https://api.quran.com/api/v4/chapters?language=en",
     fetcher
   );
@@ -43,39 +41,39 @@ export default function Home(props: HomeFetch) {
         }}
       />
       <Toolbar />
-      <Hero data={props.chapters} error={props.error} />
-      <ListSurah data={props.chapters} error={props.error} />
+      <Hero data={chapters.data?.chapters} error={chapters.error} />
+      <ListSurah data={chapters.data?.chapters} error={chapters.error} />
     </Fragment>
   );
 }
 
-interface HomeFetch {
-  chapters?: chapter[];
-  error: boolean;
-}
+// interface HomeFetch {
+//   chapters?: chapter[];
+//   error: boolean;
+// }
 
-// @ts-ignore
-export const getServerSideProps: GetServerSideProps<HomeFetch> = async (
-  ctx
-) => {
-  // const verses = await FetchVerses(router.query.verse);
-  //@ts-ignore
-  const dataChapters = await axios.get<chapters>(
-    `https://api.quran.com/api/v4/chapters?language=en`
-  );
-  //@ts-ignore
-  if (!dataChapters) {
-    return {
-      props: {
-        chapters: undefined,
-        error: true
-      }
-    };
-  }
-  return {
-    props: {
-      chapters: dataChapters.data.chapters,
-      error: false
-    }
-  };
-};
+// // @ts-ignore
+// export const getServerSideProps: GetServerSideProps<HomeFetch> = async (
+//   ctx
+// ) => {
+//   // const verses = await FetchVerses(router.query.verse);
+//   //@ts-ignore
+//   const dataChapters = await axios.get<chapters>(
+//     `https://api.quran.com/api/v4/chapters?language=en`
+//   );
+//   //@ts-ignore
+//   if (!dataChapters) {
+//     return {
+//       props: {
+//         chapters: undefined,
+//         error: true
+//       }
+//     };
+//   }
+//   return {
+//     props: {
+//       chapters: dataChapters.data.chapters,
+//       error: false
+//     }
+//   };
+// };

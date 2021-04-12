@@ -32,6 +32,9 @@ import {
   InputLeftAddon,
   InputRightAddon,
   HStack,
+  IconButton,
+  Switch,
+  FormControl,
   Select,
   Textarea,
   DrawerFooter,
@@ -44,6 +47,8 @@ import RedditIcon from "@material-ui/icons/Reddit";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
+
 import { NextRouter, useRouter } from "next/router";
 import { useState } from "react";
 interface Props {
@@ -176,23 +181,38 @@ function ScrollToTop(props: SpeedDialProps) {
 
             <DrawerBody>
               <Stack spacing="24px">
-                <Box>
-                  <FormLabel htmlFor="username">Name</FormLabel>
-                  <Input id="username" placeholder="Please enter user name" />
-                </Box>
+                <FormControl
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <FormLabel htmlFor="Dark-mode" mb="0">
+                    Dark Mode (enable)
+                  </FormLabel>
+                  <IconButton
+                    variant="outline"
+                    colorScheme="teal"
+                    aria-label="Call Sage"
+                    fontSize="20px"
+                    icon={<Brightness4Icon />}
+                  />
+                </FormControl>
 
-                <Box>
-                  <FormLabel htmlFor="owner">Select Owner</FormLabel>
-                  <Select id="owner" defaultValue="segun">
-                    <option value="segun">Segun Adebayo</option>
-                    <option value="kola">Kola Tioluwani</option>
-                  </Select>
-                </Box>
+                <FormControl display="flex" alignItems="center">
+                  <Switch id="Transliteration" />
 
-                <Box>
-                  <FormLabel htmlFor="desc">Description</FormLabel>
-                  <Textarea id="desc" />
-                </Box>
+                  <FormLabel htmlFor="Transliteration" marginLeft={3} mb="0">
+                    Transliteration (enable)
+                  </FormLabel>
+                </FormControl>
+
+                <FormControl display="flex" alignItems="center">
+                  <Switch id="Translation" />
+
+                  <FormLabel htmlFor="Translation" marginLeft={3} mb="0">
+                    Translation (enable)
+                  </FormLabel>
+                </FormControl>
               </Stack>
             </DrawerBody>
 
@@ -200,7 +220,7 @@ function ScrollToTop(props: SpeedDialProps) {
               <Button variant="outline" mr={3} onClick={setSettingsToClose}>
                 Cancel
               </Button>
-              <Button colorScheme="blue">Submit</Button>
+              <Button colorScheme="blue">Save</Button>
             </DrawerFooter>
           </DrawerContent>
         </DrawerOverlay>

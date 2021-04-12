@@ -96,7 +96,6 @@ export default function ModalShare({ verse }: ModalShareProps) {
                         isClosable: true,
                         position: "bottom-right"
                       });
-
                     onCopy();
                   }}
                   ml={2}

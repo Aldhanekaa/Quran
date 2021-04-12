@@ -9,7 +9,7 @@ import * as gtag from "../utils/gtag";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import ProgressLoad from "../components/ProgressLoad";
-import SpeedDial from "../components/scrollToTop";
+import SpeedDial from "../components/speedDialMenu";
 
 import { DefaultSeo } from "next-seo";
 import Head from "next/head";

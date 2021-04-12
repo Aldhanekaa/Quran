@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -165,7 +165,7 @@ export default function ChapterTab() {
 
   return (
     <ChapterContext.Consumer>
-      {({ SurahInfo, BismillahText, surah, surahVerses }) => (
+      {({ SurahInfo, BismillahText, surah, currentPage, FetchMoreVerse }) => (
         <div className={classes.root}>
           {/* Audio For Verse Audio Sound */}
           <WordVerseSound
@@ -201,6 +201,8 @@ export default function ChapterTab() {
                 playtranslationRecognition={playtranslationRecognition}
               />
               <ChapterNavigation
+                currentPage={currentPage}
+                FetchMoreVerse={FetchMoreVerse}
                 totalVerses={surah?.verses_count}
                 surahID={surah?.id}
               />
@@ -217,6 +219,8 @@ export default function ChapterTab() {
                 stopWordVerseSound={stopWordVerseSound}
               />
               <ChapterNavigation
+                currentPage={currentPage}
+                FetchMoreVerse={FetchMoreVerse}
                 totalVerses={surah?.verses_count}
                 surahID={surah?.id}
               />
@@ -245,8 +249,21 @@ export default function ChapterTab() {
 interface ChapterNavigationProps {
   surahID?: number;
   totalVerses?: number;
+  FetchMoreVerse: () => void;
+  currentPage: number;
 }
-function ChapterNavigation({ surahID, totalVerses }: ChapterNavigationProps) {
+function ChapterNavigation({
+  surahID,
+  totalVerses,
+  FetchMoreVerse,
+  currentPage
+}: ChapterNavigationProps) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  async function OKCool() {
+    setIsLoading(true);
+    await FetchMoreVerse();
+    setIsLoading(false);
+  }
   return (
     <Container>
       {/* @ts-ignore */}
@@ -276,9 +293,9 @@ function ChapterNavigation({ surahID, totalVerses }: ChapterNavigationProps) {
           ""
         )}
 
-        {totalVerses && totalVerses > 19 && (
-          <ButtonGridItem item>
-            <Button colorScheme="blue" variant="outline">
+        {totalVerses && currentPage != totalVerses && (
+          <ButtonGridItem item onClick={OKCool}>
+            <Button isLoading={isLoading} colorScheme="blue" variant="outline">
               Load More Verse
             </Button>
           </ButtonGridItem>

@@ -15,7 +15,14 @@ import {
   chapter
 } from "@/ts/interfaces";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef, Fragment, createContext } from "react";
+import {
+  useEffect,
+  useState,
+  useRef,
+  Fragment,
+  createContext,
+  useMemo
+} from "react";
 import styled from "@emotion/styled";
 
 import Tab from "@/components/Surah/Tab";
@@ -61,6 +68,8 @@ export const ChapterContext = createContext<{
     shareModalData: shareModalDataRef;
     handleShareModal: (verse: string, translation: string) => void;
   };
+  FetchMoreVerse: () => void;
+  currentPage: number;
 }>({
   // @ts-ignore
   modalShare: {
@@ -69,12 +78,16 @@ export const ChapterContext = createContext<{
 });
 
 export default function Chapter(props: SurahResult) {
+  let currentPage = useRef(1);
+
   let [BismillahText, setBismillahText] = useState<JSX.Element>(<p></p>);
+
   const {
     isOpen: isModalShareOpen,
     onOpen: openModalShare,
     onClose: closeModalShare
   } = useDisclosure();
+
   const shareModalData = useRef<shareModalDataRef>({
     verse: "",
     translation: ""
@@ -90,8 +103,36 @@ export default function Chapter(props: SurahResult) {
     return props;
   });
 
+  async function FetchMoreVerse() {
+    // surahVerses?.valueOf
+    // console.log(surahVerses.pagination.total_pages, currentPage);
+    if (
+      surahVerses &&
+      // @ts-ignore
+      currentPage.current < surahVerses.pagination.total_pages
+    ) {
+      if (router.query.chapter) {
+        console.log("hey");
+        currentPage.current += 1;
+        // @ts-ignore
+        const verses = await FetchVerses(
+          Number(router.query.chapter),
+          currentPage.current
+        );
+        if (verses) {
+          const PP = Object.assign({}, surahVerses, {
+            verses: [...surahVerses.verses, ...verses.verses.slice(1)]
+          });
+          changeVerses(PP);
+          console.log(surahVerses);
+        }
+      }
+    }
+  }
+
   // @ts-ignore
-  useEffect(async () => {
+  useMemo(async () => {
+    currentPage.current = 1;
     if (router.query.chapter) {
       // @ts-ignore
       const verses = await FetchVerses(router.query.chapter);
@@ -128,6 +169,7 @@ export default function Chapter(props: SurahResult) {
 
       <ChapterContext.Provider
         value={{
+          currentPage: currentPage.current,
           surah: props.surah,
           BismillahText: BismillahText,
           SurahInfo: Surah.surahInfo,
@@ -137,7 +179,8 @@ export default function Chapter(props: SurahResult) {
             closeModalShare: closeModalShare,
             handleShareModal: handleShareModal,
             shareModalData: shareModalData.current
-          }
+          },
+          FetchMoreVerse: FetchMoreVerse
         }}
       >
         <div style={{ marginTop: "50px" }}>

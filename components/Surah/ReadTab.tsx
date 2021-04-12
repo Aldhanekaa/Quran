@@ -45,11 +45,13 @@ function a11yProps(index: number) {
 interface ReadTabProps {
   playWordVerseSound: (url: string) => void;
   stopWordVerseSound: () => void;
+  children: JSX.Element | JSX.Element[];
 }
 
 export default function BasicTabs({
   playWordVerseSound,
-  stopWordVerseSound
+  stopWordVerseSound,
+  children
 }: ReadTabProps) {
   const [value, setValue] = React.useState(0);
 
@@ -86,6 +88,7 @@ export default function BasicTabs({
                     />
                   );
                 })}
+              {children}
             </TabPanel>
             <TabPanel value={value} index={1}>
               Item Two

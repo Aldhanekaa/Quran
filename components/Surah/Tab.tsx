@@ -165,7 +165,14 @@ export default function ChapterTab() {
 
   return (
     <ChapterContext.Consumer>
-      {({ SurahInfo, BismillahText, surah, currentPage, FetchMoreVerse }) => (
+      {({
+        surahVerses,
+        SurahInfo,
+        BismillahText,
+        surah,
+        currentPage,
+        FetchMoreVerse
+      }) => (
         <div className={classes.root}>
           {/* Audio For Verse Audio Sound */}
           <WordVerseSound
@@ -173,6 +180,7 @@ export default function ChapterTab() {
             playStatus={audio.status}
             url={audio.url}
           />
+          {surahVerses && surahVerses.pagination.total_pages}
           {/* Audio For Verse Audio Sound */}
 
           <AppBar position="static">
@@ -205,6 +213,8 @@ export default function ChapterTab() {
                 FetchMoreVerse={FetchMoreVerse}
                 totalVerses={surah?.verses_count}
                 surahID={surah?.id}
+                // @ts-ignore
+                totalPage={surahVerses.pagination.total_pages}
               />
             </Container>
           </TabPanel>
@@ -217,13 +227,16 @@ export default function ChapterTab() {
               <ReadTab
                 playWordVerseSound={playWordVerseSound}
                 stopWordVerseSound={stopWordVerseSound}
-              />
-              <ChapterNavigation
-                currentPage={currentPage}
-                FetchMoreVerse={FetchMoreVerse}
-                totalVerses={surah?.verses_count}
-                surahID={surah?.id}
-              />
+              >
+                <ChapterNavigation
+                  currentPage={currentPage}
+                  FetchMoreVerse={FetchMoreVerse}
+                  totalVerses={surah?.verses_count}
+                  surahID={surah?.id}
+                  // @ts-ignore
+                  totalPage={surahVerses.pagination.total_pages}
+                />
+              </ReadTab>
             </Container>
           </TabPanel>
           {/* Read Tab */}
@@ -251,10 +264,11 @@ interface ChapterNavigationProps {
   totalVerses?: number;
   FetchMoreVerse: () => void;
   currentPage: number;
+  totalPage?: number;
 }
 function ChapterNavigation({
   surahID,
-  totalVerses,
+  totalPage,
   FetchMoreVerse,
   currentPage
 }: ChapterNavigationProps) {
@@ -293,12 +307,14 @@ function ChapterNavigation({
           ""
         )}
 
-        {totalVerses && currentPage != totalVerses && (
+        {totalPage && currentPage < totalPage ? (
           <ButtonGridItem item onClick={OKCool}>
             <Button isLoading={isLoading} colorScheme="blue" variant="outline">
               Load More Verse
             </Button>
           </ButtonGridItem>
+        ) : (
+          ""
         )}
 
         {surahID && surahID != 114 ? (

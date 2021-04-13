@@ -101,32 +101,32 @@ interface songInterface {
 }
 
 export default function ChapterTab() {
-  let translationRecognition = new SpeechSynthesisUtterance();
-  translationRecognition.lang = "en-US";
-  translationRecognition.volume = 0.75;
+  // let translationRecognition = new SpeechSynthesisUtterance();
+  // translationRecognition.lang = "en-US";
+  // translationRecognition.volume = 0.75;
 
-  function playtranslationRecognition(text: string) {
-    translationRecognition.text = text;
-    if (!("speechSynthesis" in window)) {
-      toast({
-        title: `Sorry, your browser doesn't support text to speech!`,
-        status: "error",
-        isClosable: true,
-        position: "bottom-right"
-      });
-      return;
-    }
-    window.speechSynthesis.speak(translationRecognition);
-  }
+  // function playtranslationRecognition(text: string) {
+  //   translationRecognition.text = text;
+  //   if (!("speechSynthesis" in window)) {
+  //     toast({
+  //       title: `Sorry, your browser doesn't support text to speech!`,
+  //       status: "error",
+  //       isClosable: true,
+  //       position: "bottom-right"
+  //     });
+  //     return;
+  //   }
+  //   window.speechSynthesis.speak(translationRecognition);
+  // }
 
-  translationRecognition.onerror = function (event) {
-    toast({
-      title: `Translation text to speech recognetion error`,
-      status: "error",
-      isClosable: true,
-      position: "bottom-right"
-    });
-  };
+  // translationRecognition.onerror = function (event) {
+  //   toast({
+  //     title: `Translation text to speech recognetion error`,
+  //     status: "error",
+  //     isClosable: true,
+  //     position: "bottom-right"
+  //   });
+  // };
 
   const toast = useToast();
   const [audio, setAudio] = useState<songInterface>(() => {
@@ -206,7 +206,6 @@ export default function ChapterTab() {
               <TranslationTab
                 playWordVerseSound={playWordVerseSound}
                 stopWordVerseSound={stopWordVerseSound}
-                playtranslationRecognition={playtranslationRecognition}
               />
               <ChapterNavigation
                 currentPage={currentPage}

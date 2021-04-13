@@ -10,7 +10,7 @@ import { Stack, Button, useToast } from "@chakra-ui/react";
 
 import { ChapterContext } from "@/pages/[chapter]/index";
 import styled from "@emotion/styled";
-
+import { memo } from "react";
 import Link from "next/link";
 
 interface songInterface {
@@ -29,16 +29,14 @@ const ButtonGridItem = styled(Grid)`
 `;
 
 interface TranslationTabProps {
-  playtranslationRecognition: (text: string) => void;
   playWordVerseSound: (url: string) => void;
   stopWordVerseSound: () => void;
 }
 
-export default function TranslationTab({
-  playtranslationRecognition,
+const TranslationTab = ({
   playWordVerseSound,
   stopWordVerseSound
-}: TranslationTabProps) {
+}: TranslationTabProps) => {
   const toast = useToast();
 
   return (
@@ -53,7 +51,6 @@ export default function TranslationTab({
                 return (
                   <Verse
                     surah={surah}
-                    playtranslationRecognition={playtranslationRecognition}
                     playWordVerseSound={playWordVerseSound}
                     stopWordVerseSound={stopWordVerseSound}
                     onOpen={handleShareModal}
@@ -67,4 +64,5 @@ export default function TranslationTab({
       )}
     </ChapterContext.Consumer>
   );
-}
+};
+export default memo(TranslationTab);

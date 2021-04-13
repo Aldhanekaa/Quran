@@ -21,7 +21,8 @@ import {
   useRef,
   Fragment,
   createContext,
-  useMemo
+  useMemo,
+  useCallback
 } from "react";
 import styled from "@emotion/styled";
 
@@ -103,7 +104,7 @@ export default function Chapter(props: SurahResult) {
     return props;
   });
 
-  async function FetchMoreVerse() {
+  const FetchMoreVerse = useCallback(async () => {
     // surahVerses?.valueOf
     // console.log(surahVerses.pagination.total_pages, currentPage);
     if (
@@ -112,13 +113,14 @@ export default function Chapter(props: SurahResult) {
       currentPage.current < surahVerses.pagination.total_pages
     ) {
       if (router.query.chapter) {
-        console.log("hey");
         currentPage.current += 1;
+
         // @ts-ignore
         const verses = await FetchVerses(
           Number(router.query.chapter),
           currentPage.current
         );
+
         if (verses) {
           const PP = Object.assign({}, surahVerses, {
             verses: [...surahVerses.verses, ...verses.verses.slice(1)]
@@ -128,7 +130,7 @@ export default function Chapter(props: SurahResult) {
         }
       }
     }
-  }
+  }, [surahVerses]);
 
   // @ts-ignore
   useMemo(async () => {
@@ -146,12 +148,15 @@ export default function Chapter(props: SurahResult) {
     }
   }, [props.surah]);
 
-  function handleShareModal(verse: string, translation: string) {
-    shareModalData.current.verse = verse;
-    shareModalData.current.translation = translation;
+  const handleShareModal = useCallback(
+    (verse: string, translation: string) => {
+      shareModalData.current.verse = verse;
+      shareModalData.current.translation = translation;
 
-    openModalShare();
-  }
+      openModalShare();
+    },
+    [shareModalData]
+  );
 
   return (
     <Fragment>

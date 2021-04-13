@@ -34,6 +34,7 @@ import {
 import { withRouter, NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
+import { memo } from "react";
 import styled from "@emotion/styled";
 import { Verse } from "../../ts/interfaces";
 
@@ -55,10 +56,9 @@ interface VerseProps extends Verse {
 
 interface VerseComponentProps extends VerseProps {
   onOpen: (verse: string, translation: string) => void;
-  playtranslationRecognition: (text: string) => void;
 }
 
-export function readVerseComponent(props: VerseProps) {
+const readVerseComponent = memo(function (props: VerseProps) {
   return (
     <>
       <Box
@@ -115,9 +115,9 @@ export function readVerseComponent(props: VerseProps) {
       </Box>
     </>
   );
-}
+});
 
-export default function VerseComponent(props: VerseComponentProps) {
+export function VerseComponent(props: VerseComponentProps) {
   const words = props.words
     .map((word) => {
       if (word.char_type_name == "word") {
@@ -230,7 +230,6 @@ export default function VerseComponent(props: VerseComponentProps) {
           <ButtonGridItem
             item
             onClick={() => {
-              console.log(words);
               props.onOpen(words, props.translations[0].text);
             }}
           >
@@ -252,3 +251,7 @@ export default function VerseComponent(props: VerseComponentProps) {
     </>
   );
 }
+
+export default memo(VerseComponent);
+
+export { readVerseComponent };

@@ -123,7 +123,7 @@ export default function Chapter(props: SurahResult) {
 
         if (verses) {
           const PP = Object.assign({}, surahVerses, {
-            verses: [...surahVerses.verses, ...verses.verses.slice(1)]
+            verses: [...surahVerses.verses, ...verses.verses]
           });
           changeVerses(PP);
           console.log(surahVerses);
@@ -137,7 +137,8 @@ export default function Chapter(props: SurahResult) {
     currentPage.current = 1;
     if (router.query.chapter) {
       // @ts-ignore
-      const verses = await FetchVerses(router.query.chapter);
+      const verses = await FetchVerses(router.query.chapter,currentPage.current);
+      console.log(verses);
       changeVerses(verses);
     }
 

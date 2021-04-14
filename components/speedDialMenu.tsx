@@ -48,6 +48,7 @@ import TelegramIcon from "@material-ui/icons/Telegram";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
+import Settings from "@/components/Settings/index.components";
 
 import { NextRouter, useRouter } from "next/router";
 import { useState } from "react";
@@ -168,63 +169,11 @@ function ScrollToTop(props: SpeedDialProps) {
           openShareDialog={openShareDialog}
         />
       </ScrollTop>
-      <Drawer
-        size="md"
-        isOpen={isSettingsOpen}
-        placement="right"
-        onClose={setSettingsToClose}
-      >
-        <DrawerOverlay>
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader borderBottomWidth="1px">Settings</DrawerHeader>
-
-            <DrawerBody>
-              <Stack spacing="24px">
-                <FormControl
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <FormLabel htmlFor="Dark-mode" mb="0">
-                    Dark Mode (enable)
-                  </FormLabel>
-                  <IconButton
-                    variant="outline"
-                    colorScheme="teal"
-                    aria-label="Call Sage"
-                    fontSize="20px"
-                    icon={<Brightness4Icon />}
-                  />
-                </FormControl>
-
-                <FormControl display="flex" alignItems="center">
-                  <Switch id="Transliteration" />
-
-                  <FormLabel htmlFor="Transliteration" marginLeft={3} mb="0">
-                    Transliteration (enable)
-                  </FormLabel>
-                </FormControl>
-
-                <FormControl display="flex" alignItems="center">
-                  <Switch id="Translation" />
-
-                  <FormLabel htmlFor="Translation" marginLeft={3} mb="0">
-                    Translation (enable)
-                  </FormLabel>
-                </FormControl>
-              </Stack>
-            </DrawerBody>
-
-            <DrawerFooter borderTopWidth="1px">
-              <Button variant="outline" mr={3} onClick={setSettingsToClose}>
-                Cancel
-              </Button>
-              <Button colorScheme="blue">Save</Button>
-            </DrawerFooter>
-          </DrawerContent>
-        </DrawerOverlay>
-      </Drawer>
+      <Settings
+        setSettingsToOpen={setSettingsToOpen}
+        isSettingsOpen={isSettingsOpen}
+        setSettingsToClose={setSettingsToClose}
+      />
     </>
   );
 }

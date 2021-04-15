@@ -39,9 +39,11 @@ import styled from "@emotion/styled";
 import { Verse } from "../../ts/interfaces";
 
 const ButtonGridItem = styled(Grid)`
+  display: flex;
   button {
     width: 100%;
   }
+  // width: 300px;
 
   @media screen and (max-width: 576px) {
     width: 100%;
@@ -198,12 +200,15 @@ export function VerseComponent(props: VerseComponentProps) {
           alignContent="stretch"
         >
           <ButtonGridItem item>
-            <Button colorScheme="blue">
+            <Button width="auto" display="inline-block" colorScheme="blue">
               <PlayArrowIcon />
             </Button>
-          </ButtonGridItem>
-          <ButtonGridItem item>
-            <Button leftIcon={<MenuBookIcon />} colorScheme="blue">
+            <Button
+              padding="0 40px"
+              marginLeft={2}
+              leftIcon={<MenuBookIcon />}
+              colorScheme="blue"
+            >
               Tafsirs
             </Button>
           </ButtonGridItem>
@@ -226,26 +231,25 @@ export function VerseComponent(props: VerseComponentProps) {
             >
               {hasCopied ? "Copied" : "Copy"}
             </Button>
-          </ButtonGridItem>
-          <ButtonGridItem
-            item
-            onClick={() => {
-              props.onOpen(words, props.translations[0].text);
-            }}
-          >
-            <Button leftIcon={<ShareIcon />} colorScheme="blue">
+            <Button
+              marginLeft={2}
+              onClick={() => {
+                props.onOpen(words, props.translations[0].text);
+              }}
+              leftIcon={<ShareIcon />}
+              colorScheme="blue"
+            >
               Share
             </Button>
           </ButtonGridItem>
-          <Tooltip label="know more about this ayah" aria-label="A tooltip">
-            <ButtonGridItem item>
-              <Link href={`/${props.surah?.id}/${props.verse_number}`}>
-                <Button colorScheme="blue">
-                  <LinkIcon />
-                </Button>
-              </Link>
-            </ButtonGridItem>
-          </Tooltip>
+
+          <ButtonGridItem item>
+            <Link href={`/${props.surah?.id}/${props.verse_number}`}>
+              <Button colorScheme="blue" leftIcon={<LinkIcon />}>
+                See Ayah
+              </Button>
+            </Link>
+          </ButtonGridItem>
         </Grid>
       </Box>
     </>

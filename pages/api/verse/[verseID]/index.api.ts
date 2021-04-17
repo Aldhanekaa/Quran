@@ -51,7 +51,6 @@ export default async function getVerseById(
 
     totalVerses += chapters[i].verses_count;
   }
-
   if (req.query.showVerseFetch) {
     //@ts-ignore
     const verse = await axios.get<VerseFetchResult>(
@@ -62,7 +61,7 @@ export default async function getVerseById(
   }
 
   if (parseInt(req.query.verseID) > totalVerses) {
-    res.json({ swse: "siahfiuah" });
+    res.json({ message: "verse not found" });
     return;
   }
 

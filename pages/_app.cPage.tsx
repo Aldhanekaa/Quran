@@ -102,20 +102,20 @@ function MyApp({ Component, pageProps }: AppProps) {
       <DefaultSeo {...SEO} />
       <Provider store={store}>
         <ChakraProvider>
-          <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <ProgressLoad />
+          {/* <ThemeProvider theme={theme}> */}
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          {/* <CssBaseline /> */}
+          <ProgressLoad />
 
-            <Navbar />
+          <Navbar />
 
-            {/* {<Navbar /> && Nav} */}
-            <Component {...pageProps} />
+          {/* {<Navbar /> && Nav} */}
+          <Component {...pageProps} />
 
-            {/* {Footer ? Footer : ""} */}
-            <Footer />
-            <SpeedDial url={`https://alqurann.vercel.app${router.asPath}`} />
-          </ThemeProvider>
+          {/* {Footer ? Footer : ""} */}
+          <Footer />
+          <SpeedDial url={`https://alqurann.vercel.app${router.asPath}`} />
+          {/* </ThemeProvider> */}
         </ChakraProvider>
       </Provider>
     </>

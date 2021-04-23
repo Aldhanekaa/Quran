@@ -1,11 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {
-  ErrorMessage,
-  surahInfoType,
-  chapter,
-  Verse,
-  chapters
-} from "@/ts/interfaces";
+import { chapter, chapters } from "@/ts/interfaces";
 
 import axios from "axios";
 
@@ -15,10 +9,6 @@ interface verseAPI extends NextApiRequest {
     chapter: string;
     showVerseFetch?: boolean;
   };
-}
-
-interface VerseFetchResult {
-  verse: Verse;
 }
 
 export default async function getVerseById(

@@ -44,7 +44,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CircularProgress from "@material-ui/core/CircularProgress";
 /* ============================================= UI ============================================= */
 
 import clsx from "clsx";
@@ -315,6 +316,7 @@ export default function SearchAppBar(props: Props) {
               placeholder="Search Surah"
               inputProps={{ "aria-label": "search google maps" }}
             />
+
             <Divider className={classes.divider} orientation="vertical" />
             <IconButton
               onClick={() => {

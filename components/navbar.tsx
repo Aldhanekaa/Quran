@@ -44,15 +44,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import CircularProgress from "@material-ui/core/CircularProgress";
 /* ============================================= UI ============================================= */
 
 import clsx from "clsx";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { route } from "next/dist/next-server/server/router";
 
 const aaaa = makeStyles({
   list: {
@@ -157,6 +156,7 @@ function HideOnScroll(props: AdvancedProps) {
 type Anchor = "top" | "left" | "bottom" | "right";
 
 export default function SearchAppBar(props: Props) {
+  const [searchChapter, setSearchChapter] = useState<string>("");
   const classes = useStyles();
   const router = useRouter();
 
@@ -191,6 +191,11 @@ export default function SearchAppBar(props: Props) {
     }
 
     setState({ ...state, [anchor]: open });
+  };
+
+  const onSubmitSearchChapter = (e: React.FormEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    router.push(`/search/chapter/${searchChapter}`);
   };
 
   const list = (anchor: Anchor) => (
@@ -304,7 +309,12 @@ export default function SearchAppBar(props: Props) {
           <Typography className={classes.title} variant="h6" noWrap>
             <Link href="/">Quran Hub</Link>
           </Typography>
-          <Paper component="form" elevation={0} className={classes.root}>
+          <Paper
+            onSubmit={onSubmitSearchChapter}
+            component="form"
+            elevation={0}
+            className={classes.root}
+          >
             <IconButton className={classes.searchIcon} aria-label="menu">
               <SearchIcon style={{ color: grey[50] }} />
             </IconButton>
@@ -313,8 +323,11 @@ export default function SearchAppBar(props: Props) {
                 root: classes.inputRoot,
                 input: classes.inputInput
               }}
+              onChange={(e) => {
+                setSearchChapter(e.target.value);
+              }}
               placeholder="Search Surah"
-              inputProps={{ "aria-label": "search google maps" }}
+              inputProps={{ "aria-label": "search surah" }}
             />
 
             <Divider className={classes.divider} orientation="vertical" />

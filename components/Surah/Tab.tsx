@@ -20,7 +20,7 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { ChapterContext } from "../../pages/[chapter]/index";
 
-import TranslationTab from "./Translations";
+import TranslationTab from "./ReadTab";
 import ReadTab from "./ReadTab";
 
 const ButtonGridItem = styled(Grid)`
@@ -101,34 +101,6 @@ interface songInterface {
 }
 
 export default function ChapterTab() {
-  // let translationRecognition = new SpeechSynthesisUtterance();
-  // translationRecognition.lang = "en-US";
-  // translationRecognition.volume = 0.75;
-
-  // function playtranslationRecognition(text: string) {
-  //   translationRecognition.text = text;
-  //   if (!("speechSynthesis" in window)) {
-  //     toast({
-  //       title: `Sorry, your browser doesn't support text to speech!`,
-  //       status: "error",
-  //       isClosable: true,
-  //       position: "bottom-right"
-  //     });
-  //     return;
-  //   }
-  //   window.speechSynthesis.speak(translationRecognition);
-  // }
-
-  // translationRecognition.onerror = function (event) {
-  //   toast({
-  //     title: `Translation text to speech recognetion error`,
-  //     status: "error",
-  //     isClosable: true,
-  //     position: "bottom-right"
-  //   });
-  // };
-
-  const toast = useToast();
   const [audio, setAudio] = useState<songInterface>(() => {
     return {
       status: "STOPPED",
@@ -173,61 +145,46 @@ export default function ChapterTab() {
         currentPage,
         FetchMoreVerse
       }) => (
-        <div className={classes.root}>
-          {/* Audio For Verse Audio Sound */}
-          <WordVerseSound
-            onFinishedPlaying={handleWordVerseSoundFinishedPlaying}
-            playStatus={audio.status}
-            url={audio.url}
-          />
-          {surahVerses && surahVerses.pagination.total_pages}
-          {/* Audio For Verse Audio Sound */}
+        <>
+          <div className={classes.root}>
+            {/* Audio For Verse Audio Sound */}
+            <WordVerseSound
+              onFinishedPlaying={handleWordVerseSoundFinishedPlaying}
+              playStatus={audio.status}
+              url={audio.url}
+            />
+            {surahVerses && surahVerses.pagination.total_pages}
+            {/* Audio For Verse Audio Sound */}
 
-          <AppBar position="static">
-            <TabsStyled
-              value={value}
-              onChange={handleChange}
-              scrollButtons="off"
-              centered
-              aria-label="scrollable prevent tabs example"
-            >
-              <Tab label="Translation" aria-label="phone" {...a11yProps(0)} />
-              <Tab label="Read" aria-label="favorite" {...a11yProps(1)} />
-              <Tab label="Surah Info" aria-label="person" {...a11yProps(2)} />
-            </TabsStyled>
-          </AppBar>
-
-          {/* Translation */}
-          <TabPanel value={value} index={0}>
-            <Container>
-              <p style={{ marginBottom: "50px" }}>
-                {BismillahText && BismillahText}
-              </p>
-              <TranslationTab
-                playWordVerseSound={playWordVerseSound}
-                stopWordVerseSound={stopWordVerseSound}
-              />
-              <ChapterNavigation
-                currentPage={currentPage}
-                FetchMoreVerse={FetchMoreVerse}
-                totalVerses={surah?.verses_count}
-                surahID={surah?.id}
-                // @ts-ignore
-                totalPage={surahVerses.pagination.total_pages}
-              />
-            </Container>
-          </TabPanel>
-          {/* Translation */}
-
-          {/* Read Tab */}
-          <TabPanel value={value} index={1}>
-            {BismillahText}
-            <Container>
-              <ReadTab
-                playWordVerseSound={playWordVerseSound}
-                stopWordVerseSound={stopWordVerseSound}
+            <AppBar position="static">
+              <TabsStyled
+                value={value}
+                onChange={handleChange}
+                scrollButtons="off"
+                centered
+                aria-label="scrollable prevent tabs example"
               >
+                <Tab label="Read" aria-label="Read" {...a11yProps(0)} />
+                <Tab
+                  label="Surah Info"
+                  aria-label="Surah Info"
+                  {...a11yProps(2)}
+                />
+              </TabsStyled>
+            </AppBar>
+
+            {/* Translation */}
+            <TabPanel value={value} index={0}>
+              <Container>
+                <p style={{ marginBottom: "50px" }}>
+                  {BismillahText && BismillahText}
+                </p>
+                <TranslationTab
+                  playWordVerseSound={playWordVerseSound}
+                  stopWordVerseSound={stopWordVerseSound}
+                />
                 <ChapterNavigation
+                  verse
                   currentPage={currentPage}
                   FetchMoreVerse={FetchMoreVerse}
                   totalVerses={surah?.verses_count}
@@ -235,24 +192,24 @@ export default function ChapterTab() {
                   // @ts-ignore
                   totalPage={surahVerses.pagination.total_pages}
                 />
-              </ReadTab>
-            </Container>
-          </TabPanel>
-          {/* Read Tab */}
+              </Container>
+            </TabPanel>
+            {/* Translation */}
 
-          {/* Surah Info Tab */}
-          <TabPanel value={value} index={2}>
-            <SurahInfoTab>
-              <div
-                dangerouslySetInnerHTML={{
-                  // @ts-ignore
-                  __html: SurahInfo?.text
-                }}
-              ></div>
-            </SurahInfoTab>
-          </TabPanel>
-          {/* Surah Info Tab */}
-        </div>
+            {/* Surah Info Tab */}
+            <TabPanel value={value} index={1}>
+              <SurahInfoTab>
+                <div
+                  dangerouslySetInnerHTML={{
+                    // @ts-ignore
+                    __html: SurahInfo?.text
+                  }}
+                ></div>
+              </SurahInfoTab>
+            </TabPanel>
+            {/* Surah Info Tab */}
+          </div>
+        </>
       )}
     </ChapterContext.Consumer>
   );
@@ -264,12 +221,14 @@ interface ChapterNavigationProps {
   FetchMoreVerse: () => void;
   currentPage: number;
   totalPage?: number;
+  verse?: boolean;
 }
 function ChapterNavigation({
   surahID,
   totalPage,
   FetchMoreVerse,
-  currentPage
+  currentPage,
+  verse
 }: ChapterNavigationProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   async function OKCool() {
@@ -306,7 +265,7 @@ function ChapterNavigation({
           ""
         )}
 
-        {totalPage && currentPage < totalPage ? (
+        {verse && totalPage && currentPage < totalPage ? (
           <ButtonGridItem item onClick={OKCool}>
             <Button isLoading={isLoading} colorScheme="blue" variant="outline">
               Load More Verse

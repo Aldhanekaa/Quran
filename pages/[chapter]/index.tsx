@@ -126,7 +126,7 @@ export default function Chapter(props: SurahResult) {
             verses: [...surahVerses.verses, ...verses.verses]
           });
           changeVerses(PP);
-          console.log(surahVerses);
+          // console.log(surahVerses);
         }
       }
     }
@@ -137,7 +137,10 @@ export default function Chapter(props: SurahResult) {
     currentPage.current = 1;
     if (router.query.chapter) {
       // @ts-ignore
-      const verses = await FetchVerses(router.query.chapter,currentPage.current);
+      const verses = await FetchVerses(
+        Number(router.query.chapter),
+        currentPage.current
+      );
       console.log(verses);
       changeVerses(verses);
     }

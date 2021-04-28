@@ -19,10 +19,13 @@ import {
   Tab,
   TabList,
   TabPanels,
-  TabPanel
+  TabPanel,
+  Radio,
+  RadioGroup
 } from "@chakra-ui/react";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { useState } from "react";
 
 function Feature({ title, desc, ...rest }: { title: string; desc?: string }) {
   return (
@@ -53,6 +56,8 @@ export default function SettingsDrawer({
   isSettingsOpen,
   setSettingsToClose
 }: SettingsDrawerProps) {
+  const [verseTooltip, setVerseTooltip] = useState<string>("translation");
+
   return (
     <Drawer
       size="md"
@@ -62,7 +67,6 @@ export default function SettingsDrawer({
     >
       <DrawerOverlay>
         <DrawerContent>
-          <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">Settings</DrawerHeader>
 
           <DrawerBody>
@@ -73,7 +77,7 @@ export default function SettingsDrawer({
                 alignItems="center"
               >
                 <FormLabel htmlFor="Dark-mode" mb="0">
-                  Dark Mode (enable)
+                  Dark Mode (disabled)
                 </FormLabel>
                 <IconButton
                   variant="outline"
@@ -84,10 +88,14 @@ export default function SettingsDrawer({
                 />
               </FormControl>
 
+              <Stack marginTop={3} spacing={8}>
+                <Feature title="Website Language" />
+              </Stack>
+
               <Tabs isFitted variant="enclosed">
                 <TabList mb="1em">
-                  <Tab>Read</Tab>
-                  <Tab>Two</Tab>
+                  <Tab>Chapter Settings</Tab>
+                  <Tab>Audio Settings</Tab>
                 </TabList>
                 <TabPanels>
                   <TabPanel>
@@ -127,6 +135,18 @@ export default function SettingsDrawer({
                           Verse Pagination (enable)
                         </FormLabel>
                       </FormControl>
+                      <Text fontSize="md" style={{ marginBottom: "-10px" }}>
+                        Verse Tooltip Content
+                      </Text>
+                      <RadioGroup
+                        onChange={setVerseTooltip}
+                        value={verseTooltip}
+                      >
+                        <Stack direction="row">
+                          <Radio value="translation">Translation</Radio>
+                          <Radio value="transliteration">Transliteration</Radio>
+                        </Stack>
+                      </RadioGroup>
                     </Stack>
                   </TabPanel>
                   <TabPanel>

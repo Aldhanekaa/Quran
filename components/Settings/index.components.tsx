@@ -26,6 +26,7 @@ import {
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 function Feature({ title, desc, ...rest }: { title: string; desc?: string }) {
   return (
@@ -56,6 +57,8 @@ export default function SettingsDrawer({
   isSettingsOpen,
   setSettingsToClose
 }: SettingsDrawerProps) {
+  const { route } = useRouter();
+
   const [verseTooltip, setVerseTooltip] = useState<string>("translation");
 
   return (
@@ -92,68 +95,76 @@ export default function SettingsDrawer({
                 <Feature title="Website Language" />
               </Stack>
 
-              <Tabs isFitted variant="enclosed">
-                <TabList mb="1em">
-                  <Tab>Chapter Settings</Tab>
-                  <Tab>Audio Settings</Tab>
-                </TabList>
-                <TabPanels>
-                  <TabPanel>
-                    <Stack spacing="24px">
-                      <Stack marginTop={3} spacing={8}>
-                        <Feature title="Select Font" />
-                      </Stack>
-
-                      <FormControl display="flex" alignItems="center">
-                        <Switch id="Transliteration" />
-
-                        <FormLabel
-                          htmlFor="Transliteration"
-                          marginLeft={3}
-                          mb="0"
-                        >
-                          Transliteration (enable)
-                        </FormLabel>
-                      </FormControl>
-
-                      <FormControl display="flex" alignItems="center">
-                        <Switch id="Translation" />
-
-                        <FormLabel htmlFor="Translation" marginLeft={3} mb="0">
-                          Translation (enable)
-                        </FormLabel>
-                      </FormControl>
-
-                      <FormControl display="flex" alignItems="center">
-                        <Switch id="paginationOnEachChapter" />
-
-                        <FormLabel
-                          htmlFor="paginationOnEachChapter"
-                          marginLeft={3}
-                          mb="0"
-                        >
-                          Verse Pagination (enable)
-                        </FormLabel>
-                      </FormControl>
-                      <Text fontSize="md" style={{ marginBottom: "-10px" }}>
-                        Verse Tooltip Content
-                      </Text>
-                      <RadioGroup
-                        onChange={setVerseTooltip}
-                        value={verseTooltip}
-                      >
-                        <Stack direction="row">
-                          <Radio value="translation">Translation</Radio>
-                          <Radio value="transliteration">Transliteration</Radio>
+              {route == "/[chapter]" && (
+                <Tabs isFitted variant="enclosed">
+                  <TabList mb="1em">
+                    <Tab>Chapter Settings</Tab>
+                    <Tab>Audio Settings</Tab>
+                  </TabList>
+                  <TabPanels>
+                    <TabPanel>
+                      <Stack spacing="24px">
+                        <Stack marginTop={3} spacing={8}>
+                          <Feature title="Select Font" />
                         </Stack>
-                      </RadioGroup>
-                    </Stack>
-                  </TabPanel>
-                  <TabPanel>
-                    <p>two!</p>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
+
+                        <FormControl display="flex" alignItems="center">
+                          <Switch id="Transliteration" />
+
+                          <FormLabel
+                            htmlFor="Transliteration"
+                            marginLeft={3}
+                            mb="0"
+                          >
+                            Transliteration (enable)
+                          </FormLabel>
+                        </FormControl>
+
+                        <FormControl display="flex" alignItems="center">
+                          <Switch id="Translation" />
+
+                          <FormLabel
+                            htmlFor="Translation"
+                            marginLeft={3}
+                            mb="0"
+                          >
+                            Translation (enable)
+                          </FormLabel>
+                        </FormControl>
+
+                        <FormControl display="flex" alignItems="center">
+                          <Switch id="paginationOnEachChapter" />
+
+                          <FormLabel
+                            htmlFor="paginationOnEachChapter"
+                            marginLeft={3}
+                            mb="0"
+                          >
+                            Verse Pagination (enable)
+                          </FormLabel>
+                        </FormControl>
+                        <Text fontSize="md" style={{ marginBottom: "-10px" }}>
+                          Verse Tooltip Content
+                        </Text>
+                        <RadioGroup
+                          onChange={setVerseTooltip}
+                          value={verseTooltip}
+                        >
+                          <Stack direction="row">
+                            <Radio value="translation">Translation</Radio>
+                            <Radio value="transliteration">
+                              Transliteration
+                            </Radio>
+                          </Stack>
+                        </RadioGroup>
+                      </Stack>
+                    </TabPanel>
+                    <TabPanel>
+                      <p>two!</p>
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs>
+              )}
             </Stack>
           </DrawerBody>
 

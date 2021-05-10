@@ -9,10 +9,7 @@ import Typography from "@material-ui/core/Typography";
 /* ======================= UI ======================= */
 
 import Grid from "@material-ui/core/Grid";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import Link from "next/link";
-import { Stack, Button, Box, useToast } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import WordVerseSound from "react-sound";
 /* ======================= END UI ======================= */
 
@@ -180,17 +177,10 @@ export default function ChapterTab() {
                   {BismillahText && BismillahText}
                 </p>
                 <TranslationTab
-                  playWordVerseSound={playWordVerseSound}
-                  stopWordVerseSound={stopWordVerseSound}
-                />
-                <ChapterNavigation
-                  verse
                   currentPage={currentPage}
                   FetchMoreVerse={FetchMoreVerse}
-                  totalVerses={surah?.verses_count}
-                  surahID={surah?.id}
-                  // @ts-ignore
-                  totalPage={surahVerses.pagination.total_pages}
+                  playWordVerseSound={playWordVerseSound}
+                  stopWordVerseSound={stopWordVerseSound}
                 />
               </Container>
             </TabPanel>
@@ -212,86 +202,5 @@ export default function ChapterTab() {
         </>
       )}
     </ChapterContext.Consumer>
-  );
-}
-
-interface ChapterNavigationProps {
-  surahID?: number;
-  totalVerses?: number;
-  FetchMoreVerse: () => void;
-  currentPage: number;
-  totalPage?: number;
-  verse?: boolean;
-}
-function ChapterNavigation({
-  surahID,
-  totalPage,
-  FetchMoreVerse,
-  currentPage,
-  verse
-}: ChapterNavigationProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  async function OKCool() {
-    setIsLoading(true);
-    await FetchMoreVerse();
-    setIsLoading(false);
-  }
-  return (
-    <Container>
-      {/* @ts-ignore */}
-      <Grid
-        container
-        spacing={2}
-        style={{
-          marginTop: "50px"
-        }}
-        alignContent="stretch"
-        justify="center"
-      >
-        {surahID && surahID != 1 ? (
-          <ButtonGridItem item>
-            <Link href={`/${surahID - 1}`}>
-              <Button
-                colorScheme="blue"
-                variant="outline"
-                leftIcon={<NavigateBeforeIcon />}
-              >
-                Previous Chapter
-              </Button>
-            </Link>
-          </ButtonGridItem>
-        ) : (
-          // </Link>
-          ""
-        )}
-
-        {verse && totalPage && currentPage < totalPage ? (
-          <ButtonGridItem item onClick={OKCool}>
-            <Button isLoading={isLoading} colorScheme="blue" variant="outline">
-              Load More Verse
-            </Button>
-          </ButtonGridItem>
-        ) : (
-          ""
-        )}
-
-        {surahID && surahID != 114 ? (
-          <ButtonGridItem item>
-            <Link href={`/${surahID + 1}`}>
-              <Button
-                colorScheme="blue"
-                variant="outline"
-                rightIcon={<NavigateNextIcon />}
-              >
-                Next Chapter
-              </Button>
-            </Link>
-          </ButtonGridItem>
-        ) : (
-          // </Link>
-          ""
-        )}
-      </Grid>
-    </Container>
   );
 }

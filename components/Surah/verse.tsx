@@ -212,7 +212,7 @@ export function VerseComponent(props: VerseComponentProps) {
               Tafsirs
             </Button>
           </ButtonGridItem>
-          <ButtonGridItem item>
+          {/* <ButtonGridItem item>
             <Button
               leftIcon={<FilterNoneIcon />}
               onClick={() => {
@@ -241,7 +241,7 @@ export function VerseComponent(props: VerseComponentProps) {
             >
               Share
             </Button>
-          </ButtonGridItem>
+          </ButtonGridItem> */}
 
           <ButtonGridItem item>
             <Link href={`/${props.surah?.id}/${props.verse_number}`}>

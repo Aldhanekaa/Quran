@@ -1,20 +1,23 @@
 /* ======================= UI ======================= */
-
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 
 import { Text, useDisclosure } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+
+import BismillahTextComponent from "components/BismillahText";
 /* ======================= END UI ======================= */
 
-import { NextSeo } from "next-seo";
-import { GetServerSideProps } from "next";
 import {
   VerseByChapterFetchResult,
   SurahResult,
   surahInfoType,
   chapter
 } from "@/ts/interfaces";
+
 import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
+import { GetServerSideProps } from "next";
 import {
   useEffect,
   useState,
@@ -24,7 +27,6 @@ import {
   useMemo,
   useCallback
 } from "react";
-import styled from "@emotion/styled";
 
 import Tab from "@/components/Surah/Tab";
 import Hero from "@/components/Surah/Hero";
@@ -33,25 +35,6 @@ import ModalShare from "@/components/Surah/ModalShare";
 
 import FetchVerses from "../../utils/getVerseByChapter";
 import FetchSurah from "../../utils/getChapter";
-
-const StyledBismillahTextComponent = styled(Text)`
-  font-size: 70px;
-
-  @media screen and (max-width: 556px) {
-    font-size: 40px;
-  }
-`;
-
-const BismillahTextComponent = () => (
-  <StyledBismillahTextComponent
-    marginTop={10}
-    className="arabic"
-    align="center"
-    id="bismillah"
-  >
-    ﷽
-  </StyledBismillahTextComponent>
-);
 
 interface shareModalDataRef {
   verse: string;
@@ -105,8 +88,6 @@ export default function Chapter(props: SurahResult) {
   });
 
   const FetchMoreVerse = useCallback(async () => {
-    // surahVerses?.valueOf
-    // console.log(surahVerses.pagination.total_pages, currentPage);
     if (
       surahVerses &&
       // @ts-ignore
@@ -141,7 +122,7 @@ export default function Chapter(props: SurahResult) {
         Number(router.query.chapter),
         currentPage.current
       );
-      console.log(verses);
+      // console.log(verses);
       changeVerses(verses);
     }
 

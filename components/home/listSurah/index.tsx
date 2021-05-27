@@ -7,6 +7,7 @@ import {
 } from "../../../ts/interfaces";
 
 /* ======================= UI ======================= */
+import { Tabs, TabList, TabPanels, TabPanel, Tab } from "@chakra-ui/react";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -21,21 +22,24 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
-import Link from "next/link";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { withStyles, WithStyles, useTheme } from "@material-ui/core/styles";
+
+// custom component
+import LoadingDataComponent from "./loadingDataComponent";
 /* ======================= END UI ======================= */
 
-import { withStyles, WithStyles, useTheme } from "@material-ui/core/styles";
+import styled from "@emotion/styled";
 import { styles, useStyles, ChapterCard } from "./styles";
-import NoData from "./noData";
+
+import React, { Fragment, useEffect, useState } from "react";
+import Link from "next/link";
+
 import useSWR from "swr";
 import axios from "axios";
-import React, { Fragment, useEffect, useState } from "react";
-import styled from "@emotion/styled";
-import { Tabs, TabList, TabPanels, TabPanel, Tab } from "@chakra-ui/react";
 
 const StyledDialogContent = styled(DialogContent)`
   ol,
@@ -211,8 +215,8 @@ export default function ListSurah({ data, error }: ListSurahProps) {
               <Grid style={{ marginTop: "20px" }} container spacing={3}>
                 {!dialogs &&
                   !error &&
-                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(() => {
-                    return <NoData classes={classes} />;
+                  [1, 1, 1, 1, 1, 1, 1].map((i) => {
+                    return <LoadingDataComponent key={i} classes={classes} />;
                   })}
                 {Array.isArray(dialogs) &&
                   data &&

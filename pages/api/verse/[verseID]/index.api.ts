@@ -1,11 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {
-  ErrorMessage,
-  surahInfoType,
-  chapter,
-  Verse,
-  chapters
-} from "@/ts/interfaces";
+import { Verse, chapters } from "@/ts/interfaces";
 
 import axios from "axios";
 
@@ -38,12 +32,12 @@ export default async function getVerseById(
 
   for (let i = 0; i < chapters.length; i++) {
     if (totalVerses <= parseInt(req.query.verseID)) {
-      console.log(
-        totalVerses,
-        chapters[i].verses_count,
-        parseInt(req.query.verseID),
-        chapters[i].id
-      );
+      // console.log(
+      //   totalVerses,
+      //   chapters[i].verses_count,
+      //   parseInt(req.query.verseID),
+      //   chapters[i].id
+      // );
 
       surah = chapters[i].id;
       surahVerse = parseInt(req.query.verseID) - totalVerses;
@@ -51,10 +45,11 @@ export default async function getVerseById(
 
     totalVerses += chapters[i].verses_count;
   }
+
   if (req.query.showVerseFetch) {
     //@ts-ignore
     const verse = await axios.get<VerseFetchResult>(
-      `https://api.quran.com/api/v4/verses/by_key/2:59?language=en&words=true&word_fields=text_uthmani&audio=7`
+      `https://api.quran.com/api/v4/verses/by_key/${surah}:${surahVerse}?language=en&words=true&word_fields=text_uthmani&audio=7`
     );
     res.status(200).json({ verse: verse.data.verse, surah, surahVerse });
     return;

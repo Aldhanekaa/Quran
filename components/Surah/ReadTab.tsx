@@ -189,6 +189,7 @@ function ChapterNavigation({
           <CircularProgress />
         </Typography>
       )}
+
       {totalPage && totalPage > 1 && (
         <Grid
           container

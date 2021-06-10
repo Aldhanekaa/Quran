@@ -52,10 +52,11 @@ export const ChapterContext = createContext<{
     shareModalData: shareModalDataRef;
     handleShareModal: (verse: string, translation: string) => void;
   };
-  FetchMoreVerse: () => void;
-  currentPage: {
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-    currentPage: number;
+  FetchMoreVerse: (n: number) => void;
+  currentPage: number;
+  fetching: {
+    fetching: boolean;
+    setFetching: React.Dispatch<React.SetStateAction<boolean>>;
   };
 }>({
   // @ts-ignore
@@ -69,9 +70,6 @@ export default function Chapter(props: {
   currentPage: number;
 }) {
   const router = useRouter();
-  let [currentPage, setCurrentPage] = useState<number>(() => props.currentPage);
-
-  let [BismillahText, setBismillahText] = useState<JSX.Element>(<p></p>);
 
   const {
     isOpen: isModalShareOpen,
@@ -83,47 +81,53 @@ export default function Chapter(props: {
     verse: "",
     translation: ""
   });
+
+  const [fetching, setFetching] = useState<boolean>(true);
+  let [currentPage, setCurrentPage] = useState<number>(() => props.currentPage);
+  let [BismillahText, setBismillahText] = useState<JSX.Element>(<p></p>);
+
   const [surahVerses, changeVerses] = useState<
     VerseByChapterFetchResult | false
   >();
-
   const [Surah, setSurah] = useState<SurahResult>(() => {
     return props.surah;
   });
 
-  const FetchMoreVerse = useCallback(async () => {
-    if (
-      surahVerses &&
-      // @ts-ignore
-      currentPage < surahVerses.pagination.total_pages
-    ) {
-      if (router.query.chapter) {
-        setCurrentPage(++currentPage);
+  const FetchMoreVerse = useCallback(
+    async (n: number) => {
+      // console.log(n);
+      setCurrentPage(n);
 
-        window.history.pushState(
-          {},
-          "",
-          // @ts-ignore
-          `/${props.surah.surah.id}/?page=${currentPage}`
-        );
+      if (
+        surahVerses &&
         // @ts-ignore
-        const verses = await FetchVerses(
-          Number(router.query.chapter),
-          currentPage
-        );
+        currentPage < surahVerses.pagination.total_pages
+      ) {
+        if (router.query.chapter) {
+          setFetching(true);
 
-        if (verses) {
-          const PP = Object.assign({}, surahVerses, {
-            verses: [/*...surahVerses.verses,*/ ...verses.verses]
-          });
-          changeVerses(PP);
-          window.scrollTo(0, 0);
+          // @ts-ignore
+          const verses = await FetchVerses(Number(router.query.chapter), n);
+          window.history.pushState(
+            {},
+            "",
+            `/${props.surah.surah?.id}/?page=${n}`
+          );
 
-          // console.log(surahVerses);
+          if (verses) {
+            const PP = Object.assign({}, surahVerses, {
+              verses: [/*...surahVerses.verses,*/ ...verses.verses]
+            });
+            setFetching(false);
+            changeVerses(PP);
+
+            // console.log(surahVerses);
+          }
         }
       }
-    }
-  }, [surahVerses]);
+    },
+    [surahVerses]
+  );
 
   const handleShareModal = useCallback(
     (verse: string, translation: string) => {
@@ -136,18 +140,25 @@ export default function Chapter(props: {
   );
 
   // @ts-ignore
-  useEffect(async () => {
+  useMemo(async () => {
+    setSurah(props.surah);
+    setCurrentPage(props.currentPage);
+    // console.log(Surah);
+
     if (router.query.chapter) {
+      setFetching(true);
+
       // @ts-ignore
       const verses = await FetchVerses(
         Number(router.query.chapter),
-        currentPage
+        props.currentPage
       );
 
       changeVerses(verses);
+      setFetching(false);
     }
 
-    if (Surah.surah && Surah.surah.bismillah_pre) {
+    if (props.surah && props.surah.surah?.bismillah_pre) {
       setBismillahText(<BismillahTextComponent />);
     } else {
       setBismillahText(<Toolbar />);
@@ -174,10 +185,7 @@ export default function Chapter(props: {
 
       <ChapterContext.Provider
         value={{
-          currentPage: {
-            setCurrentPage: setCurrentPage,
-            currentPage: currentPage
-          },
+          currentPage: currentPage,
           surah: props.surah.surah,
           BismillahText: BismillahText,
           SurahInfo: Surah.surahInfo,
@@ -188,7 +196,11 @@ export default function Chapter(props: {
             handleShareModal: handleShareModal,
             shareModalData: shareModalData.current
           },
-          FetchMoreVerse: FetchMoreVerse
+          FetchMoreVerse: FetchMoreVerse,
+          fetching: {
+            fetching: fetching,
+            setFetching: setFetching
+          }
         }}
       >
         <div style={{ marginTop: "50px" }}>
@@ -215,7 +227,7 @@ export default function Chapter(props: {
           {/* @ts-ignore */}
           {props.message == "error" && <p>error</p>}
 
-          {!surahVerses && (
+          {fetching && (
             <Typography
               variant="h5"
               align="center"
@@ -227,7 +239,7 @@ export default function Chapter(props: {
           )}
 
           {/* Tabs */}
-          {surahVerses && <Tab />}
+          {surahVerses && !fetching && <Tab />}
         </div>
       </ChapterContext.Provider>
     </Fragment>
@@ -254,7 +266,6 @@ export const getServerSideProps: GetServerSideProps<{
   }
   //@ts-ignore
   const surah = await FetchSurah(chapter, page);
-  // console.log(page);
 
   //@ts-ignore
   if (surah.message && !surah.surahInfo) {
@@ -264,12 +275,7 @@ export const getServerSideProps: GetServerSideProps<{
   }
 
   if (page <= 0) {
-    return {
-      redirect: {
-        destination: `/${chapter}/?page=1`,
-        permanent: true
-      }
-    };
+    page = 1;
   }
 
   return {

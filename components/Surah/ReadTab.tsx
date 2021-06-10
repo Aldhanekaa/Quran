@@ -5,15 +5,17 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 
 /* ======================= UI ======================= */
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import Pagination from "@material-ui/lab/Pagination";
-import Container from "@material-ui/core/Container";
 
+import Pagination from "@material-ui/lab/Pagination";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -168,16 +170,26 @@ function ChapterNavigation({
   totalPage,
   verse
 }: ChapterNavigationProps) {
-  const { FetchMoreVerse, currentPage } = useContext(ChapterContext);
+  const {
+    FetchMoreVerse,
+    currentPage,
+    fetching: { fetching }
+  } = useContext(ChapterContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  async function OKCool() {
+
+  async function OKCool(n: number) {
     setIsLoading(true);
-    await FetchMoreVerse();
+    await FetchMoreVerse(n);
     setIsLoading(false);
   }
   return (
     <Container>
-      {totalPage > 1 && (
+      {isLoading && (
+        <Typography variant="h5" align="center" color="textSecondary" paragraph>
+          <CircularProgress />
+        </Typography>
+      )}
+      {totalPage && totalPage > 1 && (
         <Grid
           container
           spacing={2}
@@ -189,10 +201,10 @@ function ChapterNavigation({
         >
           <Pagination
             onChange={(e, page) => {
-              OKCool();
+              OKCool(page);
             }}
             count={totalPage}
-            defaultPage={currentPage.currentPage}
+            defaultPage={currentPage}
             showFirstButton
             showLastButton
           />

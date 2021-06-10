@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Verse, chapters } from "@/ts/interfaces";
+import { Verse, chapters, chapter } from "@/ts/interfaces";
 
 import axios from "axios";
 
@@ -9,7 +9,8 @@ const SearchTypes = ["all", "verse", "surah"];
 // @ts-ignore
 interface verseAPI extends NextApiRequest {
   query: {
-    searchType?: SearchT;
+    type?: SearchT;
+    q: string;
     searchNameInput: string;
   };
 }
@@ -25,21 +26,52 @@ export default async function getVerseById(
   res: NextApiResponse
 ) {
   console.log(req.query);
-  let { searchType, searchNameInput } = req.query;
+  let { searchNameInput, q, type } = req.query;
 
-  if (searchType && !SearchTypes.includes(searchType)) {
-    searchType = "surah";
+  if (!type) {
+    type = "surah";
+  }
+  if (type && !SearchTypes.includes(type)) {
+    type = "surah";
   }
 
   let totalVerses: number = 0;
   let surahVerse = 0;
   let surah = 0;
-  //@ts-ignore
-  const {
-    data: { chapters }
-  } = await axios.get<chapters>(
-    `https://api.quran.com/api/v4/chapters?language=en`
-  );
+
+  const Response: { chapters?: chapter[] } = {};
+
+  if (type == "surah" || type == "all") {
+    //@ts-ignore
+    const {
+      data: { chapters }
+    } = await axios.get<chapters>(
+      `https://api.quran.com/api/v4/chapters?language=en`
+    );
+    Response.chapters = [];
+    for (let i = 0; i < chapters.length; i++) {
+      if (chapters[i].name_simple.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+        Response.chapters.push(chapters[i]);
+      }
+    }
+  }
+
+  if (type == "verse" || type == "all") {
+    // //@ts-ignore
+    // const {
+    //   data: { chapters }
+    // } = await axios.get<chapters>(
+    //   `https://api.quran.com/api/v4/chapters?language=en`
+    // );
+    // Response.chapters = [];
+    // for (let i = 0; i < chapters.length; i++) {
+    //   if (
+    //     chapters[i].name_simple.toLowerCase().indexOf(q.toLowerCase()) > -1
+    //   ) {
+    //     Response.chapters.push(chapters[i]);
+    //   }
+    // }
+  }
 
   //   for (let i = 0; i < chapters.length; i++) {
   //     if (totalVerses <= parseInt(req.query.verseID)) {
@@ -71,5 +103,5 @@ export default async function getVerseById(
   //     return;
   //   }
 
-  res.json({ msg: "success!" });
+  res.json({ msg: "success!", response: Response });
 }

@@ -177,7 +177,7 @@ function ChapterNavigation({
   }
   return (
     <Container>
-      {totalPage > 1 && (
+      {totalPage && totalPage > 1 && (
         <Grid
           container
           spacing={2}

@@ -149,9 +149,9 @@ export type Word = {
 // Pagination Model
 export type Pagination = {
   per_page?: number;
-  current_page?: number;
-  next_page?: number;
-  total_pages?: number;
+  current_page: number;
+  next_page: number;
+  total_pages: number;
   total_records?: number;
 };
 

@@ -1,5 +1,8 @@
-import React, { useState } from "react";
-import Container from "@material-ui/core/Container";
+import React, { useState, memo, useContext } from "react";
+
+import Link from "next/link";
+
+import styled from "@emotion/styled";
 
 /* ======================= UI ======================= */
 import Tabs from "@material-ui/core/Tabs";
@@ -8,6 +11,9 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Pagination from "@material-ui/lab/Pagination";
+import Container from "@material-ui/core/Container";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -15,19 +21,12 @@ interface TabPanelProps {
 }
 import Verse from "@/components/Surah/verse";
 import Grid from "@material-ui/core/Grid";
+import { Toolbar } from "@material-ui/core";
+
 import { Stack, Button, useToast } from "@chakra-ui/react";
 /* ======================= END UI ======================= */
 
 import { ChapterContext } from "@/pages/[chapter]/index";
-import styled from "@emotion/styled";
-import { memo } from "react";
-import Link from "next/link";
-import { Toolbar } from "@material-ui/core";
-
-interface songInterface {
-  status: "PLAYING" | "STOPPED" | "PAUSED";
-  url: string;
-}
 
 const ButtonGridItem = styled(Grid)`
   button {
@@ -42,14 +41,10 @@ const ButtonGridItem = styled(Grid)`
 interface TranslationTabProps {
   playWordVerseSound: (url: string) => void;
   stopWordVerseSound: () => void;
-  FetchMoreVerse: () => void;
-  currentPage: number;
 }
 
 const TranslationTab = ({
   playWordVerseSound,
-  currentPage,
-  FetchMoreVerse,
   stopWordVerseSound
 }: TranslationTabProps) => {
   const toast = useToast();
@@ -109,8 +104,6 @@ const TranslationTab = ({
               {/* Buttons | Previous, Next Chapter, and Load more verse */}
               <ChapterNavigation
                 verse
-                currentPage={currentPage}
-                FetchMoreVerse={FetchMoreVerse}
                 totalVerses={surah?.verses_count}
                 surahID={surah?.id}
                 // @ts-ignore
@@ -167,18 +160,15 @@ function a11yProps(index: number) {
 interface ChapterNavigationProps {
   surahID?: number;
   totalVerses?: number;
-  FetchMoreVerse: () => void;
-  currentPage: number;
   totalPage?: number;
   verse?: boolean;
 }
 function ChapterNavigation({
   surahID,
   totalPage,
-  FetchMoreVerse,
-  currentPage,
   verse
 }: ChapterNavigationProps) {
+  const { FetchMoreVerse, currentPage } = useContext(ChapterContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   async function OKCool() {
     setIsLoading(true);
@@ -187,12 +177,34 @@ function ChapterNavigation({
   }
   return (
     <Container>
+      {totalPage > 1 && (
+        <Grid
+          container
+          spacing={2}
+          style={{
+            marginTop: "50px"
+          }}
+          alignContent="stretch"
+          justify="center"
+        >
+          <Pagination
+            onChange={(e, page) => {
+              OKCool();
+            }}
+            count={totalPage}
+            defaultPage={currentPage.currentPage}
+            showFirstButton
+            showLastButton
+          />
+        </Grid>
+      )}
+
       {/* @ts-ignore */}
       <Grid
         container
         spacing={2}
         style={{
-          marginTop: "50px"
+          marginTop: "20px"
         }}
         alignContent="stretch"
         justify="center"
@@ -211,16 +223,6 @@ function ChapterNavigation({
           </ButtonGridItem>
         ) : (
           // </Link>
-          ""
-        )}
-
-        {verse && totalPage && currentPage < totalPage ? (
-          <ButtonGridItem item onClick={OKCool}>
-            <Button isLoading={isLoading} colorScheme="blue" variant="outline">
-              Load More Verse
-            </Button>
-          </ButtonGridItem>
-        ) : (
           ""
         )}
 

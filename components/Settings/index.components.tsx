@@ -108,18 +108,6 @@ export default function SettingsDrawer({
                         </Stack>
 
                         <FormControl display="flex" alignItems="center">
-                          <Switch id="Transliteration" />
-
-                          <FormLabel
-                            htmlFor="Transliteration"
-                            marginLeft={3}
-                            mb="0"
-                          >
-                            Transliteration (enable)
-                          </FormLabel>
-                        </FormControl>
-
-                        <FormControl display="flex" alignItems="center">
                           <Switch id="Translation" />
 
                           <FormLabel
@@ -131,17 +119,17 @@ export default function SettingsDrawer({
                           </FormLabel>
                         </FormControl>
 
-                        <FormControl display="flex" alignItems="center">
-                          <Switch id="paginationOnEachChapter" />
-
-                          <FormLabel
-                            htmlFor="paginationOnEachChapter"
-                            marginLeft={3}
-                            mb="0"
-                          >
-                            Verse Pagination (enable)
-                          </FormLabel>
-                        </FormControl>
+                        {/* <FormControl display="flex" flexDirection="column">
+                          <Text fontSize="md" style={{ marginBottom: "10px" }}>
+                            Verse Indexing
+                          </Text>
+                          <RadioGroup>
+                            <Stack direction="row">
+                              <Radio value="pagination">Pagination</Radio>
+                              <Radio value="more">Read More</Radio>
+                            </Stack>
+                          </RadioGroup>
+                        </FormControl> */}
                         <Text fontSize="md" style={{ marginBottom: "-10px" }}>
                           Verse Tooltip Content
                         </Text>

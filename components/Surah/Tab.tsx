@@ -1,34 +1,21 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import WordVerseSound from "react-sound";
+
+import styled from "@emotion/styled";
+
+/* ======================= UI ======================= */
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-
-/* ======================= UI ======================= */
-
 import Grid from "@material-ui/core/Grid";
 import { Box } from "@chakra-ui/react";
-import WordVerseSound from "react-sound";
 /* ======================= END UI ======================= */
 
-import { useState } from "react";
-import styled from "@emotion/styled";
 import { ChapterContext } from "../../pages/[chapter]/index";
-
 import TranslationTab from "./ReadTab";
-import ReadTab from "./ReadTab";
-
-const ButtonGridItem = styled(Grid)`
-  button {
-    width: 100%;
-  }
-
-  @media screen and (max-width: 680px) {
-    width: 100%;
-  }
-`;
 
 const SurahInfoTab = styled(Container)`
   ol,
@@ -177,8 +164,6 @@ export default function ChapterTab() {
                   {BismillahText && BismillahText}
                 </p>
                 <TranslationTab
-                  currentPage={currentPage}
-                  FetchMoreVerse={FetchMoreVerse}
                   playWordVerseSound={playWordVerseSound}
                   stopWordVerseSound={stopWordVerseSound}
                 />
